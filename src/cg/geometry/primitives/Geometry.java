@@ -4,6 +4,8 @@
  */
 package cg.geometry.primitives;
 
+import cg.geometry.primitives.impl.Point2D;
+import java.awt.Graphics;
 import java.util.List;
 
 /**
@@ -13,8 +15,8 @@ import java.util.List;
  * @author rrufai
  */
 public interface Geometry {
-    List<Point> getVertices();
+    List<Point2D> getVertices();
     List<Edge> getEdges();
     List<Face> getFaces();
-
+    void draw(Graphics canvas);
 }

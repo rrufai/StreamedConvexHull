@@ -10,8 +10,11 @@ import cg.geometry.primitives.Geometry;
  *
  * @author rrufai
  */
-interface Streaming {
-    Geometry initialize(Geometry geometry);
+interface Streaming<T> {
+    void initialize(T... geometry);
     
-    Geometry update(Geometry geometry);
+    void update(T point);
+    
+    Geometry query();
+    
 }

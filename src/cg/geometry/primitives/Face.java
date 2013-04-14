@@ -4,10 +4,14 @@
  */
 package cg.geometry.primitives;
 
+import java.io.IOException;
+
 /**
  *
  * @author rrufai
  */
-public interface Face {
+public interface Face extends Geometry{
+
+    void saveToFile(String fileName)  throws IOException;
     
 }

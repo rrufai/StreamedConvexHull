@@ -4,19 +4,21 @@
  */
 package cg.convexhull.main;
 
+import cg.geometry.primitives.Point;
+import cg.geometry.primitives.impl.Point2D;
+import cg.geometry.primitives.impl.Polygon2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -58,33 +60,32 @@ public class StreamedConvexHullMain {
         // Create the Area shape that represents the path that is clipped by the clipShape
         Area clipArea = new Area(sClip);
         clipArea.intersect(new Area(at.createTransformedShape(clippedPath)));
-
-
-        int bbox = 10;
-        Rectangle rect = sPath.getBounds();
+        Rectangle rect =  sPath.getBounds();
         rect.add(sClip.getBounds());
-        // Expand the drawing area      
-        rect.width += bbox;
-        rect.height += bbox;
-        rect.x -= bbox / 2;
-        rect.y -= bbox / 2;
-        BufferedImage img = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = img.createGraphics();
+        CanvasImpl canvas = new CanvasImpl(rect);
 
-//        g2.setStroke(pathStroke);
-        g2.setColor(Color.black);
-        g2.draw(sPath);
-//
-        g2.setColor(Color.red);
-       g2.draw(sClip);
-//
-        g2.setColor(Color.green);
-        g2.draw(clipArea);
 
-        g2.finalize();
-
-        String imgFormat = "PNG";
-        File img1 = new File("img1.png");
-        ImageIO.write(img, imgFormat, img1);
+        //imageObject.
+        canvas.drawShape(sPath, Color.black);
+        canvas.drawShape(sClip, Color.red);
+        canvas.drawShape(clipArea, Color.green);
+        canvas.saveToFile("PNG", "img1.png");
+        Collection<Point2D> points = new ArrayList<>();
+                double[][] chdata = {
+            {-20.7067, -7.5420},
+            {-15.6558, -21.0232},
+            {6.7786, -19.5432},
+            {13.5400, -12.1944},
+            {22.8319, 1.5574},
+            {15.1514, 15.8849},
+            {5.4365, 19.6453},
+            {-8.9209, 22.1216},
+            {-14.9373, 10.3122}};
+        for(int i = 0; i < chdata.length; i++){
+            points.add(new Point2D(10 *(chdata[i][0]), 10 * (chdata[i][1])));
+        }
+        Polygon2D polygon = new Polygon2D(points);
+        List<Point2D> vertices = polygon.getVertices();
+        polygon.saveToFile("polygon.png");
     }
 }

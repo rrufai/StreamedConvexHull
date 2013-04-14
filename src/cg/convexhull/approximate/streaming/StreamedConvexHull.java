@@ -4,13 +4,15 @@
  */
 package cg.convexhull.approximate.streaming;
 
+import cg.convexhull.exact.ConvexHull;
 import cg.geometry.primitives.Geometry;
+import cg.geometry.primitives.Point;
 
 /**
  *
  * @author rrufai
  */
-public class StreamedConvexHull implements ConvexHull, Streaming{
+public class StreamedConvexHull implements ConvexHull, Streaming<Point>{
 
     @Override
     public Geometry compute(Geometry geom) {
@@ -18,12 +20,17 @@ public class StreamedConvexHull implements ConvexHull, Streaming{
     }
 
     @Override
-    public Geometry initialize(Geometry geometry) {
+    public void initialize(Point... geometry) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Geometry update(Geometry geometry) {
+    public void update(Point point) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Geometry query() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

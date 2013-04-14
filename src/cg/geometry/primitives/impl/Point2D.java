@@ -12,40 +12,46 @@ import cg.geometry.primitives.Point;
  */
 public class Point2D implements Point {
     private java.awt.geom.Point2D.Double point;
-
-    @Override
-    public Number getX() {
-        return point.getX();
+    private static double EPSILON = 1e-9;
+    
+    public Point2D(double x, double y){
+        point = new java.awt.geom.Point2D.Double(x, y);
     }
 
     @Override
-    public Number getY() {
-        return point.getY();
+    public double getX() {
+        return getPoint().getX();
     }
 
     @Override
-    public void setLocation(Number x, Number y) {
-        setLocation(x.doubleValue(), y.doubleValue());
+    public double getY() {
+        return getPoint().getY();
+    }
+
+    @Override
+    public void setLocation(double x, double y) {
+        setLocation(x, y);
     }
 
     public double distanceSq(double px, double py) {
-        px -= point.getX();
-        py -= point.getY();
+        px -= getPoint().getX();
+        py -= getPoint().getY();
         return (px * px + py * py);
     }
 
     public double distanceSq(Point pt) {
-        return this.distance(pt.getX().doubleValue(), pt.getY().doubleValue());
+        return this.distance(pt.getX(), pt.getY());
     }
 
     public double distance(double px, double py) {
-        px -= point.getX();
-        py -= point.getY();
+        px -= getPoint().getX();
+        py -= getPoint().getY();
         return Math.sqrt(px * px + py * py);
     }
 
+    @Override
     public double distance(Point pt) {
-        return distance(pt.getX().doubleValue(), pt.getY().doubleValue());
+        return distance(pt.getX(), pt.getY());
     }
 
     @Override
@@ -60,16 +66,35 @@ public class Point2D implements Point {
 
     @Override
     public int hashCode() {
-        return point.hashCode();
+        return getPoint().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Point) {
             Point p2d = (Point) obj;
-            return (getX() == p2d.getX()) && (getY() == p2d.getY());
+            return (getX() - p2d.getX()) < EPSILON && (getY() - p2d.getY()) < EPSILON;
         }
         return super.equals(obj);
     }
+
+    /**
+     * @return the point
+     */
+    public java.awt.geom.Point2D getPoint() {
+        return point;
+    }
+
+    /**
+     * @param point the point to set
+     */
+    public void setPoint(java.awt.geom.Point2D point) {
+        this.point = new java.awt.geom.Point2D.Double(point.getX(), point.getY());
+    }
     
+    @Override
+    public String toString(){
+        String textForm = "{"+ point.x + ", " + point.y + "}";
+        return textForm;
+    }
 }

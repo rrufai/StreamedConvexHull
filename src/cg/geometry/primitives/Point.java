@@ -10,11 +10,11 @@ package cg.geometry.primitives;
  */
 public interface Point {
 
-    Number getX();
+    double getX();
 
-    Number getY();
+    double getY();
 
-    void setLocation(Number x, Number y);
+    void setLocation(double x, double y);
 
     public double distance(Point terminus);
 

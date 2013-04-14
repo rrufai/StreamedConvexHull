@@ -9,7 +9,6 @@ import cg.geometry.primitives.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -18,14 +17,19 @@ import java.awt.geom.Rectangle2D;
  */
 public class Edge2D implements Edge {
 
-    private Point origin;
-    private Point terminus;
+    private Point2D origin;
+    private Point2D terminus;
+
+    public Edge2D(Point2D origin, Point2D terminus) {
+        this.origin = origin;
+        this.terminus = terminus;
+    }
 
     /**
      * {@inheritDoc
      */
     @Override
-    public Point getOrigin() {
+    public Point2D getOrigin() {
         return origin;
     }
 
@@ -33,7 +37,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public void setOrigin(Point origin) {
+    public void setOrigin(Point2D origin) {
         this.origin = origin;
     }
 
@@ -41,7 +45,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public Point getTerminus() {
+    public Point2D getTerminus() {
         return terminus;
     }
 
@@ -49,7 +53,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public void setTerminus(Point terminus) {
+    public void setTerminus(Point2D terminus) {
         this.terminus = terminus;
     }
 
@@ -75,9 +79,13 @@ public class Edge2D implements Edge {
     public boolean contains(double x, double y) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
+    
     public boolean contains(Point2D p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public boolean contains(java.awt.geom.Point2D p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -103,7 +111,46 @@ public class Edge2D implements Edge {
 
     @Override
     public PathIterator getPathIterator(AffineTransform at) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new PathIterator() {
+            private Point currentPoint = origin;
+            private int type = PathIterator.SEG_MOVETO;
+            private boolean done;
+        
+            @Override
+            public int getWindingRule() {
+                return PathIterator.WIND_EVEN_ODD;
+            }
+
+            @Override
+            public boolean isDone() {
+                return done;
+            }
+
+            @Override
+            public void next() {
+                if(currentPoint == terminus){
+                    done = true;
+                }
+                currentPoint = terminus;
+                type = PathIterator.SEG_LINETO;                
+            }
+                
+
+            @Override
+            public int currentSegment(float[] coords) {
+                coords[0] = (float)currentPoint.getX();
+                coords[1] = (float)currentPoint.getY();
+               return type ;
+            }
+
+            @Override
+            public int currentSegment(double[] coords) {
+                coords[0] = currentPoint.getX();
+                coords[1] = currentPoint.getY();
+             return type;
+            }
+        };
+
     }
 
     @Override
