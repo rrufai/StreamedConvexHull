@@ -4,7 +4,7 @@
  */
 package cg.geometry.primitives.impl;
 
-import cg.convexhull.main.CanvasImpl;
+import cg.common.visualization.CanvasImpl;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
 import cg.geometry.primitives.Point;
