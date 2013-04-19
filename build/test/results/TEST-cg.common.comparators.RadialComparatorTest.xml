@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="rrufai-HP" name="cg.common.comparators.RadialComparatorTest" tests="3" time="0.067" timestamp="2013-01-10T10:42:17">
+<testsuite errors="0" failures="0" hostname="rrufai-HP" name="cg.common.comparators.RadialComparatorTest" tests="3" time="0.065" timestamp="2013-04-19T03:57:35">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="CA" />
     <property name="nb.wait.for.caches" value="true" />
-    <property name="javac.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
+    <property name="javac.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
     <property name="libs.jsf20.maven-pom" value="" />
     <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\java\docs\junit-3.8.2-api.zip" />
     <property name="ant.core.lib" value="C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar" />
     <property name="javadoc.windowtitle" value="" />
     <property name="libs.jsp-compilation.javadoc" value="" />
-    <property name="user.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="user.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.hibernate-persistence.javadoc" value="" />
     <property name="java.vm.version" value="23.5-b02" />
     <property name="libs.jstl11.maven-pom" value="" />
@@ -55,7 +55,7 @@
     <property name="manifest.available+main.class" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner cg.common.comparators.RadialComparatorTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\test\results\TEST-cg.common.comparators.RadialComparatorTest.xml crashfile=C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\junitvmwatcher3659535609008488355.properties propsfile=C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\junit7671816809013224018.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner cg.common.comparators.RadialComparatorTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\test\results\TEST-cg.common.comparators.RadialComparatorTest.xml crashfile=C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\junitvmwatcher3487560538760996051.properties propsfile=C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\junit6462284672346587436.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="jnlp.descriptor" value="application" />
@@ -68,7 +68,7 @@
     <property name="manifest.file" value="manifest.mf" />
     <property name="libs.jstl11.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\javaee6-doc-api.zip" />
     <property name="javadoc.encoding" value="UTF-8" />
-    <property name="javac.classpath" value="lib/javaGeom-0.11.1.jar" />
+    <property name="javac.classpath" value="" />
     <property name="libs.jsp-compilation-syscp.src" value="" />
     <property name="libs.JAVADB_DRIVER_LABEL.src" value="" />
     <property name="debug-transport" value="dt_shmem" />
@@ -100,7 +100,7 @@
     <property name="ant.file.type.StreamedConvexHull-impl" value="file" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="false" />
-    <property name="javac.test.processorpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
+    <property name="javac.test.processorpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
     <property name="netbeans.buildnumber" value="201211062253" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="build.generated.sources.dir" value="build/generated-sources" />
@@ -116,7 +116,7 @@
     <property name="libs.testng.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\testng-6.5.1-dist.jar" />
     <property name="libs.absolutelayout.maven-pom" value="" />
     <property name="ant.java.version" value="1.7" />
-    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_09\bin;C:\Users\rrufai\Documents\NetBeansProjects\CG\lib\Windows\;." />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_09\bin;C:\Users\rrufai\Documents\NetBeansProjects\CG\lib\Windows\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;." />
     <property name="javadoc.author" value="false" />
     <property name="libs.metro.maven-pom" value="" />
     <property name="manifest.available+main.class-mkdist.available" value="true" />
@@ -124,7 +124,7 @@
     <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
     <property name="libs.PostgreSQLDriver.src" value="" />
     <property name="sun.arch.data.model" value="64" />
-    <property name="basedir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="basedir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.jpa20-persistence.maven-pom" value="" />
     <property name="jar.compress" value="false" />
     <property name="libs.jstl11.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\standard.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jstl.jar" />
@@ -146,7 +146,7 @@
     <property name="manifest.available" value="true" />
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
-    <property name="run.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
+    <property name="run.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
     <property name="ant.project.invoked-targets" value="test" />
     <property name="test.binaryexcludes" value="" />
     <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\platform\docs\swing-layout-1.0.4-doc.zip" />
@@ -168,7 +168,7 @@
     <property name="libs.JAXB-ENDORSED.javadoc" value="" />
     <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
     <property name="libs.spring-framework300.src" value="" />
-    <property name="empty.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\empty" />
+    <property name="empty.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\empty" />
     <property name="libs.JOGL.classpath" value="C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl.jar" />
     <property name="version-output" value="java version &quot;1.7" />
     <property name="test.binarytestincludes" value="" />
@@ -178,11 +178,10 @@
     <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_09\jre" />
     <property name="libs.jsp-compilation.src" value="" />
     <property name="libs.spring-webmvc.src" value="" />
-    <property name="debug.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
+    <property name="debug.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
     <property name="libs.javaee-api-6.0.src" value="" />
-    <property name="ant.file.StreamedConvexHull-impl" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\nbproject\build-impl.xml" />
-    <property name="file.reference.javaGeom-0.11.1.jar" value="lib/javaGeom-0.11.1.jar" />
+    <property name="ant.file.StreamedConvexHull-impl" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\nbproject\build-impl.xml" />
     <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
     <property name="ant.project.default-target" value="default" />
     <property name="annotation.processing.run.all.processors" value="true" />
@@ -196,7 +195,7 @@
     <property name="libs.spring-webmvc.javadoc" value="" />
     <property name="libs.EclipseLink-GlassFish-v3.maven-pom" value="" />
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
-    <property name="run.classpath" value="lib/javaGeom-0.11.1.jar:build/classes" />
+    <property name="run.classpath" value=":build/classes" />
     <property name="libs.GLUEGEN-RT.src" value="" />
     <property name="libs.hibernate-support.src" value="" />
     <property name="jna.boot.library.name" value="jnidispatch-340" />
@@ -211,10 +210,10 @@
     <property name="javadoc.use" value="true" />
     <property name="sun.java2d.noddraw" value="true" />
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\ant\extra\jspcompile.jar" />
-    <property name="javac.processorpath" value="lib/javaGeom-0.11.1.jar" />
+    <property name="javac.processorpath" value="" />
     <property name="libs.spring-webmvc.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\spring\spring-webmvc-2.5.6.SEC03.jar" />
     <property name="javac.compilerargs" value="" />
-    <property name="ant.file" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build.xml" />
+    <property name="ant.file" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build.xml" />
     <property name="libs.beans-binding.maven-pom" value="" />
     <property name="jnlp.codebase.type" value="no.codebase" />
     <property name="libs.jsf12.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-beanutils.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-collections.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-digester.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-logging.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\jsf-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\jsf-impl.jar" />
@@ -236,7 +235,7 @@
     <property name="org.openide.awt.ActionReference.completion" value="org.netbeans.modules.apisupport.project.layers.PathCompletions" />
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin" />
     <property name="have.sources" value="true" />
-    <property name="debug.classpath" value="lib/javaGeom-0.11.1.jar:build/classes" />
+    <property name="debug.classpath" value=":build/classes" />
     <property name="javadoc.private" value="false" />
     <property name="sun.awt.disableMixing" value="true" />
     <property name="test.src.dir" value="test" />
@@ -290,12 +289,12 @@
     <property name="libs.testng.maven-pom" value="" />
     <property name="libs.jaxb.src" value="" />
     <property name="libs.Java-EE-GlassFish-v3.wsgenerate" value="" />
-    <property name="work.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="work.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb1-impl.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
     <property name="do.depend" value="false" />
     <property name="dist.javadoc.dir" value="dist/javadoc" />
-    <property name="libs.spring-webmvc3.0.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\spring-3.0\spring-webmvc-3.1.1.RELEASE.jar" />
     <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\swing-layout-1.0.4.jar" />
+    <property name="libs.spring-webmvc3.0.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\spring-3.0\spring-webmvc-3.1.1.RELEASE.jar" />
     <property name="libs.restlib.src" value="" />
     <property name="javac.source" value="1.7" />
     <property name="build.generated.dir" value="build/generated" />
@@ -310,7 +309,7 @@
     <property name="libs.spring-framework.maven-pom" value="" />
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_09\jre\classes" />
     <property name="javac.target" value="1.7" />
-    <property name="built-jar.properties" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\built-jar.properties" />
+    <property name="built-jar.properties" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\built-jar.properties" />
     <property name="build.test.classes.dir" value="build/test/classes" />
     <property name="src.dir" value="src" />
     <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
@@ -340,8 +339,8 @@
     <property name="manifest.available+main.class+mkdist.available" value="true" />
     <property name="libs.JOGL.maven-pom" value="" />
     <property name="default.javac.target" value="1.7" />
-    <property name="libs.Java-EE-GlassFish-v3.src" value="" />
     <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
+    <property name="libs.Java-EE-GlassFish-v3.src" value="" />
     <property name="user.timezone" value="" />
     <property name="nb.junit.single" value="false" />
     <property name="do.jar" value="true" />
@@ -356,9 +355,9 @@
     <property name="excludes" value="" />
     <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-tools.jar" />
     <property name="libs.restlib.maven-pom" value="" />
-    <property name="ant.file.StreamedConvexHull" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build.xml" />
+    <property name="ant.file.StreamedConvexHull" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build.xml" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
-    <property name="java.class.path" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\lib\javaGeom-0.11.1.jar;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\classes;C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\test\classes;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull;C:\Program Files (x86)\Java\jre7\lib\ext\QTJava.zip;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit4.jar" />
+    <property name="java.class.path" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\classes;C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar;C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\test\classes;C:\Users\rrufai\Documents\GitHub\StreamedConvexHull;C:\Program Files (x86)\Java\jre7\lib\ext\QTJava.zip;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit4.jar" />
     <property name="do.mkdist" value="true" />
     <property name="libs.absolutelayout.src" value="" />
     <property name="libs.jpa20-persistence.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\eclipselink\javax.persistence-2.0.3.jar" />
@@ -372,8 +371,8 @@
     <property name="libs.restlib.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-apache-client-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-atom-abdera-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-guice-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-multipart-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-simple-server-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\jersey-spring-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\oauth-client-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\oauth-server-1.13-javadoc.zip;C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\oauth-signature-1.13-javadoc.zip" />
     <property name="libs.JAXB-ENDORSED.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\api\jaxb-api.jar" />
     <property name="libs.eclipselink.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\eclipselink\eclipselink-2.3.2.jar;C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\eclipselink\javax.persistence-2.0.3.jar;C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_1.0.1.jar" />
-    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\java\docs\beansbinding-1.2.1-doc.zip" />
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\java\docs\beansbinding-1.2.1-doc.zip" />
     <property name="libs.Java-EE-GlassFish-v3.classpath" value="C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.servlet.jsp.jstl.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.ejb.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.security.auth.message.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.enterprise.deploy.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\bean-validator.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.servlet.jsp-api.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.jms.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\weld-osgi-bundle.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jaxb-osgi.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.transaction.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.servlet.jsp.jstl-api.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\endorsed\javax.annotation.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.el-api.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.management.j2ee.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.persistence.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.resource.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.mail.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.servlet-api.jar;C:\Program Files\glassfish-3.1.2.2\mq\lib\jaxm-api.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\webservices-osgi.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\endorsed\webservices-api-osgi.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.security.jacc.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\javax.faces.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\endorsed\jaxb-api-osgi.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-core.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\web-core.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jackson-core-asl.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jackson-jaxrs.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jackson-mapper-asl.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-client.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-core.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-gf-server.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-json.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jersey-multipart.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\jettison.jar;C:\Program Files\glassfish-3.1.2.2\glassfish\modules\mimepull.jar" />
     <property name="java.vm.vendor" value="Oracle Corporation" />
     <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
@@ -387,8 +386,8 @@
     <property name="libs.JAXB-ENDORSED.src" value="" />
     <property name="libs.spring-framework.javadoc" value="" />
     <property name="libs.testng.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\platform\docs\testng-6.5.1-javadoc.zip" />
-    <property name="libs.PostgreSQLDriver.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\postgresql-9.1-901.jdbc4.jar" />
     <property name="user.script" value="" />
+    <property name="libs.PostgreSQLDriver.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\postgresql-9.1-901.jdbc4.jar" />
     <property name="libs.jsf12.maven-pom" value="" />
     <property name="jnlp.signing" value="" />
     <property name="libs.junit.src" value="" />
@@ -405,11 +404,11 @@
     <property name="javadoc.nonavbar" value="false" />
     <property name="ant.file.type.StreamedConvexHull" value="file" />
     <property name="platform.active" value="default_platform" />
-    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
     <property name="libs.JOGL.src" value="C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl-src.zip;C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl-src.zip" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
   </properties>
   <testcase classname="cg.common.comparators.RadialComparatorTest" name="testSetAnchor" time="0.003" />
-  <testcase classname="cg.common.comparators.RadialComparatorTest" name="testCompare" time="0.001" />
+  <testcase classname="cg.common.comparators.RadialComparatorTest" name="testCompare" time="0.0" />
   <testcase classname="cg.common.comparators.RadialComparatorTest" name="testCcw" time="0.0" />
   <system-out><![CDATA[setAnchor
 compare

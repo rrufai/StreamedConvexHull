@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="6" hostname="rrufai-HP" name="cg.convexhull.exact.impl.QuickHullRecursiveTest" tests="7" time="0.102" timestamp="2013-01-10T10:42:20">
+<testsuite errors="0" failures="6" hostname="rrufai-HP" name="cg.convexhull.exact.impl.QuickHullRecursiveTest" tests="7" time="0.117" timestamp="2013-04-19T03:57:37">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="CA" />
     <property name="nb.wait.for.caches" value="true" />
-    <property name="javac.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
+    <property name="javac.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
     <property name="libs.jsf20.maven-pom" value="" />
     <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\java\docs\junit-3.8.2-api.zip" />
     <property name="ant.core.lib" value="C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar" />
     <property name="javadoc.windowtitle" value="" />
     <property name="libs.jsp-compilation.javadoc" value="" />
-    <property name="user.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="user.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.hibernate-persistence.javadoc" value="" />
     <property name="java.vm.version" value="23.5-b02" />
     <property name="libs.jstl11.maven-pom" value="" />
@@ -55,7 +55,7 @@
     <property name="manifest.available+main.class" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner cg.convexhull.exact.impl.QuickHullRecursiveTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\test\results\TEST-cg.convexhull.exact.impl.QuickHullRecursiveTest.xml crashfile=C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\junitvmwatcher3117596584775242368.properties propsfile=C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\junit4769513850850822242.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner cg.convexhull.exact.impl.QuickHullRecursiveTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\test\results\TEST-cg.convexhull.exact.impl.QuickHullRecursiveTest.xml crashfile=C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\junitvmwatcher8060662038054890952.properties propsfile=C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\junit8613896950318306441.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="jnlp.descriptor" value="application" />
@@ -68,7 +68,7 @@
     <property name="manifest.file" value="manifest.mf" />
     <property name="libs.jstl11.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\docs\javaee6-doc-api.zip" />
     <property name="javadoc.encoding" value="UTF-8" />
-    <property name="javac.classpath" value="lib/javaGeom-0.11.1.jar" />
+    <property name="javac.classpath" value="" />
     <property name="libs.jsp-compilation-syscp.src" value="" />
     <property name="libs.JAVADB_DRIVER_LABEL.src" value="" />
     <property name="debug-transport" value="dt_shmem" />
@@ -100,7 +100,7 @@
     <property name="ant.file.type.StreamedConvexHull-impl" value="file" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="false" />
-    <property name="javac.test.processorpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
+    <property name="javac.test.processorpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar" />
     <property name="netbeans.buildnumber" value="201211062253" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="build.generated.sources.dir" value="build/generated-sources" />
@@ -116,7 +116,7 @@
     <property name="libs.testng.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\testng-6.5.1-dist.jar" />
     <property name="libs.absolutelayout.maven-pom" value="" />
     <property name="ant.java.version" value="1.7" />
-    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_09\bin;C:\Users\rrufai\Documents\NetBeansProjects\CG\lib\Windows\;." />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_09\bin;C:\Users\rrufai\Documents\NetBeansProjects\CG\lib\Windows\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;." />
     <property name="javadoc.author" value="false" />
     <property name="libs.metro.maven-pom" value="" />
     <property name="manifest.available+main.class-mkdist.available" value="true" />
@@ -124,7 +124,7 @@
     <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
     <property name="libs.PostgreSQLDriver.src" value="" />
     <property name="sun.arch.data.model" value="64" />
-    <property name="basedir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="basedir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.jpa20-persistence.maven-pom" value="" />
     <property name="jar.compress" value="false" />
     <property name="libs.jstl11.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\standard.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jstl.jar" />
@@ -146,7 +146,7 @@
     <property name="manifest.available" value="true" />
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
-    <property name="run.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
+    <property name="run.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
     <property name="ant.project.invoked-targets" value="test" />
     <property name="test.binaryexcludes" value="" />
     <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 7.3 Beta\platform\docs\swing-layout-1.0.4-doc.zip" />
@@ -168,7 +168,7 @@
     <property name="libs.JAXB-ENDORSED.javadoc" value="" />
     <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
     <property name="libs.spring-framework300.src" value="" />
-    <property name="empty.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\empty" />
+    <property name="empty.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\empty" />
     <property name="libs.JOGL.classpath" value="C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl.jar" />
     <property name="version-output" value="java version &quot;1.7" />
     <property name="test.binarytestincludes" value="" />
@@ -178,11 +178,10 @@
     <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_09\jre" />
     <property name="libs.jsp-compilation.src" value="" />
     <property name="libs.spring-webmvc.src" value="" />
-    <property name="debug.test.classpath" value="lib/javaGeom-0.11.1.jar:build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
+    <property name="debug.test.classpath" value=":build/classes:C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar:build/test/classes" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
     <property name="libs.javaee-api-6.0.src" value="" />
-    <property name="ant.file.StreamedConvexHull-impl" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\nbproject\build-impl.xml" />
-    <property name="file.reference.javaGeom-0.11.1.jar" value="lib/javaGeom-0.11.1.jar" />
+    <property name="ant.file.StreamedConvexHull-impl" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\nbproject\build-impl.xml" />
     <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
     <property name="ant.project.default-target" value="default" />
     <property name="annotation.processing.run.all.processors" value="true" />
@@ -196,7 +195,7 @@
     <property name="libs.spring-webmvc.javadoc" value="" />
     <property name="libs.EclipseLink-GlassFish-v3.maven-pom" value="" />
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
-    <property name="run.classpath" value="lib/javaGeom-0.11.1.jar:build/classes" />
+    <property name="run.classpath" value=":build/classes" />
     <property name="libs.GLUEGEN-RT.src" value="" />
     <property name="libs.hibernate-support.src" value="" />
     <property name="jna.boot.library.name" value="jnidispatch-340" />
@@ -211,10 +210,10 @@
     <property name="javadoc.use" value="true" />
     <property name="sun.java2d.noddraw" value="true" />
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\ant\extra\jspcompile.jar" />
-    <property name="javac.processorpath" value="lib/javaGeom-0.11.1.jar" />
+    <property name="javac.processorpath" value="" />
     <property name="libs.spring-webmvc.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\spring\spring-webmvc-2.5.6.SEC03.jar" />
     <property name="javac.compilerargs" value="" />
-    <property name="ant.file" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build.xml" />
+    <property name="ant.file" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build.xml" />
     <property name="libs.beans-binding.maven-pom" value="" />
     <property name="jnlp.codebase.type" value="no.codebase" />
     <property name="libs.jsf12.classpath" value="C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-beanutils.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-collections.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-digester.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\commons-logging.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\jsf-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\jsf-1_2\jsf-impl.jar" />
@@ -237,7 +236,7 @@
     <property name="org.openide.awt.ActionReference.completion" value="org.netbeans.modules.apisupport.project.layers.PathCompletions" />
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\bin" />
     <property name="have.sources" value="true" />
-    <property name="debug.classpath" value="lib/javaGeom-0.11.1.jar:build/classes" />
+    <property name="debug.classpath" value=":build/classes" />
     <property name="javadoc.private" value="false" />
     <property name="sun.awt.disableMixing" value="true" />
     <property name="test.src.dir" value="test" />
@@ -291,12 +290,12 @@
     <property name="libs.testng.maven-pom" value="" />
     <property name="libs.jaxb.src" value="" />
     <property name="libs.Java-EE-GlassFish-v3.wsgenerate" value="" />
-    <property name="work.dir" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull" />
+    <property name="work.dir" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull" />
     <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\jaxb1-impl.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
     <property name="do.depend" value="false" />
     <property name="dist.javadoc.dir" value="dist/javadoc" />
-    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\swing-layout-1.0.4.jar" />
     <property name="libs.spring-webmvc3.0.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\spring-3.0\spring-webmvc-3.1.1.RELEASE.jar" />
+    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\swing-layout-1.0.4.jar" />
     <property name="libs.restlib.src" value="" />
     <property name="javac.source" value="1.7" />
     <property name="build.generated.dir" value="build/generated" />
@@ -311,7 +310,7 @@
     <property name="libs.spring-framework.maven-pom" value="" />
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_09\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_09\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_09\jre\classes" />
     <property name="javac.target" value="1.7" />
-    <property name="built-jar.properties" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\built-jar.properties" />
+    <property name="built-jar.properties" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\built-jar.properties" />
     <property name="build.test.classes.dir" value="build/test/classes" />
     <property name="src.dir" value="src" />
     <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
@@ -335,8 +334,8 @@
     <property name="sun.jnu.encoding" value="Cp1252" />
     <property name="libs.MySQLDriver.src" value="" />
     <property name="libs.JOGL.javadoc" value="C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl-docs.zip" />
-    <property name="build.test.results.dir" value="build/test/results" />
     <property name="java.runtime.version" value="1.7.0_09-b05" />
+    <property name="build.test.results.dir" value="build/test/results" />
     <property name="libs.ejb3-persistence.javadoc" value="" />
     <property name="manifest.available+main.class+mkdist.available" value="true" />
     <property name="libs.JOGL.maven-pom" value="" />
@@ -355,11 +354,11 @@
     <property name="endorsed.classpath" value="" />
     <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\AbsoluteLayout.jar" />
     <property name="excludes" value="" />
-    <property name="ant.file.StreamedConvexHull" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build.xml" />
-    <property name="libs.restlib.maven-pom" value="" />
     <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 7.3 Beta\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 7.3 Beta\enterprise\modules\ext\metro\webservices-tools.jar" />
+    <property name="libs.restlib.maven-pom" value="" />
+    <property name="ant.file.StreamedConvexHull" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build.xml" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
-    <property name="java.class.path" value="C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\lib\javaGeom-0.11.1.jar;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\classes;C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull\build\test\classes;C:\Users\rrufai\Documents\NetBeansProjects\StreamedConvexHull;C:\Program Files (x86)\Java\jre7\lib\ext\QTJava.zip;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit4.jar" />
+    <property name="java.class.path" value="C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\classes;C:\Program Files\NetBeans 7.3 Beta\platform\modules\ext\junit-4.10.jar;C:\Users\rrufai\Documents\GitHub\StreamedConvexHull\build\test\classes;C:\Users\rrufai\Documents\GitHub\StreamedConvexHull;C:\Program Files (x86)\Java\jre7\lib\ext\QTJava.zip;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 7.3 Beta\java\ant\lib\ant-junit4.jar" />
     <property name="do.mkdist" value="true" />
     <property name="libs.absolutelayout.src" value="" />
     <property name="libs.jpa20-persistence.classpath" value="C:\Program Files\NetBeans 7.3 Beta\java\modules\ext\eclipselink\javax.persistence-2.0.3.jar" />
@@ -409,19 +408,19 @@
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
     <property name="libs.JOGL.src" value="C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl-src.zip;C:\Users\rrufai\AppData\Roaming\NetBeans\7.3beta\jogl-runtime\jogl-src.zip" />
   </properties>
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeSubset" time="0.013">
-    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
-	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testComputeSubset(QuickHullRecursiveTest.java:160)
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testCompute" time="0.016">
+    <failure message="expected:&lt;[{-20.7067, -7.542}, {-15.6558, -21.0232}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {6.7786, -19.5432}, {13.54, -12.1944}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt; but was:&lt;[{-20.7067, -20.7067}, {-20.7067, -7.542}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;[{-20.7067, -7.542}, {-15.6558, -21.0232}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {6.7786, -19.5432}, {13.54, -12.1944}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt; but was:&lt;[{-20.7067, -20.7067}, {-20.7067, -7.542}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt;
+	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testCompute(QuickHullRecursiveTest.java:66)
 </failure>
   </testcase>
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeFarthest" time="0.002">
-    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
-	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testComputeFarthest(QuickHullRecursiveTest.java:138)
-</failure>
-  </testcase>
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeLR" time="0.002">
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeLR" time="0.001">
     <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
 	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testComputeLR(QuickHullRecursiveTest.java:175)
+</failure>
+  </testcase>
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeSubset" time="0.004">
+    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
+	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testComputeSubset(QuickHullRecursiveTest.java:160)
 </failure>
   </testcase>
   <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testConvexHull" time="0.003">
@@ -429,29 +428,29 @@
 	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testConvexHull(QuickHullRecursiveTest.java:81)
 </failure>
   </testcase>
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testMergeHulls" time="0.003">
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testMergeHulls" time="0.002">
     <failure message="expected:&lt;[{-15.6558, -21.0232}, {6.7786, -19.5432}, {13.54, -12.1944}, {-20.7067, -7.542}, {22.8319, 1.5574}, {-14.9373, 10.3122}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}]&gt; but was:&lt;[{-20.7067, -7.542}, {22.8319, 1.5574}, {-14.9373, 10.3122}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;[{-15.6558, -21.0232}, {6.7786, -19.5432}, {13.54, -12.1944}, {-20.7067, -7.542}, {22.8319, 1.5574}, {-14.9373, 10.3122}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}]&gt; but was:&lt;[{-20.7067, -7.542}, {22.8319, 1.5574}, {-14.9373, 10.3122}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}]&gt;
 	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testMergeHulls(QuickHullRecursiveTest.java:100)
 </failure>
   </testcase>
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testQuickHull" time="0.001" />
-  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testCompute" time="0.006">
-    <failure message="expected:&lt;[{-20.7067, -7.542}, {-15.6558, -21.0232}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {6.7786, -19.5432}, {13.54, -12.1944}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt; but was:&lt;[{-20.7067, -20.7067}, {-20.7067, -7.542}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;[{-20.7067, -7.542}, {-15.6558, -21.0232}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {6.7786, -19.5432}, {13.54, -12.1944}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt; but was:&lt;[{-20.7067, -20.7067}, {-20.7067, -7.542}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {15.1514, 15.8849}, {22.8319, 1.5574}]&gt;
-	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testCompute(QuickHullRecursiveTest.java:66)
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testQuickHull" time="0.022" />
+  <testcase classname="cg.convexhull.exact.impl.QuickHullRecursiveTest" name="testComputeFarthest" time="0.002">
+    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
+	at cg.convexhull.exact.impl.QuickHullRecursiveTest.testComputeFarthest(QuickHullRecursiveTest.java:138)
 </failure>
   </testcase>
-  <system-out><![CDATA[computeSubset
+  <system-out><![CDATA[compute
+computeLR
+computeSubset
 subset(L, R): [{4.8988, 16.5324}, {-2.9989, 9.0573}, {15.4351, 1.558}, {-0.315, 4.1554}, {-9.5647, 5.9777}, {-10.4647, 4.2737}, {11.95, 1.3588}, {-15.0409, -2.306}, {-9.0776, 11.3783}, {-14.9373, 10.3122}, {-7.2171, 12.9024}, {1.8799, 8.0789}, {7.7709, 16.9294}, {8.9905, 4.7096}, {-12.3618, 7.5647}, {-5.9178, -1.6244}, {7.9, 3.3163}, {13.9025, 3.895}, {1.4031, 2.3256}, {-5.436, -3.3475}, {-4.8832, 15.7248}, {0.0435, -1.611}, {-7.3235, 10.5347}, {-2.5097, -2.6787}, {5.4365, 19.6453}, {12.9084, 12.3803}, {2.2533, 10.8634}, {-8.499, -2.3981}, {7.1446, 0.3471}, {1.0004, 5.6938}, {-17.7399, -5.2753}, {-2.7747, 0.2134}, {3.9441, 2.2864}, {-8.219, 7.6302}, {-0.5672, 0.2707}, {6.9128, -0.4967}, {8.3096, -1.0369}, {6.689, 11.1841}, {6.6896, -1.1112}, {15.1514, 15.8849}, {-9.1063, -0.1987}, {-8.9209, 22.1216}, {5.2818, 6.354}, {-13.4096, 1.1124}, {2.1393, 0.5877}, {6.0774, 5.853}, {12.8916, 1.2147}, {10.4089, 8.2828}, {7.686, 15.7892}, {-7.0509, -4.4648}, {-5.3547, 20.5738}, {2.1844, 3.8881}, {9.9564, 6.5288}, {3.1932, -1.4634}, {-4.5957, 6.0454}, {-6.4204, -2.898}, {-9.0912, 16.3515}, {12.9092, 3.3406}, {4.8034, 0.2067}, {8.1191, 14.3959}]
 subset(R, L): [{3.8768, -4.1864}, {13.54, -12.1944}, {0.8021, -11.9194}, {-0.364, -11.1732}, {11.6677, -10.2834}, {3.3788, -9.2261}, {17.9243, -4.9549}, {0.8049, -5.0648}, {8.1432, -10.6782}, {-1.6561, -10.1621}, {-11.0246, -5.8414}, {-1.9589, -5.8166}, {6.7786, -19.5432}, {3.573, -7.4363}, {-3.3256, -10.8778}, {9.58, -11.1315}, {8.8118, -10.3978}, {1.5928, -12.4928}, {17.2356, -3.6061}, {-2.1786, -8.0357}, {2.7464, -2.7443}, {11.8229, -12.8127}, {0.5178, -12.4736}, {-1.5565, -14.804}, {-15.6558, -21.0232}, {3.1204, -12.573}, {4.1481, -3.293}, {6.2874, -7.4676}, {6.7115, -5.4515}, {9.1562, -8.8976}, {-1.34, -11.3435}, {-0.8671, -10.8589}, {8.2579, -9.559}, {4.2729, -8.4715}, {7.2323, -3.6497}, {-13.7513, -9.2455}, {0.4081, -11.0131}, {0.6237, -9.0394}]
-computeFarthest
-leftmost: {-20.7067, -7.542}, rightmost: {22.8319, 1.5574}
-farthest: {-8.9209, 22.1216}
-computeLR
 convexHull
 mergeHulls
 quickHull
 quickHull: [{-20.7067, -7.542}, {-14.9373, 10.3122}, {-8.9209, 22.1216}, {5.4365, 19.6453}, {15.1514, 15.8849}, {22.8319, 1.5574}]
-compute
+computeFarthest
+leftmost: {-20.7067, -7.542}, rightmost: {22.8319, 1.5574}
+farthest: {-8.9209, 22.1216}
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
