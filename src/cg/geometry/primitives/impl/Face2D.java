@@ -4,10 +4,9 @@
  */
 package cg.geometry.primitives.impl;
 
-import cg.convexhull.main.CanvasImpl;
+import cg.common.visualization.CanvasImpl;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
-import cg.geometry.primitives.Point;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Path2D;
