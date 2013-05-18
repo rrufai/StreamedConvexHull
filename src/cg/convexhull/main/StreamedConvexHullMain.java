@@ -4,7 +4,6 @@
  */
 package cg.convexhull.main;
 
-import cg.common.visualization.CanvasImpl;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;

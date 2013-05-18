@@ -18,5 +18,8 @@ public interface Geometry {
     List<Point2D> getVertices();
     List<Edge> getEdges();
     List<Face> getFaces();
+    Point2D getCentroid();
+    Point2D getPredecessor(Point2D point);
+    Point2D getSuccessor(Point2D point);
     void draw(Graphics canvas);
 }

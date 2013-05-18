@@ -4,15 +4,10 @@
  */
 package cg.convexhull.exact.impl;
 
-import cg.common.comparators.LexicographicComparator;
-import cg.common.comparators.LexicographicComparator.Direction;
-import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -33,8 +28,7 @@ public class AndrewsMonotoneChainTest {
      */
     @Before
     public void setUp() {
-        pointset = new ArrayList<Point2D>();
-        this.chVertices = new ArrayList<Point2D>();
+        pointset = new ArrayList<>();
 
         double[][] data = {
             {-3.3256, -10.8778},
@@ -153,6 +147,7 @@ public class AndrewsMonotoneChainTest {
             {-8.9209, 22.1216},
             {-14.9373, 10.3122}};
 
+        this.chVertices = new ArrayList<>(chdata.length);
         for (int i = 0; i < chdata.length; i++) {
             chVertices.add(new Point2D(chdata[i][0], chdata[i][1]));
         }
@@ -177,9 +172,9 @@ public class AndrewsMonotoneChainTest {
         List<Point2D> expectedResult = chVertices;
         final Polygon2D polygon2D = new Polygon2D(pointset);
         List<Point2D> actualResult = instance.compute(polygon2D).getVertices();
-        Comparator<Point2D> comparator = new LexicographicComparator<>(Direction.BOTTOM_UP);
-        Collections.sort(expectedResult, comparator);
-        Collections.sort(actualResult, comparator);
+        //Comparator<Point2D> comparator = new LexicographicComparator<>(Direction.BOTTOM_UP);
+        //Collections.sort(expectedResult, comparator);
+        //Collections.sort(actualResult, comparator);
         assertEquals(expectedResult, actualResult);
     }
 }

@@ -4,7 +4,7 @@
  */
 package cg.geometry.primitives.impl;
 
-import cg.common.visualization.CanvasImpl;
+import cg.convexhull.main.CanvasImpl;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
 import cg.geometry.primitives.Point;
@@ -95,4 +95,48 @@ public class Face2D implements Face {
     public void draw(Graphics canvas) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	public Point2D getCentroid() {
+		List<Point2D> vertices = getVertices();
+		double x = 0.0, y = 0.0;
+		if (vertices.size() == 0 ) {
+			return new Point2D(x , y);
+		}
+		for (Point2D v : vertices) {
+			x = x + v.getX();
+			y = y + v.getY();
+		}
+		
+		return new Point2D(x / vertices.size(), y / vertices.size());
+	}
+
+
+	// TODO: should be testes
+	@Override
+	public Point2D getPredecessor(Point2D point) {
+
+		List<Point2D> vertices = getVertices();
+		int index = vertices.indexOf(point);
+
+		if (index == 0)
+			return vertices.get(vertices.size() - 1);
+
+		return vertices.get(index - 1);
+
+	}
+
+	// TODO: should be testes
+	@Override
+	public Point2D getSuccessor(Point2D point) {
+
+		List<Point2D> vertices = getVertices();
+		int index = vertices.indexOf(point);
+
+		if (index == vertices.size() - 1)
+			return vertices.get(0);
+
+		return vertices.get(index + 1);
+
+	}
 }
