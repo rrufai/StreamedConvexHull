@@ -121,7 +121,8 @@ public class AndrewsMonotoneChain implements ConvexHull {
         List<Point2D> partialHull = new ArrayList(stack.size());
         //partialHull.addAll(stack);
         while (!stack.empty()) {
-            partialHull.add(stack.remove(stack.size() - 1));
+            //partialHull.add(stack.remove(stack.size() - 1));
+            partialHull.add(stack.pop());
         }
         return partialHull;
     }

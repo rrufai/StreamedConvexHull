@@ -11,10 +11,11 @@ import cg.geometry.primitives.Point;
  * @author rrufai
  */
 public class Point2D implements Point {
+
     private java.awt.geom.Point2D.Double point;
     private static double EPSILON = 1e-9;
-    
-    public Point2D(double x, double y){
+
+    public Point2D(double x, double y) {
         point = new java.awt.geom.Point2D.Double(x, y);
     }
 
@@ -91,10 +92,28 @@ public class Point2D implements Point {
     public void setPoint(java.awt.geom.Point2D point) {
         this.point = new java.awt.geom.Point2D.Double(point.getX(), point.getY());
     }
-    
+
     @Override
-    public String toString(){
-        String textForm = "{"+ point.x + ", " + point.y + "}";
+    public String toString() {
+        String textForm = "{" + point.x + ", " + point.y + "}";
         return textForm;
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        if (obj instanceof Point) {
+            Point p2d = (Point) obj;
+            double xDistance = getX() - p2d.getX();
+            double yDistance = getY() - p2d.getY();
+            if (Math.abs(xDistance) < EPSILON && Math.abs(yDistance) < EPSILON) {
+                return 0;
+            } else if (xDistance > EPSILON || (Math.abs(xDistance) < EPSILON && yDistance > EPSILON)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            return 1;
+        }
     }
 }

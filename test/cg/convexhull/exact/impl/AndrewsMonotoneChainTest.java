@@ -4,6 +4,7 @@
  */
 package cg.convexhull.exact.impl;
 
+import cg.common.collections.CircularArrayList;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
 
@@ -147,7 +148,7 @@ public class AndrewsMonotoneChainTest {
             {-8.9209, 22.1216},
             {-14.9373, 10.3122}};
 
-        this.chVertices = new ArrayList<>(chdata.length);
+        this.chVertices = new CircularArrayList<>(chdata.length);
         for (int i = 0; i < chdata.length; i++) {
             chVertices.add(new Point2D(chdata[i][0], chdata[i][1]));
         }
@@ -175,6 +176,6 @@ public class AndrewsMonotoneChainTest {
         //Comparator<Point2D> comparator = new LexicographicComparator<>(Direction.BOTTOM_UP);
         //Collections.sort(expectedResult, comparator);
         //Collections.sort(actualResult, comparator);
-        assertEquals(expectedResult, actualResult);
+        assertEquals( actualResult, expectedResult);
     }
 }

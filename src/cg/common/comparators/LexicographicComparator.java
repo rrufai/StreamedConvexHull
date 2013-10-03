@@ -5,8 +5,6 @@
 package cg.common.comparators;
 
 import cg.geometry.primitives.Point;
-import java.io.Serializable;
-import java.util.Comparator;
 
 /**
  *

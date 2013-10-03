@@ -8,7 +8,7 @@ package cg.geometry.primitives;
  *
  * @author rrufai
  */
-public interface Point {
+public interface Point  extends Comparable {
 
     double getX();
 

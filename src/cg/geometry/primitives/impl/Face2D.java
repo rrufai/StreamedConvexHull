@@ -4,6 +4,7 @@
  */
 package cg.geometry.primitives.impl;
 
+import cg.common.collections.CircularArrayList;
 import cg.common.visualization.CanvasImpl;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
@@ -31,7 +32,7 @@ public class Face2D implements Face {
         
         if (outerBoundaryList != null && outerBoundaryList.size() > 0) {
             final Point2D origin = outerBoundaryList.get(0).getOrigin();
-            path.moveTo(origin.getPoint().getX(), origin.getX());
+            path.moveTo(origin.getX(), origin.getY());
             for (Edge edge : outerBoundaryList) {                
                 path.append(edge, true);
             }
@@ -70,7 +71,7 @@ public class Face2D implements Face {
     @Override
     public List<Point2D> getVertices() {
         PathIterator iterator = path.getPathIterator(null);
-        List<Point2D> vertices = new ArrayList<>();
+        List<Point2D> vertices = new CircularArrayList<>();
         double[] coords = new double[6];
         while(!iterator.isDone()){
             iterator.currentSegment(coords);
