@@ -1,8 +1,7 @@
 package cg.convexhull.approximate.streaming;
 
-import java.util.List;
-
 import cg.geometry.primitives.Point;
+import java.util.List;
 
 public interface StreamedInitializer {
 	

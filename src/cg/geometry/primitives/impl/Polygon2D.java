@@ -36,9 +36,9 @@ public class Polygon2D extends Face2D implements Polygon {
             return edges;
         }
         
-        Point2D origin, destination = null;
+        Point2D destination = null;
         for(Point2D vertex : vertices){
-            origin = destination;
+            Point2D origin = destination;
             destination = vertex;
             if(origin != null){
                 edges.add(new Edge2D(origin, destination));

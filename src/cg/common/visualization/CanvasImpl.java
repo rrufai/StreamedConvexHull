@@ -27,9 +27,9 @@ public class CanvasImpl {
         // Expand the drawing area      
         rect.width *= 1.1;
         rect.height *= 1.1;
-        rect.x -= rect.width * .05;
-        rect.y -= rect.height * .05;
-        imageObject = new BufferedImage(rect.width + 10, rect.height + 10, BufferedImage.TYPE_INT_ARGB);
+        //rect.x = rect.width;
+        //rect.y = rect.height;
+        imageObject = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
         g2 = imageObject.createGraphics();
     }   
     
@@ -38,7 +38,7 @@ public class CanvasImpl {
         //        g2.setStroke(pathStroke);
         g2.setColor(color);
         g2.draw(shape);
-        g2.drawChars("00".toCharArray(), 0, "00".length(), imageObject.getMinX(), imageObject.getMinY());
+        //g2.drawChars("00".toCharArray(), 0, "00".length(), imageObject.getMinX() + 10, imageObject.getMinY() + 10);
     }
 
     public void saveToFile(String imgFormat, String fileName) throws IOException {

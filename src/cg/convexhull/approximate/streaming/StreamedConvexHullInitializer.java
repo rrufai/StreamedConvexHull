@@ -1,14 +1,13 @@
 package cg.convexhull.approximate.streaming;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-
 import cg.convexhull.exact.ConvexHull;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 public class StreamedConvexHullInitializer implements StreamedInitializer {
 	
@@ -20,8 +19,8 @@ public class StreamedConvexHullInitializer implements StreamedInitializer {
 			
 	public StreamedConvexHullInitializer(ConvexHull convexHull) {
 		this.convexHull = convexHull;
-		inputPoints = new ArrayList<Point2D>();
-		outputPoints = new ArrayList<StreamedPoint2D>();
+		inputPoints = new ArrayList<>();
+		outputPoints = new ArrayList<>();
 	}
 	
 	

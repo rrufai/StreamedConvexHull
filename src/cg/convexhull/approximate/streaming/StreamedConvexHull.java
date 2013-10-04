@@ -5,7 +5,6 @@
 package cg.convexhull.approximate.streaming;
 
 import cg.convexhull.exact.ConvexHull;
-import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
 

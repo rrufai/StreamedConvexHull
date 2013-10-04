@@ -7,7 +7,6 @@ package cg.convexhull.exact.impl;
 import cg.common.collections.CircularArrayList;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -173,9 +172,7 @@ public class AndrewsMonotoneChainTest {
         List<Point2D> expectedResult = chVertices;
         final Polygon2D polygon2D = new Polygon2D(pointset);
         List<Point2D> actualResult = instance.compute(polygon2D).getVertices();
-        //Comparator<Point2D> comparator = new LexicographicComparator<>(Direction.BOTTOM_UP);
-        //Collections.sort(expectedResult, comparator);
-        //Collections.sort(actualResult, comparator);
-        assertEquals( actualResult, expectedResult);
+
+        assertEquals( expectedResult, actualResult);
     }
 }

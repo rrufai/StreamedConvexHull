@@ -52,7 +52,7 @@ public class StreamedConvexHullMain {
         Shape clippedPath = pathStroke.createStrokedShape(path);
 
         // Apply a scale so the image is easier to see
-        int scale = 10;
+        int scale = 15;
         AffineTransform at = AffineTransform.getScaleInstance(scale, scale);
         Shape sPath = at.createTransformedShape(path);
         Shape sClip = at.createTransformedShape(clipShape);
@@ -71,21 +71,27 @@ public class StreamedConvexHullMain {
         canvas.drawShape(clipArea, Color.green);
         canvas.saveToFile("PNG", "img1.png");
         Collection<Point2D> points = new ArrayList<>();
-                double[][] chdata = {
-            {-20.7067, -7.5420},
-            {-15.6558, -21.0232},
-            {6.7786, -19.5432},
-            {13.5400, -12.1944},
-            {22.8319, 1.5574},
-            {15.1514, 15.8849},
-            {5.4365, 19.6453},
-            {-8.9209, 22.1216},
-            {-14.9373, 10.3122}};
+//                double[][] chdata = {
+//            {-20.7067, -7.5420},
+//            {-15.6558, -21.0232},
+//            {6.7786, -19.5432},
+//            {13.5400, -12.1944},
+//            {22.8319, 1.5574},
+//            {15.1514, 15.8849},
+//            {5.4365, 19.6453},
+//            {-8.9209, 22.1216},
+//            {-14.9373, 10.3122}};
+                //double[][] chdata = {{-15.6558, -21.0232}, {6.7786, -19.5432}, {13.54, -12.1944}, {11.6677, -10.2834}, {-1.6561, -10.1621}, {-1.6561, -10.1621}, {8.2579, -9.559}, {17.9243, -4.9549}, {22.8319, 1.5574}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}, {-14.9373, 10.3122}, {-20.7067, -7.542}, {-13.7513, -9.2455}, {-1.6561, -10.1621}, {-1.6561, -10.1621}, {-3.3256, -10.8778}, {-3.3256, -10.8778}};
+             double[][] chdata = {{-20.7067, -7.542}, {-15.6558, -21.0232}, {6.7786, -19.5432}, {13.54, -12.1944}, {22.8319, 1.5574}, {15.1514, 15.8849}, {5.4365, 19.6453}, {-8.9209, 22.1216}, {-14.9373, 10.3122} };
+        int FACTOR = 5;
+              int XTRANSLATE = 21;
+              int YTRANSLATE = 22;
         for(int i = 0; i < chdata.length; i++){
-            points.add(new Point2D(10 *(chdata[i][0]), 10 * (chdata[i][1])));
+            points.add(new Point2D(FACTOR *(chdata[i][0] + XTRANSLATE), FACTOR * (chdata[i][1] + YTRANSLATE)));
         }
         Polygon2D polygon = new Polygon2D(points);
         List<Point2D> vertices = polygon.getVertices();
+        System.out.println("vertices: " + vertices);
         polygon.saveToFile("polygon.png");
     }
 }

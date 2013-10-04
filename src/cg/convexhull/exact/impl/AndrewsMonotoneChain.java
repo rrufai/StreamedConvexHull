@@ -6,11 +6,10 @@ package cg.convexhull.exact.impl;
 
 import cg.common.comparators.LexicographicComparator;
 import cg.common.comparators.LexicographicComparator.Direction;
+import cg.common.comparators.RadialComparator;
 import cg.common.iterators.ReverseIterator;
 import cg.convexhull.exact.ConvexHull;
-import cg.common.comparators.RadialComparator;
 import cg.geometry.primitives.Geometry;
-import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
 import java.util.ArrayList;
