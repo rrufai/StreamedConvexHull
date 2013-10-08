@@ -10,6 +10,8 @@ import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.io.IOException;
@@ -22,6 +24,9 @@ import java.util.List;
 public class Face2D implements Face {
 
     private Path2D.Double path;
+    private boolean showPoints = true;
+    private double minX = Integer.MAX_VALUE;
+    private double minY = Integer.MAX_VALUE;
 
     public Face2D(List<Edge> outerBoundaryList) {
         this(outerBoundaryList, null);
@@ -31,6 +36,14 @@ public class Face2D implements Face {
         path = new Path2D.Double();
 
         if (outerBoundaryList != null && outerBoundaryList.size() > 0) {
+            for (Edge edge : outerBoundaryList) {
+                Point2D origin = outerBoundaryList.get(0).getOrigin();
+                minX = Math.min(minX, origin.getX());
+                minY = Math.min(minY, origin.getY());
+            }
+        }
+
+        if (outerBoundaryList != null && outerBoundaryList.size() > 0) {
             final Point2D origin = outerBoundaryList.get(0).getOrigin();
             path.moveTo(origin.getX(), origin.getY());
             for (Edge edge : outerBoundaryList) {
@@ -38,12 +51,12 @@ public class Face2D implements Face {
             }
         }
 
-        if (innerBoundaryList != null) {
-            for (Edge edge : innerBoundaryList) {
-                path.append(edge, true);
-            }
-        }
-
+        /* if (innerBoundaryList != null) {
+         for (Edge edge : innerBoundaryList) {
+         path.append(edge, true);
+         }
+         }
+         */
         path.closePath();
     }
 
@@ -63,24 +76,34 @@ public class Face2D implements Face {
     @Override
     public void saveToFile(String fileName) throws IOException {
         CanvasImpl canvas = new CanvasImpl(path.getBounds());
-        canvas.drawShape(path, Color.black);
+        //canvas.drawShape(path, Color.black);
+        AffineTransform transform = AffineTransform.getTranslateInstance(-minX, -minX);
+        Shape transformedPath = transform.createTransformedShape(path);
+        canvas.drawShape(transformedPath, Color.blue);
+        if (showPoints) {
+            canvas.drawPoints(this.getVertices(transformedPath), Color.red);
+        }
         canvas.saveToFile("PNG", fileName);
     }
 
     @Override
     public List<Point2D> getVertices() {
+        return getVertices(path);
+    }
+
+    private List<Point2D> getVertices(Shape path) {
         PathIterator iterator = path.getPathIterator(null);
         List<Point2D> vertices = new CircularArrayList<>();
         double[] coords = new double[6];
-        
+
         while (!iterator.isDone()) {
             int type = iterator.currentSegment(coords);
-            if(type != PathIterator.SEG_CLOSE){
+            if (type != PathIterator.SEG_CLOSE) {
                 vertices.add(new Point2D(coords[0], coords[1]));
             }
             iterator.next();
         }
-        
+
         return vertices;
     }
 

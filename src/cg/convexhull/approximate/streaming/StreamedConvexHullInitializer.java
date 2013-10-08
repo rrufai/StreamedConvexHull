@@ -39,7 +39,7 @@ public class StreamedConvexHullInitializer implements StreamedInitializer {
 		for (Point2D p : L.getVertices()) {
 			streamedPoint = new StreamedPoint2D(p);
 			streamedPoint.setPolar(StreamedConvexUtility.polar(p, centroid) ); 
-			streamedPoint.setDogear(StreamedConvexUtility.area(L.getPredecessor(p), p, L.getSuccessor(p)));	
+			streamedPoint.setDogEar(StreamedConvexUtility.area(L.getPredecessor(p), p, L.getSuccessor(p)));	
 			outputPoints.add(streamedPoint);
 			
 			// add the point to treemap  - RB tree

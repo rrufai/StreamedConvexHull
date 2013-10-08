@@ -24,7 +24,7 @@ public class StreamedPoint2D {
 		return dogear;
 	}
 
-	public void setDogear(double dogear) {
+	public void setDogEar(double dogear) {
 		this.dogear = dogear;
 	}
 
