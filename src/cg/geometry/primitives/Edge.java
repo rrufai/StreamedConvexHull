@@ -11,27 +11,27 @@ import java.awt.Shape;
  *
  * @author rrufai
  */
-public interface Edge extends Shape{
+public interface Edge<T extends Point> extends Shape{
 
    /**
      * @return the origin of this edge
      */
-    Point2D getOrigin();
+    T getOrigin();
 
     /**
      * @return the terminus of this edge
      */
-    Point2D getTerminus();
+    T getTerminus();
 
     /**
      * @param origin the origin to set
      */
-    void setOrigin(Point2D origin);
+    void setOrigin(T origin);
 
     /**
      * @param terminus the terminus to set
      */
-    void setTerminus(Point2D terminus);
+    void setTerminus(T terminus);
     
     /**
      * @return length of this edge.

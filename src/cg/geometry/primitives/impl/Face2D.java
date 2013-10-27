@@ -8,6 +8,7 @@ import cg.common.collections.CircularArrayList;
 import cg.common.visualization.CanvasImpl;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
+import cg.geometry.primitives.Point;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Shape;
@@ -21,51 +22,43 @@ import java.util.List;
  *
  * @author rrufai
  */
-public class Face2D implements Face {
+public class Face2D<T extends Point> implements Face<T> {
 
     private Path2D.Double path;
     private boolean showPoints = true;
     private double minX = Integer.MAX_VALUE;
     private double minY = Integer.MAX_VALUE;
 
-    public Face2D(List<Edge> outerBoundaryList) {
-        this(outerBoundaryList, null);
-    }
-
-    public Face2D(List<Edge> outerBoundaryList, List<Edge> innerBoundaryList) {
-        path = new Path2D.Double();
+    public Face2D(List<Edge<T>> outerBoundaryList) {
+        path = new Path2D.Double(Path2D.WIND_EVEN_ODD);
+        //path = new Path2D.Double();
 
         if (outerBoundaryList != null && outerBoundaryList.size() > 0) {
-            for (Edge edge : outerBoundaryList) {
-                Point2D origin = outerBoundaryList.get(0).getOrigin();
+            for (Edge<T> edge : outerBoundaryList) {
+                T origin = edge.getOrigin();
                 minX = Math.min(minX, origin.getX());
                 minY = Math.min(minY, origin.getY());
             }
         }
 
         if (outerBoundaryList != null && outerBoundaryList.size() > 0) {
-            final Point2D origin = outerBoundaryList.get(0).getOrigin();
+            final T origin = outerBoundaryList.get(0).getOrigin();
             path.moveTo(origin.getX(), origin.getY());
-            for (Edge edge : outerBoundaryList) {
+            for (Edge<T> edge : outerBoundaryList) {
                 path.append(edge, true);
             }
-        }
 
-        /* if (innerBoundaryList != null) {
-         for (Edge edge : innerBoundaryList) {
-         path.append(edge, true);
-         }
-         }
-         */
-        path.closePath();
+            path.closePath();
+        }
     }
 
-    public boolean contains(Point2D p) {
+    @Override
+    public boolean contains(T p) {
         return path.contains(p.getPoint());
     }
 
     public double area() {
-        return 0d;
+        return 0; // todo: decide to remove or implement
     }
 
     /**
@@ -87,19 +80,19 @@ public class Face2D implements Face {
     }
 
     @Override
-    public List<Point2D> getVertices() {
+    public List<T> getVertices() {
         return getVertices(path);
     }
 
-    private List<Point2D> getVertices(Shape path) {
+    private List<T> getVertices(Shape path) {
         PathIterator iterator = path.getPathIterator(null);
-        List<Point2D> vertices = new CircularArrayList<>();
+        List<T> vertices = new CircularArrayList<>();
         double[] coords = new double[6];
 
         while (!iterator.isDone()) {
             int type = iterator.currentSegment(coords);
             if (type != PathIterator.SEG_CLOSE) {
-                vertices.add(new Point2D(coords[0], coords[1]));
+                vertices.add((T) new Point2D(coords[0], coords[1]));
             }
             iterator.next();
         }
@@ -108,7 +101,7 @@ public class Face2D implements Face {
     }
 
     @Override
-    public List<Edge> getEdges() {
+    public List<Edge<T>> getEdges() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -122,46 +115,50 @@ public class Face2D implements Face {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param <T>
+     * @return
+     */
     @Override
-    public Point2D getCentroid() {
-        List<Point2D> vertices = getVertices();
+    public T getCentroid() {
+        List<T> vertices = getVertices();
         double x = 0.0, y = 0.0;
-        if (vertices.size() == 0) {
-            return new Point2D(x, y);
+        if (vertices.isEmpty()) {
+            return (T) new Point2D(x, y);
         }
-        for (Point2D v : vertices) {
+        for (T v : vertices) {
             x = x + v.getX();
             y = y + v.getY();
         }
 
-        return new Point2D(x / vertices.size(), y / vertices.size());
-    }
-
-    // TODO: should be testes
-    @Override
-    public Point2D getPredecessor(Point2D point) {
-
-        List<Point2D> vertices = getVertices();
-        int index = vertices.indexOf(point);
-
-        if (index == 0) {
-            return vertices.get(vertices.size() - 1);
-        }
-
-        return vertices.get(index - 1);
+        return (T) new Point2D(x / vertices.size(), y / vertices.size());
     }
 
     // TODO: should be tested
     @Override
-    public Point2D getSuccessor(Point2D point) {
+    public T getPredecessor(T point) {
 
-        List<Point2D> vertices = getVertices();
+        List<T> vertices = getVertices();
         int index = vertices.indexOf(point);
+        int size = vertices.size();
 
-        if (index == vertices.size() - 1) {
-            return vertices.get(0);
-        }
+        return vertices.get((index + size - 1) % size);
+    }
 
-        return vertices.get(index + 1);
+    // TODO: should be tested
+    @Override
+    public T getSuccessor(T point) {
+
+        List<T> vertices = getVertices();
+        int index = vertices.indexOf(point);
+        int size = vertices.size();
+
+        return vertices.get((index + 1) % size);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "[" + getVertices() + "]";
     }
 }

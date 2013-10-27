@@ -15,12 +15,12 @@ import java.awt.geom.Rectangle2D;
  *
  * @author rrufai
  */
-public class Edge2D implements Edge {
+public class Edge2D<T extends Point> implements Edge<T> {
 
-    private Point2D origin;
-    private Point2D terminus;
+    private T origin;
+    private T terminus;
 
-    public Edge2D(Point2D origin, Point2D terminus) {
+    public Edge2D(T origin, T terminus) {
         this.origin = origin;
         this.terminus = terminus;
     }
@@ -29,7 +29,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc
      */
     @Override
-    public Point2D getOrigin() {
+    public T getOrigin() {
         return origin;
     }
 
@@ -37,7 +37,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public void setOrigin(Point2D origin) {
+    public void setOrigin(T origin) {
         this.origin = origin;
     }
 
@@ -45,7 +45,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public Point2D getTerminus() {
+    public T getTerminus() {
         return terminus;
     }
 
@@ -53,7 +53,7 @@ public class Edge2D implements Edge {
      * {@inheritDoc}
      */
     @Override
-    public void setTerminus(Point2D terminus) {
+    public void setTerminus(T terminus) {
         this.terminus = terminus;
     }
 
@@ -80,7 +80,7 @@ public class Edge2D implements Edge {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public boolean contains(Point2D p) {
+    public boolean contains(T p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

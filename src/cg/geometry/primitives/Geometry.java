@@ -4,7 +4,6 @@
  */
 package cg.geometry.primitives;
 
-import cg.geometry.primitives.impl.Point2D;
 import java.awt.Graphics;
 import java.util.List;
 
@@ -14,12 +13,13 @@ import java.util.List;
  * 
  * @author rrufai
  */
-public interface Geometry {
-    List<Point2D> getVertices();
-    List<Edge> getEdges();
+public interface Geometry<T extends Point> {
+    List<T> getVertices();
+    List<Edge<T>> getEdges();
     List<Face> getFaces();
-    Point2D getCentroid();
-    Point2D getPredecessor(Point2D point);
-    Point2D getSuccessor(Point2D point);
+    T getCentroid();
+    T getPredecessor(T point);
+    T getSuccessor(T point);
     void draw(Graphics canvas);
+    boolean contains(T p);
 }

@@ -43,10 +43,10 @@ public class CircularArrayList<E extends Comparable> extends ArrayList<E> {
         }
 
         ListComparator comparator = new ListComparator();
-        List aList = (List) this.clone();
-        List bList = new ArrayList((List)o);
+        List<E> aList = (List) this.clone();
+        List<E> bList = new ArrayList<>((List)o);
         
-        for(int i = 0; i < aList.size() - 1; i++){
+        for(int i = 0; i < aList.size(); i++){
             if(comparator.compare(aList, bList) == 0){
                 return true;
             }else if(comparator.compare(aList, bList) < 0){

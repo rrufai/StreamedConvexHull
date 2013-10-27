@@ -4,6 +4,7 @@
  */
 package cg.geometry.primitives.impl;
 
+import cg.common.comparators.LexicographicComparator;
 import cg.geometry.primitives.Point;
 
 /**
@@ -74,7 +75,7 @@ public class Point2D implements Point {
     public boolean equals(Object obj) {
         if (obj instanceof Point) {
             Point p2d = (Point) obj;
-            return (getX() - p2d.getX()) < EPSILON && (getY() - p2d.getY()) < EPSILON;
+            return Math.abs(getX() - p2d.getX()) < EPSILON && Math.abs(getY() - p2d.getY()) < EPSILON;
         }
         return super.equals(obj);
     }
@@ -82,6 +83,7 @@ public class Point2D implements Point {
     /**
      * @return the point
      */
+    @Override
     public java.awt.geom.Point2D getPoint() {
         return point;
     }
@@ -101,19 +103,6 @@ public class Point2D implements Point {
 
     @Override
     public int compareTo(Object obj) {
-        if (obj instanceof Point) {
-            Point p2d = (Point) obj;
-            double xDistance = getX() - p2d.getX();
-            double yDistance = getY() - p2d.getY();
-            if (Math.abs(xDistance) < EPSILON && Math.abs(yDistance) < EPSILON) {
-                return 0;
-            } else if (xDistance > EPSILON || (Math.abs(xDistance) < EPSILON && yDistance > EPSILON)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        } else {
-            return 1;
-        }
+        return new LexicographicComparator<>().compare(this, (Point) obj);
     }
 }

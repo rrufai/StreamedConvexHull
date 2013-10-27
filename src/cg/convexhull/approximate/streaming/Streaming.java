@@ -5,16 +5,20 @@
 package cg.convexhull.approximate.streaming;
 
 import cg.geometry.primitives.Geometry;
+import cg.geometry.primitives.Point;
+import java.util.List;
 
 /**
  *
  * @author rrufai
  */
-interface Streaming<T> {
-    void initialize(T... geometry);
+interface Streaming<T extends Point> {
+    void initialize(List<T> geometry);
     
     void update(T point);
     
-    Geometry query();
+    void process (T point);
+    
+    Geometry<T> query();
     
 }

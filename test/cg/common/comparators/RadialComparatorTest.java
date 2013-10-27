@@ -38,11 +38,11 @@ public class RadialComparatorTest {
         Point2D o1 = new Point2D(1, 2);
         Point2D o2 = new Point2D(2, 2);
         RadialComparator instance = new RadialComparator(new Point2D(0, 0));
-        int expResult = -1;
+        int expResult = RadialComparator.Orientation.CLOCKWISE.getCode();
         int result = instance.compare(o1, o2);
         assertEquals(expResult, result);
-        assertEquals(1, instance.compare(o2, o1));
-        assertEquals(0, instance.compare(o1, o1));
+        assertEquals(RadialComparator.Orientation.COUNTERCLOCKWISE.getCode(), instance.compare(o2, o1));
+        assertEquals(RadialComparator.Orientation.COLLINEAR.getCode(), instance.compare(o1, o1));
     }
 
     /**

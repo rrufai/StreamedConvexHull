@@ -4,37 +4,15 @@
  */
 package cg.convexhull.approximate.streaming;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cg.geometry.primitives.impl.Point2D;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author I827590
  */
 public class StreamedPoint2DTest {
-    
-    public StreamedPoint2DTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of getPolar method, of class StreamedPoint2D.
@@ -42,12 +20,12 @@ public class StreamedPoint2DTest {
     @Test
     public void testGetPolar() {
         System.out.println("getPolar");
-        StreamedPoint2D instance = null;
+        double polar = 0.0;
+        StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
+        instance.setPolar(polar);
         double expResult = 0.0;
         double result = instance.getPolar();
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -57,10 +35,11 @@ public class StreamedPoint2DTest {
     public void testSetPolar() {
         System.out.println("setPolar");
         double polar = 0.0;
-        StreamedPoint2D instance = null;
+        StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
         instance.setPolar(polar);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double expResult = polar;
+        double result = instance.getPolar();
+        assertEquals(expResult, result, 0.0);
     }
 
     /**
@@ -69,12 +48,13 @@ public class StreamedPoint2DTest {
     @Test
     public void testGetDogear() {
         System.out.println("getDogear");
-        StreamedPoint2D instance = null;
-        double expResult = 0.0;
-        double result = instance.getDogear();
+        double dogEar = 0.0;
+        StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
+        instance.setDogEar(dogEar);
+        double expResult = dogEar;
+        double result = instance.getDogEar();
+
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -83,10 +63,12 @@ public class StreamedPoint2DTest {
     @Test
     public void testSetDogEar() {
         System.out.println("setDogEar");
-        double dogear = 0.0;
-        StreamedPoint2D instance = null;
-        instance.setDogEar(dogear);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double dogEar = 0.0;
+        StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
+        instance.setDogEar(dogEar);
+        double expResult = dogEar;
+        double result = instance.getDogEar();
+
+        assertEquals(expResult, result, 0.0);
     }
 }

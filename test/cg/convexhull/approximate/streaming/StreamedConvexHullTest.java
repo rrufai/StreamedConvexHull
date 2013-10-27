@@ -4,38 +4,49 @@
  */
 package cg.convexhull.approximate.streaming;
 
+import cg.convexhull.exact.ConvexHull;
+import cg.convexhull.exact.testcases.TestCase;
+import cg.convexhull.exact.testcases.TestData;
 import cg.geometry.primitives.Geometry;
-import cg.geometry.primitives.Point;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cg.geometry.primitives.impl.Point2D;
+import cg.geometry.primitives.impl.Polygon2D;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  *
  * @author I827590
  */
+@RunWith(Parameterized.class)
 public class StreamedConvexHullTest {
-    
-    public StreamedConvexHullTest() {
+
+    private List<Point2D> chVertices;
+    private List<Point2D> pointset;
+    private int budget;
+
+    public StreamedConvexHullTest(TestCase<Point2D> testCase) {
+        // TestCases: "simple","medium","complex", "big", "smallnumbers"
+        //TestCase<Point2D> testCase = (new TestData()).get("simple");
+        pointset = testCase.getInputPoints();
+        chVertices = testCase.getHullVertices();
+        budget = Math.max(4, chVertices.size());
     }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+
+    @Parameterized.Parameters
+    public static Collection getTestData() {
+        Map<String, TestCase<Point2D>> testData = new TestData();
+        return Arrays.asList(new Object[][]{
+                    {testData.get("simple")},
+                    {testData.get("medium")},
+                    {testData.get("complex")},
+                    {testData.get("smallnumbers")}
+                });
     }
 
     /**
@@ -44,13 +55,14 @@ public class StreamedConvexHullTest {
     @Test
     public void testCompute() {
         System.out.println("compute");
-        Geometry geom = null;
-        StreamedConvexHull instance = null;
-        Geometry expResult = null;
-        Geometry result = instance.compute(geom);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        final Polygon2D<Point2D> polygon2D = new Polygon2D<>(pointset);
+        ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget);
+        Geometry<Point2D> result = instance.compute(polygon2D);
+        List<Point2D> actualResult = result.getVertices();
+        List<Point2D> expectedResult = chVertices;
+
+        assertEquals(expectedResult, actualResult);
     }
 
     /**
@@ -59,11 +71,16 @@ public class StreamedConvexHullTest {
     @Test
     public void testInitialize() {
         System.out.println("initialize");
-        Point[] geometry = null;
-        StreamedConvexHull instance = null;
-        instance.initialize(geometry);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int BUDGET = Math.min(10, chVertices.size());
+
+        List<Point2D> hullVertices = chVertices.subList(0, BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        instance.initialize(hullVertices);
+
+        Geometry<Point2D> expectedResult = new Polygon2D<>(hullVertices);
+        Geometry<Point2D> actualResult = instance.query();
+
+        assertEquals(expectedResult, actualResult);
     }
 
     /**
@@ -72,11 +89,21 @@ public class StreamedConvexHullTest {
     @Test
     public void testUpdate() {
         System.out.println("update");
-        Point point = null;
-        StreamedConvexHull instance = null;
-        instance.update(point);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int BUDGET = Math.min(10, chVertices.size()) - 1;
+
+        List<Point2D> geometry = chVertices.subList(0, BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        instance.initialize(geometry);
+        instance.update(chVertices.get(BUDGET));
+        Geometry<Point2D> actualResult = instance.query();
+
+        StreamedConvexHull<Point2D> instance2 = new StreamedConvexHull<>(BUDGET);
+        final Polygon2D<Point2D> polygon = new Polygon2D<>(chVertices.subList(0, BUDGET + 1));
+        Geometry<Point2D> expectedResult = instance2.compute(polygon);
+
+        assertEquals(expectedResult, actualResult);
+
+
     }
 
     /**
@@ -85,11 +112,15 @@ public class StreamedConvexHullTest {
     @Test
     public void testQuery() {
         System.out.println("query");
-        StreamedConvexHull instance = null;
-        Geometry expResult = null;
-        Geometry result = instance.query();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int BUDGET = Math.min(10, chVertices.size());
+
+        List<Point2D> hullVertices = chVertices.subList(0, BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        instance.initialize(hullVertices);
+
+        Geometry<Point2D> expectedResult = new Polygon2D<>(hullVertices);
+        Geometry<Point2D> actualResult = instance.query();
+
+        assertEquals(expectedResult, actualResult);
     }
 }

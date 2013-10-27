@@ -5,11 +5,12 @@
 package cg.convexhull.exact;
 
 import cg.geometry.primitives.Geometry;
+import cg.geometry.primitives.Point;
 
 /**
  *
  * @author rrufai
  */
-public interface ConvexHull {
-    Geometry compute(Geometry geom);
+public interface ConvexHull<T extends Point> {
+    Geometry<T> compute(Geometry<T> geom);
 }

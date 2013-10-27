@@ -8,6 +8,6 @@ package cg.geometry.primitives;
  *
  * @author rrufai
  */
-public interface Polygon  extends Face{
+public interface Polygon<T extends Point>  extends Face<T> {
     
 }

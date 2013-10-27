@@ -28,7 +28,7 @@ public class LexicographicComparatorTest {
         int expResult = -1;
         int result = instance.compare(o1, o2);
         Assert.assertEquals(expResult, result);
-        Assert.assertEquals(1, instance.compare(o2, o1));
+        Assert.assertEquals(-expResult, instance.compare(o2, o1));
         Assert.assertEquals(0, instance.compare(o1, o1));
     }
 

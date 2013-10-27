@@ -10,7 +10,7 @@ import cg.common.comparators.RadialComparator;
 import cg.common.iterators.ReverseIterator;
 import cg.convexhull.exact.ConvexHull;
 import cg.geometry.primitives.Geometry;
-import cg.geometry.primitives.impl.Point2D;
+import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Polygon2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,24 +23,24 @@ import java.util.Stack;
  *
  * @author rrufai
  */
-public class AndrewsMonotoneChain implements ConvexHull {
+public class AndrewsMonotoneChain<T extends Point> implements ConvexHull<T> {
 
-    private List<Point2D> pointset;
-    private List<Point2D> convexHullVertices;
+    private List<T> pointset;
+    private List<T> convexHullVertices;
     private boolean valid;
 
     /**
      *
      */
     public AndrewsMonotoneChain() {
-        this(new ArrayList());
+        this(new ArrayList<T>());
     }
 
     /**
      *
      * @param pointset
      */
-    public AndrewsMonotoneChain(List<Point2D> pointset) {
+    public AndrewsMonotoneChain(List<T> pointset) {
         this.pointset = pointset;
         valid = false;
     }
@@ -49,17 +49,17 @@ public class AndrewsMonotoneChain implements ConvexHull {
      *
      * @return
      */
-    private List<Point2D> convexHull() {
+    private List<T> convexHull() {
         if (pointset == null) {
             throw new RuntimeException("Pointset is null!");
         }
-        List<Point2D> pset = new ArrayList<>();
+        List<T> pset = new ArrayList<>();
         pset.addAll(pointset);
-        Collections.sort((ArrayList) pset, new LexicographicComparator(Direction.BOTTOM_UP));
-        List<Point2D> vertices = pset;
+        Collections.sort((ArrayList) pset, new LexicographicComparator(Direction.LEFT_TO_RIGHT));
+        List<T> vertices = pset;
         if (pset.size() > 3) {
-            final List<Point2D> upper = computeUpperHull(pset);
-            final List<Point2D> lower = computeLowerHull(pset);
+            final List<T> upper = computeUpperHull(pset);
+            final List<T> lower = computeLowerHull(pset);
             vertices = mergeHulls(upper, lower);
         }
 
@@ -72,7 +72,7 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param lower
      * @return
      */
-    private List<Point2D> mergeHulls(final List<Point2D> upper, final List<Point2D> lower) {
+    private List<T> mergeHulls(final List<T> upper, final List<T> lower) {
         upper.remove(0);
         upper.remove(upper.size() - 1);
 
@@ -85,7 +85,7 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param pset
      * @return
      */
-    private List<Point2D> computeUpperHull(final List<Point2D> pset) {
+    private List<T> computeUpperHull(final List<T> pset) {
         return computeHalfHull(pset.iterator());
     }
 
@@ -94,7 +94,7 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param pset
      * @return
      */
-    private List<Point2D> computeLowerHull(final List<Point2D> pset) {
+    private List<T> computeLowerHull(final List<T> pset) {
         return computeHalfHull(new ReverseIterator(pset));
     }
 
@@ -103,13 +103,13 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param iter
      * @return
      */
-    private List<Point2D> computeHalfHull(final Iterator<Point2D> iter) {
-        final Stack<Point2D> stack = new Stack();
+    private List<T> computeHalfHull(final Iterator<T> iter) {
+        final Stack<T> stack = new Stack();
 
         while (iter.hasNext()) {
-            final Point2D current = iter.next();
+            final T current = iter.next();
 
-            while (isRightTurn(stack, current)) {
+            while (!isRightTurn(stack, current) && stack.size() > 1) {
                 stack.pop();
             }
 
@@ -117,12 +117,9 @@ public class AndrewsMonotoneChain implements ConvexHull {
         }
 
         valid = true;
-        List<Point2D> partialHull = new ArrayList(stack.size());
-        //partialHull.addAll(stack);
-        while (!stack.empty()) {
-            //partialHull.add(stack.remove(stack.size() - 1));
-            partialHull.add(stack.pop());
-        }
+        List<T> partialHull = new ArrayList(stack.size());
+        partialHull.addAll(stack);
+
         return partialHull;
     }
 
@@ -132,7 +129,7 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param current
      * @return
      */
-    private boolean isRightTurn(final Stack<Point2D> stack, final Point2D current) {
+    private boolean isRightTurn(final Stack<T> stack, final T current) {
         boolean retValue = false;
         if (stack.size() > 1) {
             retValue = isRightTurn(stack.elementAt(stack.size() - 2),
@@ -149,9 +146,8 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @param top
      * @return
      */
-    private boolean isRightTurn(final Point2D bottom, final Point2D middle, final Point2D top) {
-        return new RadialComparator(bottom).compare(middle, top) > 0;
-
+    private boolean isRightTurn(final T bottom, final T middle, final T top) {
+        return new RadialComparator(bottom).compare(middle, top) == RadialComparator.Orientation.COUNTERCLOCKWISE.getCode();
     }
 
     /**
@@ -160,14 +156,14 @@ public class AndrewsMonotoneChain implements ConvexHull {
      * @return the vertices on the convex hull.
      */
     @Override
-    public Geometry compute(Geometry geom) {
+    public Geometry<T> compute(Geometry<T> geom) {
         if (!valid) {
             valid = true;
             pointset = geom.getVertices();
             convexHullVertices = convexHull();
         }
 
-        return new Polygon2D(convexHullVertices);
+        return new Polygon2D<>(convexHullVertices);
     }
 
 }

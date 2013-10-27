@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author rrufai
  */
-public interface Face extends Geometry{
+public interface Face<T extends Point> extends Geometry<T>{
 
     void saveToFile(String fileName)  throws IOException;
     

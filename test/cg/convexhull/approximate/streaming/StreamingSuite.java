@@ -17,10 +17,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({cg.convexhull.approximate.streaming.StreamedConvexHullTest.class, 
-    cg.convexhull.approximate.streaming.StreamedConvexHullInitializerTest.class, 
     cg.convexhull.approximate.streaming.StreamedPoint2DTest.class, 
-    cg.convexhull.approximate.streaming.StreamedConvexUtilityTest.class, 
-    cg.convexhull.approximate.streaming.StreamedInitializerTest.class})
+    cg.convexhull.approximate.streaming.StreamedConvexUtilityTest.class})
 public class StreamingSuite {
 
     @BeforeClass

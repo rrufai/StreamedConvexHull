@@ -78,12 +78,12 @@ public class Face2DTest {
     @Test
     public void testGetVertices() {
         System.out.println("getVertices");
-        List<Edge> edges = new ArrayList<>();
+        List<Edge<Point2D>> edges = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            Edge edge = new Edge2D(new Point2D(i, i*i), new Point2D(i+1, (i+1)*(i+1)));
+            Edge<Point2D> edge = new Edge2D<>(new Point2D(i, i*i), new Point2D(i+1, (i+1)*(i+1)));
             edges.add(edge);
         }
-        Face2D instance = new Face2D(edges);
+        Face2D<Point2D> instance = new Face2D<>(edges);
         int expResult = 11;
         int result = instance.getVertices().size();
         assertEquals(expResult, result);

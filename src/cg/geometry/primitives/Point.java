@@ -16,6 +16,8 @@ public interface Point  extends Comparable {
 
     void setLocation(double x, double y);
 
-    public double distance(Point terminus);
+    double distance(Point terminus);
+    
+    java.awt.geom.Point2D getPoint();
 
 }

@@ -6,12 +6,13 @@ package cg.convexhull.exact.impl;
 
 import cg.common.comparators.LexicographicComparator;
 import cg.common.comparators.LexicographicComparator.Direction;
-import cg.convexhull.exact.ConvexHull;
 import cg.common.comparators.RadialComparator;
+import cg.convexhull.exact.ConvexHull;
 import cg.geometry.primitives.Geometry;
-import cg.geometry.primitives.impl.Point2D;
+import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Polygon2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,10 +23,10 @@ import java.util.Set;
  *
  * @author rrufai
  */
-public class QuickHullRecursive implements ConvexHull {
+public class QuickHullRecursive<T extends Point> implements ConvexHull<T> {
 
-    private List<Point2D> pointset;
-    private List<Point2D> convexHullVertices;
+    private List<T> pointset;
+    private List<T> convexHullVertices;
     private boolean valid;
 
     /**
@@ -40,7 +41,7 @@ public class QuickHullRecursive implements ConvexHull {
      *
      * @param pointset
      */
-    public QuickHullRecursive(List<Point2D> pointset) {
+    public QuickHullRecursive(List<T> pointset) {
         this();
         this.pointset = pointset;
 
@@ -53,19 +54,19 @@ public class QuickHullRecursive implements ConvexHull {
      * @return list of points on the convex hull in counter clockwise order
      */
     //private
-    public List<Point2D> convexHull() {
+    public List<T> convexHull() {
         if (pointset == null || pointset.isEmpty()) {
             return pointset;
         }
 
-        final List<Point2D> pset = (List<Point2D>) ((ArrayList) pointset).clone();
+        final List<T> pset = (List<T>) ((ArrayList<T>) pointset).clone();
 
         //compute leftmost point, l and rightmost point, r.
-        final Map<String, Point2D> map = computeLR(pset);
+        final Map<String, T> map = computeLR(pset);
 
-        final List<Point2D> upper =
+        final List<T> upper =
                 leftHalfHull(map.get("leftmost"), map.get("rightmost"), pset);
-        final List<Point2D> lower =
+        final List<T> lower =
                 leftHalfHull(map.get("rightmost"), map.get("leftmost"), pset);
 
         convexHullVertices = mergeHulls(upper, lower);
@@ -80,15 +81,15 @@ public class QuickHullRecursive implements ConvexHull {
      * @return
      */
     //private
-    public List<Point2D> mergeHulls(final List<Point2D> upper, final List<Point2D> lower) {
-        List<Point2D> smaller = lower, bigger = upper;
+    public List<T> mergeHulls(final List<T> upper, final List<T> lower) {
+        List<T> smaller = lower, bigger = upper;
         
         if(upper.size() < lower.size()){
             smaller = upper;
             bigger = lower;
         }
         
-        for(Point2D p : smaller){
+        for(T p : smaller){
             if(!bigger.contains(p)){
                 bigger.add(p);
             }
@@ -107,15 +108,15 @@ public class QuickHullRecursive implements ConvexHull {
      * @return
      */
     //private
-    public List<Point2D> leftHalfHull(final Point2D left, final Point2D right, final List<Point2D> pointSet) {
-        List<Point2D> newPointSet = new ArrayList();
+    public List<T> leftHalfHull(final T left, final T right, final List<T> pointSet) {
+        List<T> newPointSet = new ArrayList<>();
         if (pointSet.size() > 0) {
             //compute the point h, farthest from segment l-r
-            final Point2D farthest = computeFarthest(left, right, pointSet);
+            final T farthest = computeFarthest(left, right, pointSet);
             //partition pointSet into S1 = {points to the left of segment l-h}
-            final List<Point2D> subsetL = computeSubset(left, farthest, pointSet);
+            final List<T> subsetL = computeSubset(left, farthest, pointSet);
             // S2 = {points to the left of segment h-r}
-            final List<Point2D> subsetR = computeSubset(farthest, right, pointSet);
+            final List<T> subsetR = computeSubset(farthest, right, pointSet);
 
             if (!farthest.equals(left)) {
                 newPointSet.addAll(leftHalfHull(left, farthest, subsetL));
@@ -158,12 +159,12 @@ public class QuickHullRecursive implements ConvexHull {
      * @param pSet
      * @return
      */
-    public Point2D computeFarthest(final Point2D left, final Point2D right, final List<Point2D> pSet) {
+    public T computeFarthest(final T left, final T right, final List<T> pSet) {
         RadialComparator comparator = new RadialComparator();
-        Point2D farthest = pSet.get(0);
+        T farthest = pSet.get(0);
         double max = comparator.ccw(left, right, farthest);
         if (pSet.size() > 2) {
-            for (Point2D point : pSet) {
+            for (T point : pSet) {
                 if (max < comparator.ccw(left, right, point)) {
                     farthest = point;
                     max = comparator.ccw(left, right, point);
@@ -181,13 +182,13 @@ public class QuickHullRecursive implements ConvexHull {
      * @param pSet
      * @return
      */
-    public List<Point2D> computeSubset(
-            final Point2D left, final Point2D right, final List<Point2D> pSet) {
+    public List<T> computeSubset(
+            final T left, final T right, final List<T> pSet) {
         RadialComparator comparator = new RadialComparator();
-        Set<Point2D> subset = new HashSet<>();
+        Set<T> subset = new HashSet<>();
 
         if (pSet.size() > 0) {
-            for (Point2D point : pSet) {
+            for (T point : pSet) {
                 if (comparator.ccw(left, right, point) > 0) {
                     subset.add(point);
                 }
@@ -207,14 +208,14 @@ public class QuickHullRecursive implements ConvexHull {
      * set.
      */
     //private
-    public Map<String, Point2D> computeLR(List<Point2D> pset) {
-        Map<String, Point2D> map = null;
+    public Map<String, T> computeLR(List<T> pset) {
+        Map<String, T> map = null;
         if (pset.size() > 0) {
             map = new HashMap();
-            Point2D leftmost = pset.get(0);
-            Point2D rightmost = pset.get(0);
+            T leftmost = pset.get(0);
+            T rightmost = pset.get(0);
             final LexicographicComparator comp = new LexicographicComparator(Direction.LEFT_TO_RIGHT);
-            for (Point2D p : pset) {
+            for (T p : pset) {
                 if (comp.compare(p, leftmost) == -1) {
                     leftmost = p;
                 }
@@ -229,7 +230,7 @@ public class QuickHullRecursive implements ConvexHull {
         return map;
     }
 
-    List<Point2D> rightHalfHull(Point2D l, Point2D r, List<Point2D> pointset) {
+    List<T> rightHalfHull(T l, T r, List<T> pointset) {
         return leftHalfHull(r, l, pointset);
     }
 
@@ -240,7 +241,7 @@ public class QuickHullRecursive implements ConvexHull {
      */
     @Override
     public Geometry compute(Geometry geom) {
-        List<Point2D> vertices;
+        Collection<T> vertices;
         if (valid) {
             vertices = this.convexHullVertices;
         } else {

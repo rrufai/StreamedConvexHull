@@ -4,38 +4,17 @@
  */
 package cg.convexhull.approximate.streaming;
 
+import cg.common.comparators.GeometricComparator;
 import cg.geometry.primitives.Point;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cg.geometry.primitives.impl.Point2D;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author I827590
  */
 public class StreamedConvexUtilityTest {
-    
-    public StreamedConvexUtilityTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of polar method, of class StreamedConvexUtility.
@@ -43,28 +22,57 @@ public class StreamedConvexUtilityTest {
     @Test
     public void testPolar() {
         System.out.println("polar");
-        Point a = null;
-        Point b = null;
+        Point a = new Point2D(0.0, 0.0);
+        Point b = new Point2D(0.0, 0.0);
         double expResult = 0.0;
         double result = StreamedConvexUtility.polar(a, b);
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+
+    @Test
+    public void testPolar90degrees() {
+        System.out.println("polar");
+        Point a = new Point2D(0.0, 0.0);
+        Point b = new Point2D(0.0, 0.1);
+        double expResult = Math.PI / 2;
+        double result = StreamedConvexUtility.polar(a, b);
+        assertEquals(expResult, result, 0.0);
     }
 
     /**
      * Test of area method, of class StreamedConvexUtility.
      */
     @Test
-    public void testArea() {
+    public void testAreaOfAPoint() {
         System.out.println("area");
-        Point a = null;
-        Point b = null;
-        Point c = null;
+        Point a = new Point2D(0.0, 0.0);
+        Point b = new Point2D(0.0, 0.0);
+        Point c = new Point2D(0.0, 0.0);
         double expResult = 0.0;
         double result = StreamedConvexUtility.area(a, b, c);
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+
+    // area((0,0), (5,4), and (8,2)) == 11
+    @Test
+    public void testAreaNonEmptyTriangle() {
+        System.out.println("area");
+        Point a = new Point2D(0.0, 0.0);
+        Point b = new Point2D(5.0, 4.0);
+        Point c = new Point2D(8.0, 2.0);
+        double expResult = 11.0;
+        double result = StreamedConvexUtility.area(a, b, c);
+        assertEquals(expResult, result, GeometricComparator.EPSILON);
+    }
+
+    @Test
+    public void testAreaLineSegment() {
+        System.out.println("area");
+        Point a = new Point2D(0.0, 0.0);
+        Point b = new Point2D(0.0, 4.0);
+        Point c = new Point2D(0.0, 2.0);
+        double expResult = 0.0;
+        double result = StreamedConvexUtility.area(a, b, c);
+        assertEquals(expResult, result, GeometricComparator.EPSILON);
     }
 }
