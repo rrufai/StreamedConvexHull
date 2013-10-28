@@ -6,9 +6,12 @@ package cg.geometry.primitives.impl;
 
 import cg.common.collections.CircularArrayList;
 import cg.common.visualization.CanvasImpl;
+import cg.convexhull.approximate.streaming.StreamedConvexUtility;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
+import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
+import cg.geometry.primitives.Polygon;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Shape;
@@ -16,6 +19,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,10 +59,6 @@ public class Face2D<T extends Point> implements Face<T> {
     @Override
     public boolean contains(T p) {
         return path.contains(p.getPoint());
-    }
-
-    public double area() {
-        return 0; // todo: decide to remove or implement
     }
 
     /**
@@ -160,5 +160,66 @@ public class Face2D<T extends Point> implements Face<T> {
     @Override
     public String toString() {
         return getClass().getName() + "[" + getVertices() + "]";
+    }
+
+    @Override
+    public double getArea() {
+        ArrayList<T> pointList = new ArrayList<>();
+        double[] coords = new double[6];
+        int type;
+        double totalArea = 0;
+        PathIterator iterator = path.getPathIterator(null);
+        while (!iterator.isDone()) {
+            type = iterator.currentSegment(coords);
+            if (type == PathIterator.SEG_MOVETO) {
+                pointList.clear();
+                pointList.add((T) new Point2D(coords[0], coords[1]));
+            } else if (type == PathIterator.SEG_LINETO) {
+                pointList.add((T) new Point2D(coords[0], coords[1]));
+            } else if (type == PathIterator.SEG_CLOSE) {
+                totalArea += polyArea(pointList);
+                pointList.clear();
+            } else {
+                System.out.println("calculateShapeArea: Cannot calculate area for shapes with segment type other than SEG_MOVETO, SEG_LINETO, or SEG_CLOSE.  Ignoring segment type=" + type);
+            }
+            iterator.next();
+        }
+        if (totalArea < 0) {
+            totalArea = -totalArea;
+        }
+        return totalArea;
+    }
+
+    @Override
+    public double getDiameter() {
+        List<T> vertices = getVertices();
+        double diameter = 0;
+        for (T v1 : vertices) {
+            for (T v2 : vertices) {
+                if(v1 != v2){
+                    double distance = v1.distance(v2);
+                    if(diameter < distance){
+                        diameter = distance;
+                    }
+                }
+            }
+        }
+        
+        return diameter;
+    }
+
+    private double polyArea(ArrayList<T> pointList) {
+        double area = 0.0;
+        for (int loopi = 1; loopi < pointList.size(); loopi++) {
+            T p1 = pointList.get(loopi - 1);
+            T p2 = pointList.get(loopi);
+            area += (p1.getX() * p2.getY() - p2.getX() * p1.getY()) / 2.0;
+        }
+        return area;
+    }
+
+    @Override
+    public double getHausdorffDistance(Geometry<T> polygon) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

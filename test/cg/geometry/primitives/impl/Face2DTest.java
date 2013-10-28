@@ -8,27 +8,15 @@ import cg.geometry.primitives.Edge;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
  * @author rrufai
  */
 public class Face2DTest {
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of contains method, of class Face2D.
@@ -53,7 +41,7 @@ public class Face2DTest {
         System.out.println("area");
         Face2D instance = null;
         double expResult = 0.0;
-        double result = instance.area();
+        double result = instance.getArea();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

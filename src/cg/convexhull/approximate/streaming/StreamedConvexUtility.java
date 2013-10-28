@@ -18,9 +18,6 @@ public class StreamedConvexUtility {
     public static double polar(Point origin, Point terminus) {
         double xDiff = terminus.getX() - origin.getX();
         double yDiff = terminus.getY() - origin.getY();
-//        if (Math.abs(xDiff) < GeometricComparator.EPSILON) {
-//            return Math.signum(yDiff) * Math.PI / 2.0;
-//        }
         double theta = Math.atan2(yDiff, xDiff);
         
         theta = theta < 0? theta + 2*Math.PI:theta;

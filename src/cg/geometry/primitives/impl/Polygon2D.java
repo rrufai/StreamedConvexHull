@@ -31,7 +31,7 @@ public class Polygon2D<T extends Point> extends Face2D<T> implements Polygon<T> 
     public Polygon2D(Collection<T> boundary) {
         this(toEdgeList(boundary));
     }
-    
+
     /**
      *
      * @param p
@@ -80,7 +80,7 @@ public class Polygon2D<T extends Point> extends Face2D<T> implements Polygon<T> 
     @Override
     public int hashCode() {
         int hash = 7;
-        for(T p : this.getVertices()){
+        for (T p : this.getVertices()) {
             hash = (hash * p.hashCode()) % Integer.MAX_VALUE;
         }
         return hash;

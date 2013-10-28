@@ -22,4 +22,7 @@ public interface Geometry<T extends Point> {
     T getSuccessor(T point);
     void draw(Graphics canvas);
     boolean contains(T p);
+    double getArea();
+    double getDiameter();
+    double getHausdorffDistance(Geometry<T> polygon);
 }
