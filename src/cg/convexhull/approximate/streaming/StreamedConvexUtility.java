@@ -1,6 +1,5 @@
 package cg.convexhull.approximate.streaming;
 
-import cg.common.comparators.GeometricComparator;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Triangle2D;
 

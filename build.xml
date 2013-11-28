@@ -9,7 +9,87 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="StreamedConvexHull" default="default" basedir=".">
     <description>Builds, tests, and runs the project StreamedConvexHull.</description>
-    <import file="nbproject/build-impl.xml"/>
+        <!-- Project directories. -->
+  <property name="lib.dir" location="lib/CofoJa"/>
+
+  <property name="classes.dir" location="${build.dir}/classes"/>
+  <property name="contracts.dir" location="${build.dir}/contracts"/>
+    <import file="nbproject/build-impl.xml"/>             
+    
+
+
+  <property name="main-class"
+    value="com.google.java.contract.example.CofojAnt"/>
+
+  <property name="cofoja" value="cofoja.jar"/>
+
+   <path id="class.path">
+     <pathelement location="${lib.dir}/CofoJa/${cofoja}"/>
+   </path>
+
+  <target name="build">
+    <mkdir dir="${build.dir}"/>
+    
+    <!-- Compiles WITHOUT contracts. -->
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+      <classpath refid="class.path"/>
+      <compilerarg value="-proc:none"/>
+    </javac>
+
+    <!-- Compiles ONLY the contracts. -->
+    <mkdir dir="${contracts.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${contracts.dir}">
+      <classpath>
+        <path refid="class.path"/>
+        <!-- Add ${classes.dir} to the second compilation class path
+             so that Cofoja finds your already compiled class files. -->
+        <pathelement path="${classes.dir}"/>
+      </classpath>
+      <compilerarg value="-proc:only"/>
+    </javac>
+  </target>
+
+  <target name="dist" depends="build">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${dist.dir}/${ant.project.name}.jar">
+      <fileset dir="${classes.dir}"/>
+      <fileset dir="${contracts.dir}"/>
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="dist">
+    <java jar="${dist.dir}/${ant.project.name}.jar" fork="true">
+      <jvmarg value="-javaagent:${lib.dir}/CofoJa/${cofoja}"/>
+    </java>
+  </target>
+    
+    <taskdef classpath="lib/AspectJ/aspectjtools.jar" resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"/>
+    <target name="aspectj">
+        <echo level="info">--- aspectj (start) ---</echo>
+        <!-- begin fix classpath for this bug https://issues.apache.org/bugzilla/show_bug.cgi?id=40291 -->
+        <condition property="targetos" value="windows" else="unix">
+            <os family="windows"/>
+        </condition>
+        <!-- converting classpath -->
+        <pathconvert targetos="${targetos}" property="javac.convertedClasspath" >
+            <path path="${javac.classpath}" />                   
+        </pathconvert>
+        <!-- end fix classpath -->
+        <iajc source="1.6" target="1.6" showweaveinfo="true" verbose="true" destdir="${build.classes.dir}"  >
+            <inpath>
+                <pathelement location="${build.classes.dir}"/>    
+            </inpath>
+            <classpath>
+                <pathelement location="${javac.convertedClasspath}" />
+            </classpath>
+        </iajc>
+        <echo level="info">--- aspectj (finished) ---</echo>
+    </target>
+    <target name="-post-compile" depends="aspectj"></target>    
     <!--
 
     There exist several targets which are by default empty and which can be 

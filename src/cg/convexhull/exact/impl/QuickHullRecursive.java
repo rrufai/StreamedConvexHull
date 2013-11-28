@@ -240,16 +240,23 @@ public class QuickHullRecursive<T extends Point> implements ConvexHull<T> {
      * @return the vertices on the convex hull.
      */
     @Override
-    public Geometry compute(Geometry geom) {
+    public Geometry<T>  compute() {
         Collection<T> vertices;
         if (valid) {
             vertices = this.convexHullVertices;
         } else {
-            valid = true;
-            this.pointset = geom.getVertices();
             vertices = convexHull();
+            valid = true;
         }
 
         return new Polygon2D(vertices);
+    }
+    
+        @Override
+    public Geometry<T> compute(Geometry<T> geom) {
+        pointset = geom.getVertices();
+        valid = false;
+
+        return compute();
     }
 }

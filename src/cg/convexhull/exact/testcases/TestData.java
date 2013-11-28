@@ -4,13 +4,15 @@
  */
 package cg.convexhull.exact.testcases;
 
-import cg.common.collections.CircularArrayList;
+import cg.convexhull.exact.ConvexHull;
+import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.impl.Point2D;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -20,6 +22,17 @@ import java.util.Set;
 public class TestData extends AbstractMap<String, TestCase<Point2D>> {
 
     private static Map<String, TestCase<Point2D>> testData = new HashMap<>();
+
+    private static double[][] generateRandom(int size) {
+        Random random = new Random(System.currentTimeMillis());
+        double [][] randomPoints = new double[size][2];
+        for(int i = 0; i < size; i++){
+            randomPoints[i][0] = size * random.nextDouble();
+            randomPoints[i][1] = size * random.nextDouble();
+        }
+        
+        return randomPoints;
+    }
 
     public TestData() {
         initialize();
@@ -39,7 +52,8 @@ public class TestData extends AbstractMap<String, TestCase<Point2D>> {
             new TestCase<>("medium", getDataSet(1), getResult(1)),
             new TestCase<>("complex", getDataSet(2), getResult(2)),
             new TestCase<>("big", getDataSet(3), getResult(3)),
-            new TestCase<>("smallnumbers", getDataSet(4), getResult(4))
+            new TestCase<>("smallnumbers", getDataSet(4), getResult(4)),
+            new TestCase<>("random1000", getDataSet(5), getResult(5)),
         };
         for (int i = 0; i < testcases.length; i++) {
             testData.put(testcases[i].getName(), testcases[i]);
@@ -331,6 +345,8 @@ public class TestData extends AbstractMap<String, TestCase<Point2D>> {
             {0.4916198379282093, -0.345391701297268},
             {0.001675087028811806, 0.1531837672490476},
             {-0.4404289572876217, -0.2894855991839297}};
+        
+        double[][] data5 = generateRandom(1000);
 
         double data[][] = null;
         switch (i) {
@@ -349,6 +365,9 @@ public class TestData extends AbstractMap<String, TestCase<Point2D>> {
             case 4:
                 data = data4;
                 break;
+            case 5:
+                data = data5;
+                break;
         }
 
         ArrayList<Point2D> pointset = new ArrayList<>(data.length);
@@ -359,84 +378,8 @@ public class TestData extends AbstractMap<String, TestCase<Point2D>> {
     }
 
     private static List<Point2D> getResult(int k) {
-        double[][] chdata0 = {
-            {0.0, 0.0},
-            {3.0, 0.0},
-            {2.0, 0.5},
-            {0.0, 1.0}
-        };
-
-
-        double[][] chdata1 = {
-            {-15.6558, -21.0232},
-            {-20.7067, -7.542},
-            {-14.9373, 10.3122},
-            {-8.9209, 22.1216},
-            {5.4365, 19.6453},
-            {15.1514, 15.8849},
-            {22.8319, 1.5574},
-            {13.54, -12.1944},
-            {6.7786, -19.5432}
-        };
-
-
-
-        double[][] chdata2 = {
-            {-15.6558, -21.0232},
-            {-20.7067, -7.542},
-            {-14.9373, 10.3122},
-            {-8.9209, 22.1216},
-            {5.4365, 19.6453},
-            {15.1514, 15.8849},
-            {22.8319, 1.5574},
-            {13.54, -12.1944},
-            {6.7786, -19.5432}};
-
-        double[][] chdata3 = {
-            {22.8319, 1.5574},
-            {15.1514, 15.8849},
-            {5.4365, 19.6453},
-            {-8.9209, 22.1216},
-            {-14.9373, 10.3122},
-            {-20.7067, -7.542},
-            {-15.6558, -21.0232},
-            {6.7786, -19.5432},
-            {13.54, -12.1944}};
-
-        double[][] chdata4 = {
-            {-0.161920957418085, -0.4055339716426413},
-            {-0.4404289572876217, -0.2894855991839297},
-            {-0.4907368011686362, 0.1865826865533206},
-            {-0.3521487911717489, 0.4352656197131292},
-            {0.05054295812784038, 0.4754929463150845},
-            {0.4932166845474547, 0.4928094162538735},
-            {0.4916198379282093, -0.345391701297268},
-            {0.4823896228171788, -0.4776170002088109}};
-
-        double[][] chdata = null;
-        switch (k) {
-            case 0:
-                chdata = chdata0;
-                break;
-            case 1:
-                chdata = chdata1;
-                break;
-            case 2:
-                chdata = chdata2;
-                break;
-            case 3:
-                chdata = chdata3;
-                break;
-            case 4:
-                chdata = chdata4;
-                break;
-        }
-
-        List<Point2D> chVertices = new CircularArrayList<>(chdata.length);
-        for (int i = 0; i < chdata.length; i++) {
-            chVertices.add(new Point2D(chdata[i][0], chdata[i][1]));
-        }
-        return chVertices;
+        ConvexHull hull = new AndrewsMonotoneChain<>(getDataSet(k));
+        return hull.compute().getVertices();
     }
 
 }

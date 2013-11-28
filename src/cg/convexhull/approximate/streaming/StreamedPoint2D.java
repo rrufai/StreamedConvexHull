@@ -13,7 +13,8 @@ public class StreamedPoint2D<T extends Point> extends Point2D {
     private double polar; //polar angle of point relative to a center point
     private double dogEar; //Goodness measure to keep this point on the hull
     private boolean marked; //to be used for lazy deletion
-    private static final double NEGATIVE_INFINITY = -Double.MAX_VALUE;;
+    private static final double NEGATIVE_INFINITY = -Double.MAX_VALUE;
+    private double goodness;
 
     /**
      *
@@ -54,12 +55,19 @@ public class StreamedPoint2D<T extends Point> extends Point2D {
     public void setPolar(double polar) {
         this.polar = polar;
     }
-
-    public double getDogEar() {
-        return dogEar;
+    public double getGoodnessMeasure() {
+        return goodness;
     }
 
-    public void setDogEar(double dogEar) {
-        this.dogEar = dogEar;
+    public void setGoodnessMeasure(double goodness) {
+        this.goodness = goodness;
     }
+    
+//    public double getDogEar() {
+//        return dogEar;
+//    }
+//
+//    public void setDogEar(double dogEar) {
+//        this.dogEar = dogEar;
+//    }
 }

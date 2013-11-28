@@ -71,7 +71,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
 
                 while (stack.size() > 1 && comparator.compare(stack.peek(), currentPoint) == RadialComparator.Orientation.COUNTERCLOCKWISE.getCode()) {
                     stack.pop(); //throw away
-                    
+
                     if (stack.size() > 1) {
                         comparator.setAnchor(stack.elementAt(stack.size() - 2));
                     }
@@ -80,8 +80,6 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
 
             stack.push(currentPoint);
         }
-
-        valid = true;
 
         //push all stack content to collection -- they should come out in counter-clockwise order
         this.convexHullVertices.addAll(stack);
@@ -115,11 +113,20 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
 
     @Override
     public Geometry<T> compute(Geometry geom) {
+        valid = false;
+        return compute();
+    }
+
+    @Override
+    public Geometry<T> compute() {
+        Geometry<T> hull;
         if (valid) {
-            return new Polygon2D<>(convexHullVertices);
+            hull = new Polygon2D<>(convexHullVertices);
         } else {
-            this.pointset = geom.getVertices();
-            return convexHull();
+            hull = convexHull();
+            valid = true;
         }
+        
+        return hull;
     }
 }

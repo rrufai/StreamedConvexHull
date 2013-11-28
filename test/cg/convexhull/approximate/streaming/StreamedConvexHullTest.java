@@ -4,6 +4,8 @@
  */
 package cg.convexhull.approximate.streaming;
 
+import cg.common.collections.pointsequences.FixedPointSequence2D;
+import cg.common.collections.pointsequences.PointSequence;
 import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.testcases.TestCase;
 import cg.convexhull.exact.testcases.TestData;
@@ -27,15 +29,15 @@ import org.junit.runners.Parameterized;
 public class StreamedConvexHullTest {
 
     private List<Point2D> chVertices;
-    private List<Point2D> pointset;
+    private PointSequence<Point2D> pointSequence;
     private int budget;
 
     public StreamedConvexHullTest(TestCase<Point2D> testCase) {
         // TestCases: "simple","medium","complex", "big", "smallnumbers"
         //TestCase<Point2D> testCase = (new TestData()).get("simple");
-        pointset = testCase.getInputPoints();
+        pointSequence = new FixedPointSequence2D<>(testCase.getInputPoints());
         chVertices = testCase.getHullVertices();
-        budget = Math.max(4, chVertices.size());
+        budget = chVertices.size();
     }
 
     @Parameterized.Parameters
@@ -45,7 +47,8 @@ public class StreamedConvexHullTest {
                     {testData.get("simple")},
                     {testData.get("medium")},
                     {testData.get("complex")},
-                    {testData.get("smallnumbers")}
+                    {testData.get("smallnumbers")},
+                    {testData.get("random1000")}
                 });
     }
 
@@ -56,13 +59,17 @@ public class StreamedConvexHullTest {
     public void testCompute() {
         System.out.println("compute");
 
-        final Polygon2D<Point2D> polygon2D = new Polygon2D<>(pointset);
         ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget);
-        Geometry<Point2D> result = instance.compute(polygon2D);
-        List<Point2D> actualResult = result.getVertices();
-        List<Point2D> expectedResult = chVertices;
-
-        assertEquals(expectedResult, actualResult);
+        for (int i = 0; i < pointSequence.size(); i++) {
+            Geometry<Point2D> result = instance.compute(pointSequence.shuffle());
+            List<Point2D> actualResult = result.getVertices();
+            List<Point2D> expectedResult = chVertices;
+            String message = "input size: " + pointSequence.size() + 
+                    " output size: " + chVertices.size() + 
+                    " input point sequence: " + pointSequence.toString() +                     
+                    " expected: " + expectedResult + ", but was: " + actualResult;
+            assertEquals(message, expectedResult, actualResult);
+        }
     }
 
     /**
@@ -102,7 +109,6 @@ public class StreamedConvexHullTest {
         Geometry<Point2D> expectedResult = instance2.compute(polygon);
 
         assertEquals(expectedResult, actualResult);
-
 
     }
 

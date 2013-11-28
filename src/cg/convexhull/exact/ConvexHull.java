@@ -12,5 +12,8 @@ import cg.geometry.primitives.Point;
  * @author rrufai
  */
 public interface ConvexHull<T extends Point> {
+
     Geometry<T> compute(Geometry<T> geom);
+
+    Geometry<T> compute();
 }

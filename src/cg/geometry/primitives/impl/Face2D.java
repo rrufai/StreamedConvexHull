@@ -6,12 +6,10 @@ package cg.geometry.primitives.impl;
 
 import cg.common.collections.CircularArrayList;
 import cg.common.visualization.CanvasImpl;
-import cg.convexhull.approximate.streaming.StreamedConvexUtility;
 import cg.geometry.primitives.Edge;
 import cg.geometry.primitives.Face;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
-import cg.geometry.primitives.Polygon;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Shape;
@@ -67,11 +65,13 @@ public class Face2D<T extends Point> implements Face<T> {
      * @throws IOException
      */
     @Override
-    public void saveToFile(String fileName) throws IOException {
-        CanvasImpl canvas = new CanvasImpl(path.getBounds());
+    public void saveToFile(String fileName) throws IOException{
+
         //canvas.drawShape(path, Color.black);
-        AffineTransform transform = AffineTransform.getTranslateInstance(-minX, -minX);
+        double scaleFactor = 5;
+        AffineTransform transform = new AffineTransform(scaleFactor, 0, 0, scaleFactor, -minX * scaleFactor, -minY * scaleFactor);
         Shape transformedPath = transform.createTransformedShape(path);
+        CanvasImpl canvas = new CanvasImpl(); //transformedPath.getBounds());
         canvas.drawShape(transformedPath, Color.blue);
         if (showPoints) {
             canvas.drawPoints(this.getVertices(transformedPath), Color.red);
@@ -196,15 +196,15 @@ public class Face2D<T extends Point> implements Face<T> {
         double diameter = 0;
         for (T v1 : vertices) {
             for (T v2 : vertices) {
-                if(v1 != v2){
+                if (v1 != v2) {
                     double distance = v1.distance(v2);
-                    if(diameter < distance){
+                    if (diameter < distance) {
                         diameter = distance;
                     }
                 }
             }
         }
-        
+
         return diameter;
     }
 

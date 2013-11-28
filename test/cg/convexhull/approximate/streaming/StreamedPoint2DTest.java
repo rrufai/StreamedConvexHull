@@ -50,9 +50,9 @@ public class StreamedPoint2DTest {
         System.out.println("getDogear");
         double dogEar = 0.0;
         StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
-        instance.setDogEar(dogEar);
+        instance.setGoodnessMeasure(dogEar);
         double expResult = dogEar;
-        double result = instance.getDogEar();
+        double result = instance.getGoodnessMeasure();
 
         assertEquals(expResult, result, 0.0);
     }
@@ -65,10 +65,10 @@ public class StreamedPoint2DTest {
         System.out.println("setDogEar");
         double dogEar = 0.0;
         StreamedPoint2D<Point2D> instance = new StreamedPoint2D<>(new Point2D(0.0, 0.0));
-        instance.setDogEar(dogEar);
+        instance.setGoodnessMeasure(dogEar);
         double expResult = dogEar;
-        double result = instance.getDogEar();
-
+        double result = instance.getGoodnessMeasure();
+        
         assertEquals(expResult, result, 0.0);
     }
 }

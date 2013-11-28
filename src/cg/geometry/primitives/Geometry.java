@@ -5,6 +5,7 @@
 package cg.geometry.primitives;
 
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,4 +26,5 @@ public interface Geometry<T extends Point> {
     double getArea();
     double getDiameter();
     double getHausdorffDistance(Geometry<T> polygon);
+    void saveToFile(String string)  throws IOException;
 }

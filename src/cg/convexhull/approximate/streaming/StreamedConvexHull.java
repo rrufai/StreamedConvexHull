@@ -14,7 +14,6 @@ import cg.geometry.primitives.impl.Triangle2D;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -36,28 +35,24 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
     private T centroid;
     private int centroidDirtyCount = 0;
 
-    private void shrinkHeap() {
-        for (Iterator<StreamedPoint2D<T>> it = minHeap.iterator(); it.hasNext();) {
-            StreamedPoint2D<T> p = it.next();
-            if (p.isMarked()) {
-                it.remove();
-            }
-        }
+    public StreamedConvexHull(int budget) {
+        this.budget = budget;
+        this.convexHull = new AndrewsMonotoneChain();
+        inputPoints = new ArrayList<>();
+        this.minHeap = new PriorityQueue<>(budget, new DogEarComparator());
+    }
+
+    @Override
+    public Geometry<T> compute() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private static class DogEarComparator<S extends StreamedPoint2D<? extends Point>> implements Comparator<S> {
 
         @Override
         public int compare(S p1, S p2) {
-            return (int) Math.signum(p1.getDogEar() - p2.getDogEar());
+            return (int) Math.signum(p1.getGoodnessMeasure() - p2.getGoodnessMeasure());
         }
-    }
-
-    public StreamedConvexHull(int budget) {
-        this.budget = budget;
-        this.convexHull = new AndrewsMonotoneChain();
-        inputPoints = new ArrayList<>();
-        this.minHeap = new PriorityQueue<>(budget, new DogEarComparator());
     }
 
     @Override
@@ -99,7 +94,7 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         if (p != null & r != null) {
             Triangle2D<Point> triangle = new Triangle2D<>(p, r, centroid); // does not always work
             //Geometry<T> triangle = query();
-            if (!triangle.contains((T)q)) {
+            if (!triangle.contains((T) q)) {
                 // point is exterior
                 Entry<StreamedPoint2D<T>, StreamedPoint2D<T>> tangents = getTangents(q, p, r);
                 p = tangents.getKey();
@@ -133,9 +128,9 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
                 }
 
                 //recompute dogEars for p, q, and r. And then insert q into both T and heap
-                q.setDogEar(StreamedConvexUtility.area(p, q, r));
-                p.setDogEar(StreamedConvexUtility.area(predecessor(p), p, q));
-                r.setDogEar(StreamedConvexUtility.area(q, r, successor(r)));
+                q.setGoodnessMeasure(StreamedConvexUtility.area(p, q, r));
+                p.setGoodnessMeasure(StreamedConvexUtility.area(predecessor(p), p, q));
+                r.setGoodnessMeasure(StreamedConvexUtility.area(q, r, successor(r)));
                 heightBalancedTree.put(q.getPolar(), q);
 
                 minHeap.add(q);
@@ -192,7 +187,10 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         do {
             vertex = minHeap.poll();
         } while (vertex != null && vertex.isMarked());
-        heightBalancedTree.remove(vertex.getPolar());
+
+        if (vertex != null) {
+            heightBalancedTree.remove(vertex.getPolar());
+        }
         //lemma: the only operation that can potentially cause the 
         // centroid to become external to the hull interior is the shrinkHull?
         //Note: recomputing centroids only affects polar angles. Dogears are not 
@@ -225,7 +223,7 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         for (T p : L.getVertices()) {
             StreamedPoint2D<T> streamedPoint = new StreamedPoint2D<>(p);
             streamedPoint.setPolar(StreamedConvexUtility.polar(centroid, p));
-            streamedPoint.setDogEar(StreamedConvexUtility.area(L.getPredecessor(p), p, L.getSuccessor(p)));
+            streamedPoint.setGoodnessMeasure(StreamedConvexUtility.area(L.getPredecessor(p), p, L.getSuccessor(p)));
 
             // add the point to treemap  - RB tree
             heightBalancedTree.put(streamedPoint.getPolar(), streamedPoint);
@@ -287,4 +285,12 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
             ++centroidDirtyCount;
         }
     }
+//    private void shrinkHeap() {
+//        for (Iterator<StreamedPoint2D<T>> it = minHeap.iterator(); it.hasNext();) {
+//            StreamedPoint2D<T> p = it.next();
+//            if (p.isMarked()) {
+//                it.remove();
+//            }
+//        }
+//    }
 }

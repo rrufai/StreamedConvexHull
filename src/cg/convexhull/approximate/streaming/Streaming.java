@@ -12,13 +12,14 @@ import java.util.List;
  *
  * @author rrufai
  */
+//@Invariant("true")
 interface Streaming<T extends Point> {
+
     void initialize(List<T> geometry);
-    
+
     void update(T point);
-    
-    void process (T point);
-    
+
+    void process(T point);
+
     Geometry<T> query();
-    
 }

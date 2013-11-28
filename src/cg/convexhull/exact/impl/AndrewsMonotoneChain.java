@@ -157,13 +157,24 @@ public class AndrewsMonotoneChain<T extends Point> implements ConvexHull<T> {
      */
     @Override
     public Geometry<T> compute(Geometry<T> geom) {
+        pointset = geom.getVertices();
+        valid = false;
+
+        return compute();
+    }
+
+    /**
+     * Compute convex hull.
+     *
+     * @return the vertices on the convex hull.
+     */
+    @Override
+    public Geometry<T> compute() {
         if (!valid) {
-            valid = true;
-            pointset = geom.getVertices();
             convexHullVertices = convexHull();
+            valid = true;
         }
 
         return new Polygon2D<>(convexHullVertices);
     }
-
 }
