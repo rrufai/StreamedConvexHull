@@ -5,7 +5,6 @@
 package cg.common.collections.pointsequences;
 
 import cg.common.smoothedanalysis.PerturbationModel;
-import cg.common.smoothedanalysis.UniformNoisePerturbationModel;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Polygon2D;
@@ -15,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class AbstractPointSequence<T extends Point> extends AbstractList<T> implements PointSequence<T> {
+public abstract class AbstractPointSequence<T extends Point> extends AbstractList<T> implements PointSequence<T> {
     private final List<T> pointSequence;
     private PerturbationModel perturbationModel;
 
@@ -56,12 +55,23 @@ public class AbstractPointSequence<T extends Point> extends AbstractList<T> impl
         return this.getPointSeqence();
     }
 
-    private PerturbationModel getPerturbationModel() {
-        if(perturbationModel == null){
-            perturbationModel = new UniformNoisePerturbationModel();
-        }
-        
+    /**
+     * Returns this sequence\'s perturbation model.
+     * 
+     * @return
+     */
+    protected PerturbationModel getPerturbationModel() {
         return perturbationModel;
+    }
+    
+    /**
+     * Sets this sequence\'s perturbation model.
+     * 
+     * @param perturbationModel 
+     */
+    @Override
+    public void setPerturbationModel(PerturbationModel perturbationModel) {
+        this.perturbationModel = perturbationModel;
     }
 
 }

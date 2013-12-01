@@ -20,4 +20,5 @@ public class FixedPointSequence2D<T extends Point> extends AbstractPointSequence
     public FixedPointSequence2D(List<T> pointSequence) {
         super(pointSequence);
     } 
+
 }

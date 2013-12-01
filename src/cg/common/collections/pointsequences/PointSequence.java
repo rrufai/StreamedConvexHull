@@ -7,6 +7,7 @@ package cg.common.collections.pointsequences;
 import cg.common.smoothedanalysis.PerturbationModel;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
+import cg.geometry.primitives.impl.Point2D;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface PointSequence<T extends Point> extends List<T>{
     Geometry<T> shuffle();
     Geometry<T> perturb();
     Geometry<T> perturb(PerturbationModel perturbationModel);
+    void setPerturbationModel(PerturbationModel<T, Double> perturbationModel);
 }

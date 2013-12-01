@@ -44,6 +44,15 @@ public class AndrewsMonotoneChain<T extends Point> implements ConvexHull<T> {
         this.pointset = pointset;
         valid = false;
     }
+    
+        /**
+     *
+     * @param pointset
+     */
+    public AndrewsMonotoneChain(Geometry<T> geometry) {
+        this.pointset = geometry.getVertices();
+        valid = false;
+    }
 
     /**
      *

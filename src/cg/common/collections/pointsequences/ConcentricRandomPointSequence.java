@@ -16,14 +16,13 @@ import java.util.Random;
  */
 public class ConcentricRandomPointSequence<T extends Point> extends AbstractPointSequence<T> {
 
-    private static Random random;
+    private static Random random = new Random();
 
     /**
      * Random in a circle constructor
      */
     public ConcentricRandomPointSequence(int size, double radius) {
         super((List<T>) generateConcentricRandomPointSequence(size, radius));
-        random = new Random();
     }
 
     private static <T extends Point> List<T> generateConcentricRandomPointSequence(int size, double radius) {

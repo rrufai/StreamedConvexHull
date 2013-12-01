@@ -4,6 +4,8 @@
  */
 package cg.experiments;
 
+import cg.common.collections.pointsequences.ConcentricRandomPointSequence;
+import cg.common.collections.pointsequences.PointSequence;
 import cg.common.smoothedanalysis.PerturbationModel;
 import cg.common.smoothedanalysis.UniformNoisePerturbationModel;
 import cg.convexhull.approximate.streaming.StreamedConvexHull;
@@ -11,13 +13,10 @@ import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.impl.Point2D;
-import cg.geometry.primitives.impl.Polygon2D;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +29,6 @@ public class SmoothedAnalysis {
     private static boolean sysout = false;
     private final PerturbationModel<Point2D, Double> perturbationModel;
     private PrintStream out;
-    private Random random;
 
     /**
      *
@@ -44,26 +42,18 @@ public class SmoothedAnalysis {
      * @param perturbationModel
      */
     public SmoothedAnalysis(
-            PerturbationModel<Point2D, Double> perturbationModel, PrintStream printStream) { // gaussian
-        // or
-        // uniform
+            PerturbationModel<Point2D, Double> perturbationModel, //gaussian or uniform
+            PrintStream printStream) { 
+        
         this.perturbationModel = perturbationModel;
         this.out = printStream;
-        this.random = new Random();
     }
 
-    List<Point2D> generateAdversarialPointset(int size, double radius) {
-        List<Point2D> adversarialPointset = new ArrayList(size);
-        //double angle = Math.PI;
-        for (int i = 0; i < size; i++) {
-            double angle = 2 * Math.PI * random.nextDouble();
-
-            adversarialPointset.add(new Point2D(
-                    radius * Math.cos(angle), radius * Math.sin(angle)));
-            //angle /= 2;
-        }
-
-        return adversarialPointset;
+    PointSequence<Point2D> generateAdversarialPointset(int size, double radius) {
+        PointSequence<Point2D> pointSequence = new ConcentricRandomPointSequence<>(size, radius);
+        pointSequence.setPerturbationModel(perturbationModel);
+       
+        return  pointSequence;
     }
 
     List<Point2D> generatePerturbation(List<Point2D> pointset) {
@@ -75,19 +65,19 @@ public class SmoothedAnalysis {
      * @param args
      */
     public static void main(String[] args) {
-        double radius = 100000.0;
+        double radius = 1000.0;
         double windowWidthRatio = 0.25;
-        int repetitions = 100;
-        int numberOfPoints = 100;
+        int repetitions = 30;
+        int numberOfPoints = 10000;
         //int skip = numberOfPoints / 2;
-        int experiments = 5;//(int) Math.pow(1000, 100);            
+        int experiments = 1;//(int) Math.pow(1000, 100);            
         PerturbationModel<Point2D, Double> model =
                 new UniformNoisePerturbationModel();
         model.setParameter("windowWidthRatio", windowWidthRatio);
         model.setParameter("radius", radius);
         SmoothedAnalysis analysis = new SmoothedAnalysis(model, getPrintStream("experiments/error.txt"));
         for (int i = 0; i < experiments; i++) {
-            for (int budget = 3; budget < Math.sqrt(numberOfPoints); budget++) {
+            for (int budget = 3; budget < Math.log(numberOfPoints); budget++) {
                 //analysis.runWorstCaseInstance(radius, numberOfPoints, budget, repetitions);
                 analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "diameter");
                 analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "area");
@@ -96,17 +86,11 @@ public class SmoothedAnalysis {
         }
     }
 
-//    private void runWorstCaseInstance(double radius, int size, int budget, int repetitions) {
-//        List<Point2D> pointset = generateAdversarialPointset(size, radius);
-//        runComparison(budget, pointset, "HullVertices    ");
-//
-//
-//    }
     private void runPertubations(double radius, int size, int budget, int repetitions, String type) {
-        List<Point2D> perturbedSet = generateAdversarialPointset(size, radius);
+        PointSequence<Point2D> pointSequence = generateAdversarialPointset(size, radius);
         ComparisonResult aggregateComparisonResult = null;
-        for (int i = 0; i < repetitions; i++) {
-            perturbedSet = generatePerturbation(perturbedSet);
+        Geometry<Point2D> perturbedSet = pointSequence.getPointSeqence();
+        for (int i = 0; i < repetitions; i++) {            
             ComparisonResult comparisonResult = runComparison(budget, perturbedSet, type);
             if (aggregateComparisonResult == null) {
                 aggregateComparisonResult = comparisonResult;
@@ -120,6 +104,8 @@ public class SmoothedAnalysis {
                     aggregateComparisonResult.updateArea(comparisonResult);
                 }
             }
+            
+            perturbedSet = pointSequence.perturb();
         }
 
         out.println(aggregateComparisonResult);
@@ -130,6 +116,7 @@ public class SmoothedAnalysis {
         String type;
         int setSize;
         int hullsize;
+        int trueHullsize;
         int budget;
         double trueDiameter;
         double streamedDiameter;
@@ -152,17 +139,15 @@ public class SmoothedAnalysis {
             return 1.0 - streamedArea / trueArea;
         }
 
-        double getErrorModel1() {
-            return 1.0 / budget;
-        }
 
-        double getErrorModel2() {
-            return 1.0 / (budget * budget);
+        double[] getErrorModels() {
+            return new double [] {1.0 / Math.sqrt(budget), 1.0 / budget, 1.0 / (budget * budget), 1.0 / Math.pow(budget, 3.0), (trueHullsize - budget) / Math.pow(budget, 3.0)};
         }
-
+        
         void updateDiameter(ComparisonResult comparisonResult) {
             this.type = "diameter";
             this.hullsize = comparisonResult.hullsize;
+            this.trueHullsize = comparisonResult.trueHullsize;
             this.trueDiameter = comparisonResult.trueDiameter;
             this.streamedDiameter = comparisonResult.streamedDiameter;
         }
@@ -177,22 +162,23 @@ public class SmoothedAnalysis {
         @Override
         public String toString() {
             Formatter formatter = new Formatter();
-            return formatter.format("%s \t%d \t%d \t%d \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f", type, setSize, hullsize, budget, trueDiameter, streamedDiameter, getDiameterDiff(), getRelativeDiameterDiff(), trueArea, streamedArea, getAreaDiff(), getRelativeAreaDiff(), getErrorModel1(), getErrorModel2()).toString();
+            return formatter.format("%s \t%d \t%d \t%d \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f", type, setSize, hullsize, budget, trueDiameter, streamedDiameter, getDiameterDiff(), getRelativeDiameterDiff(), trueArea, streamedArea, getAreaDiff(), getRelativeAreaDiff(), getErrorModels()[0], getErrorModels()[1], getErrorModels()[2], getErrorModels()[3]).toString();
         }
     };
 
-    private ComparisonResult runComparison(int budget, List<Point2D> pointset, String type) {
+    private ComparisonResult runComparison(int budget, Geometry<Point2D> geometry, String type) {
         ConvexHull<Point2D> streamedHull = new StreamedConvexHull<>(budget);
 
-        Geometry<Point2D> streamedHullGeometry = streamedHull.compute(new Polygon2D<>(pointset));
+        Geometry<Point2D> streamedHullGeometry = streamedHull.compute(geometry);
 
-        ConvexHull<Point2D> trueHull = new AndrewsMonotoneChain<>(pointset);
+        ConvexHull<Point2D> trueHull = new AndrewsMonotoneChain<>(geometry);
         Geometry<Point2D> trueHullGeometry = trueHull.compute();
         ComparisonResult comparisonResult = new ComparisonResult();
         comparisonResult.type = type;
-        comparisonResult.setSize = pointset.size();
+        comparisonResult.setSize = geometry.getVertices().size();
         comparisonResult.budget = budget;
-        comparisonResult.hullsize = trueHullGeometry.getVertices().size();
+        comparisonResult.trueHullsize = trueHullGeometry.getVertices().size();
+        comparisonResult.hullsize = streamedHullGeometry.getVertices().size();
         comparisonResult.trueDiameter = trueHullGeometry.getDiameter();
         comparisonResult.streamedDiameter = streamedHullGeometry.getDiameter();
         comparisonResult.trueArea = trueHullGeometry.getArea();
@@ -209,7 +195,7 @@ public class SmoothedAnalysis {
                 out = System.out;
             }
 
-            out.println("type        \tsize \thullsize \tbudget \ttrueDiameter \tstrDiameter \tdiameterDiff \trelDiamDiff \ttrueArea \tstreamedArea \tareaDiff \trelAreaDiff \terrorModel1 \terrorModel2");
+            out.println("type        \tsize \thullsize \tbudget \ttrueDiameter \tstrDiameter \tdiameterDiff \trelDiamDiff \ttrueArea \tstreamedArea \tareaDiff \trelAreaDiff \terrorModel1 \terrorModel2 \terrorModel3 \terrorModel4");
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SmoothedAnalysis.class.getName()).log(Level.SEVERE, null, ex);
