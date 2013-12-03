@@ -43,8 +43,8 @@ public class SmoothedAnalysis {
      */
     public SmoothedAnalysis(
             PerturbationModel<Point2D, Double> perturbationModel, //gaussian or uniform
-            PrintStream printStream) { 
-        
+            PrintStream printStream) {
+
         this.perturbationModel = perturbationModel;
         this.out = printStream;
     }
@@ -52,8 +52,8 @@ public class SmoothedAnalysis {
     PointSequence<Point2D> generateAdversarialPointset(int size, double radius) {
         PointSequence<Point2D> pointSequence = new ConcentricRandomPointSequence<>(size, radius);
         pointSequence.setPerturbationModel(perturbationModel);
-       
-        return  pointSequence;
+
+        return pointSequence;
     }
 
     List<Point2D> generatePerturbation(List<Point2D> pointset) {
@@ -67,22 +67,26 @@ public class SmoothedAnalysis {
     public static void main(String[] args) {
         double radius = 1000.0;
         double windowWidthRatio = 0.25;
-        int repetitions = 30;
-        int numberOfPoints = 10000;
+        int repetitions = 3;
+        int numberOfPoints = 35;
+        int dataSizes = 100;
         //int skip = numberOfPoints / 2;
-        int experiments = 1;//(int) Math.pow(1000, 100);            
+        int experiments = 3;            
         PerturbationModel<Point2D, Double> model =
                 new UniformNoisePerturbationModel();
         model.setParameter("windowWidthRatio", windowWidthRatio);
         model.setParameter("radius", radius);
         SmoothedAnalysis analysis = new SmoothedAnalysis(model, getPrintStream("experiments/error.txt"));
-        for (int i = 0; i < experiments; i++) {
-            for (int budget = 3; budget < Math.log(numberOfPoints); budget++) {
-                //analysis.runWorstCaseInstance(radius, numberOfPoints, budget, repetitions);
-                analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "diameter");
-                analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "area");
+        for (int d = 0; d < dataSizes; d++) {
+            for (int i = 0; i < experiments; i++) {
+                for (int budget = 3; budget < Math.log(numberOfPoints); budget++) {
+                    analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "diameter");
+                    analysis.runPertubations(radius, numberOfPoints, budget, repetitions, "area");
+                }
+                System.out.print("*");
             }
-            numberOfPoints *= 2;
+            numberOfPoints *= 1.2;
+            System.out.print(".");
         }
     }
 
@@ -90,7 +94,7 @@ public class SmoothedAnalysis {
         PointSequence<Point2D> pointSequence = generateAdversarialPointset(size, radius);
         ComparisonResult aggregateComparisonResult = null;
         Geometry<Point2D> perturbedSet = pointSequence.getPointSeqence();
-        for (int i = 0; i < repetitions; i++) {            
+        for (int i = 0; i < repetitions; i++) {
             ComparisonResult comparisonResult = runComparison(budget, perturbedSet, type);
             if (aggregateComparisonResult == null) {
                 aggregateComparisonResult = comparisonResult;
@@ -104,7 +108,7 @@ public class SmoothedAnalysis {
                     aggregateComparisonResult.updateArea(comparisonResult);
                 }
             }
-            
+
             perturbedSet = pointSequence.perturb();
         }
 
@@ -139,11 +143,10 @@ public class SmoothedAnalysis {
             return 1.0 - streamedArea / trueArea;
         }
 
-
         double[] getErrorModels() {
-            return new double [] {1.0 / Math.sqrt(budget), 1.0 / budget, 1.0 / (budget * budget), 1.0 / Math.pow(budget, 3.0), (trueHullsize - budget) / Math.pow(budget, 3.0)};
+            return new double[]{1.0 / Math.sqrt(budget), 1.0 / budget, 1.0 / (budget * budget), 1.0 / Math.pow(budget, 3.0), (trueHullsize - budget) / Math.pow(budget, 3.0)};
         }
-        
+
         void updateDiameter(ComparisonResult comparisonResult) {
             this.type = "diameter";
             this.hullsize = comparisonResult.hullsize;
@@ -155,6 +158,7 @@ public class SmoothedAnalysis {
         void updateArea(ComparisonResult comparisonResult) {
             this.type = "area";
             this.hullsize = comparisonResult.hullsize;
+            this.trueHullsize = comparisonResult.trueHullsize;
             this.trueArea = comparisonResult.trueArea;
             this.streamedArea = comparisonResult.streamedArea;
         }
@@ -162,7 +166,7 @@ public class SmoothedAnalysis {
         @Override
         public String toString() {
             Formatter formatter = new Formatter();
-            return formatter.format("%s \t%d \t%d \t%d \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f", type, setSize, hullsize, budget, trueDiameter, streamedDiameter, getDiameterDiff(), getRelativeDiameterDiff(), trueArea, streamedArea, getAreaDiff(), getRelativeAreaDiff(), getErrorModels()[0], getErrorModels()[1], getErrorModels()[2], getErrorModels()[3]).toString();
+            return formatter.format("%s \t%d \t%d \t%d \t%d \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f \t%07.3f", type, setSize, hullsize, trueHullsize, budget, trueDiameter, streamedDiameter, getDiameterDiff(), getRelativeDiameterDiff(), trueArea, streamedArea, getAreaDiff(), getRelativeAreaDiff(), getErrorModels()[0], getErrorModels()[1], getErrorModels()[2], getErrorModels()[3]).toString();
         }
     };
 
@@ -195,7 +199,7 @@ public class SmoothedAnalysis {
                 out = System.out;
             }
 
-            out.println("type        \tsize \thullsize \tbudget \ttrueDiameter \tstrDiameter \tdiameterDiff \trelDiamDiff \ttrueArea \tstreamedArea \tareaDiff \trelAreaDiff \terrorModel1 \terrorModel2 \terrorModel3 \terrorModel4");
+            out.println("type        \tsize \thullsize \ttrueHullsize \tbudget \ttrueDiameter \tstrDiameter \tdiameterDiff \trelDiamDiff \ttrueArea \tstreamedArea \tareaDiff \trelAreaDiff \terrorModel1 \terrorModel2 \terrorModel3 \terrorModel4");
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SmoothedAnalysis.class.getName()).log(Level.SEVERE, null, ex);
