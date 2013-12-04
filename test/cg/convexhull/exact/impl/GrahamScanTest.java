@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +31,6 @@ public class GrahamScanTest {
     private List<Point2D> chVertices;
 
     public GrahamScanTest(TestCase<Point2D> testCase) {
-        // TestCases: "simple","medium","complex", "big", "smallnumbers"
-        //TestCase<Point2D> testCase = (new TestData()).get("simple");
         pointset = testCase.getInputPoints();
         chVertices = testCase.getHullVertices();
     }

@@ -6,6 +6,7 @@ package cg.convexhull.main;
 
 import cg.convexhull.approximate.streaming.StreamedConvexHull;
 import cg.convexhull.exact.ConvexHull;
+import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
@@ -41,6 +42,15 @@ public class StreamedConvexHullMain {
             System.out.printf("%s \tdiameter: %.3f \tarea: %.3f \tvertices: %s \n", imageFileName, polygon.getDiameter(), polygon.getArea(), vertices);
             polygon.saveToFile(imageFileName);
         }
+
+        //exact hull
+        ConvexHull<Point2D> instance = new AndrewsMonotoneChain<>();
+        final Geometry<Point2D> polygon = instance.compute(polygon2D);
+
+        List<Point2D> vertices = polygon.getVertices();
+        String imageFileName = "polygon_truehull" + ".png";
+        System.out.printf("%s \tdiameter: %.3f \tarea: %.3f \tvertices: %s \n", imageFileName, polygon.getDiameter(), polygon.getArea(), vertices);
+
     }
 
     private static double[][] getData2() {

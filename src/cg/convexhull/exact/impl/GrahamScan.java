@@ -4,6 +4,7 @@
  */
 package cg.convexhull.exact.impl;
 
+import cg.common.collections.CircularArrayList;
 import cg.common.comparators.RadialComparator;
 import cg.convexhull.exact.ConvexHull;
 import cg.geometry.primitives.Geometry;
@@ -39,7 +40,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
      */
     public GrahamScan(List<T> pointset) {
         this.pointset = pointset;
-        convexHullVertices = new ArrayList<>();
+        convexHullVertices = new CircularArrayList<>();
         valid = false;
     }
 
@@ -55,7 +56,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
         anchor = findAnchor();
 
         RadialComparator comparator = new RadialComparator(anchor);
-        Collections.sort((ArrayList) pointset, comparator);
+        Collections.sort(pointset, comparator);
         //   System.out.println(pset);
         Stack<T> stack = new Stack<>();
 
@@ -82,7 +83,9 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
         }
 
         //push all stack content to collection -- they should come out in counter-clockwise order
-        this.convexHullVertices.addAll(stack);
+        while(!stack.isEmpty()) {
+            this.convexHullVertices.add(stack.pop());
+        }
 
         return new Polygon2D<>(convexHullVertices);
     }
@@ -114,6 +117,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
     @Override
     public Geometry<T> compute(Geometry geom) {
         valid = false;
+        this.pointset = geom.getVertices();
         return compute();
     }
 

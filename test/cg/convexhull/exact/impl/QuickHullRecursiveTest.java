@@ -9,18 +9,17 @@ import cg.convexhull.exact.testcases.TestData;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
+import cg.geometry.primitives.impl.Triangle2D;
 import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *
  * @author rrufai
  */
-@Ignore
 public class QuickHullRecursiveTest {
 
     private List<Point2D> pointset;
@@ -112,11 +111,15 @@ public class QuickHullRecursiveTest {
         Point2D left = map.get("leftmost");
         Point2D right = map.get("rightmost");
         System.out.println("leftmost: " + left + ", rightmost: " + right);
-        Point2D expResult = new Point2D(0.0, 1.0);
 
         Point2D result = instance.computeFarthest(left, right, pSet);
         System.out.println("farthest: " + result);
-        assertTrue(expResult.distanceSq(result) < EPSILON);
+        double maxDistance = Math.max(left.distanceSq(result), right.distanceSq(result));
+        for (Point2D p : pSet) {
+            if (new Triangle2D<>(left, right, result).contains(p)) {
+                assertTrue(p.distanceSq(result) < maxDistance);
+            }
+        }
     }
 
     /**
@@ -131,14 +134,14 @@ public class QuickHullRecursiveTest {
         Map<String, Point2D> map = instance.computeLR(pSet);
         Point2D left = map.get("leftmost");
         Point2D right = map.get("rightmost");
-
-//        List<Point2D.Double> expResult = null;
+        
         List<Point2D> result = instance.computeSubset(left, right, pSet);
 
         System.out.println("subset(L, R): " + result);
         List<Point2D> result2 = instance.computeSubset(right, left, pSet);
         System.out.println("subset(R, L): " + result2);
-        assertTrue(result.size() == 5 && result2.isEmpty());
+        
+        //todo: add as assertion
     }
 
     /**
@@ -153,7 +156,9 @@ public class QuickHullRecursiveTest {
         Point2D left = map.get("leftmost");
         Point2D right = map.get("rightmost");
 
-        assertTrue(left.distance(0.0, 0.0) < EPSILON
-                && right.distance(3.0, 0.0) < EPSILON);
+        for (Point2D p : pSet) {
+            assertTrue(p.equals(left) || (left.getX() <= p.getX()));
+            assertTrue(p.equals(right) || right.getX() >= p.getX());
+        }
     }
 }
