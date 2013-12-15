@@ -85,4 +85,14 @@ public class Polygon2D<T extends Point> extends Face2D<T> implements Polygon<T> 
         }
         return hash;
     }
+
+    @Override
+    public int size() {
+        return getVertices().size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 }

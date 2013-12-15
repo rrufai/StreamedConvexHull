@@ -9,5 +9,6 @@ package cg.geometry.primitives;
  * @author rrufai
  */
 public interface Polygon<T extends Point>  extends Face<T> {
-    
+    int size();
+    boolean isEmpty();
 }

@@ -22,38 +22,34 @@ public class Point2D implements Point {
 
     @Override
     public double getX() {
-        return getPoint().getX();
+        return point.getX();
     }
 
     @Override
     public double getY() {
-        return getPoint().getY();
+        return point.getY();
     }
 
     @Override
     public void setLocation(double x, double y) {
-        setLocation(x, y);
+        point.setLocation(x, y);
     }
 
     public double distanceSq(double px, double py) {
-        px -= getPoint().getX();
-        py -= getPoint().getY();
-        return (px * px + py * py);
+        return point.distanceSq(px, py);
     }
 
     public double distanceSq(Point pt) {
-        return this.distance(pt.getX(), pt.getY());
+        return point.distanceSq(pt.getX(), pt.getY());
     }
 
     public double distance(double px, double py) {
-        px -= getPoint().getX();
-        py -= getPoint().getY();
-        return Math.sqrt(px * px + py * py);
+        return  point.distance(px, py);
     }
 
     @Override
     public double distance(Point pt) {
-        return distance(pt.getX(), pt.getY());
+        return point.distance(pt.getX(), pt.getY());
     }
 
     @Override
