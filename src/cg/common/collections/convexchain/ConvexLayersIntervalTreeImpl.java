@@ -37,7 +37,7 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
             System.out.println(pointset.get(i) + "  \t: " + i + " \t: " + binaryNumber);
         }
         System.out.println("Point Rank Map: " + pointToIndexMap);
-        intervalTree = new IntervalTreeImpl<>(null, this);
+        intervalTree = new SimpleIntervalTreeImpl<>(null, this);
         Collections.sort(pointset, verticalComparator);
         for (K p : pointset) {
             intervalTree.insert(p);

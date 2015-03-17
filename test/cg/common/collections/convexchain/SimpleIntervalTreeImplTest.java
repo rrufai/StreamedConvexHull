@@ -4,8 +4,10 @@
  */
 package cg.common.collections.convexchain;
 
+import cg.common.comparators.GeometricComparator;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map.Entry;
 import org.junit.After;
@@ -18,16 +20,19 @@ import org.junit.Test;
  * @author I827590
  */
 public class SimpleIntervalTreeImplTest {
+
     private SimpleIntervalTreeImpl<Point2D> intervalTree;
-    
+    private ConvexChain<Point2D> chain;
+
     public SimpleIntervalTreeImplTest() {
         intervalTree = new SimpleIntervalTreeImpl<>(null, new ConvexLayersIntervalTreeStub());
+        chain = new ConvexChainImpl<>();
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -177,19 +182,38 @@ public class SimpleIntervalTreeImplTest {
      * Test of bridgePoints method, of class SimpleIntervalTreeImpl.
      */
     @Test
-    public void testBridgePoints() {
-        System.out.println("bridgePoints");
-        SimpleIntervalTreeImpl instance = null;
-        SimpleIntervalTreeImpl left = null;
-        SimpleIntervalTreeImpl right = null;
-        Entry expResult = null;
-        Entry result = instance.bridgePoints(left, right);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testBridgePointsNonEmptyTrees() {
+        System.out.println("bridgePoints -- non empty subtrees");
+        SimpleIntervalTreeImpl emptyIntervalTree = new SimpleIntervalTreeImpl<>(null, new ConvexLayersIntervalTreeStub());
+        SimpleIntervalTreeImpl left = emptyIntervalTree.getLeftChild();
+        SimpleIntervalTreeImpl right = emptyIntervalTree.getRightChild();
+        Entry<Point2D, Point2D> expResult = new AbstractMap.SimpleEntry<>(
+                new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), 
+                new Point2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY));
+        Entry<Point2D, Point2D> result = emptyIntervalTree.bridgePoints(left, right);
+        assertEquals(expResult.getKey().getX(), result.getKey().getX(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getKey().getY(), result.getKey().getY(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getValue().getX(), result.getValue().getX(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getValue().getY(), result.getValue().getY(), GeometricComparator.EPSILON);
     }
-    
-        /**
+
+    @Test
+    public void testBridgePointsEmptyTrees() {
+        System.out.println("bridgePoints -- empty subtrees");
+        SimpleIntervalTreeImpl emptyIntervalTree = new SimpleIntervalTreeImpl<>(null, new ConvexLayersIntervalTreeStub());
+        SimpleIntervalTreeImpl left = emptyIntervalTree.getLeftChild();
+        SimpleIntervalTreeImpl right = emptyIntervalTree.getRightChild();
+        Entry<Point2D, Point2D> expResult = new AbstractMap.SimpleEntry<>(
+                new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), 
+                new Point2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY));
+        Entry<Point2D, Point2D> result = emptyIntervalTree.bridgePoints(left, right);
+        assertEquals(expResult.getKey().getX(), result.getKey().getX(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getKey().getY(), result.getKey().getY(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getValue().getX(), result.getValue().getX(), GeometricComparator.EPSILON);
+        assertEquals(expResult.getValue().getY(), result.getValue().getY(), GeometricComparator.EPSILON);
+    }
+
+    /**
      * Test of bridgePoints method, of class SimpleIntervalTreeImpl.
      */
     @Test
@@ -205,24 +229,10 @@ public class SimpleIntervalTreeImplTest {
         fail("The test case is a prototype.");
     }
 
-    static class ConvexLayersIntervalTreeStub implements ConvexLayersIntervalTree<Point2D> {
+    static class ConvexLayersIntervalTreeStub extends ConvexLayersIntervalTreeImpl<Point2D> {
 
         public ConvexLayersIntervalTreeStub() {
-        }
-
-        @Override
-        public List<Point2D> extractRoot() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public boolean goRight(Point2D point, int level) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public boolean isEmpty() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            super();
         }
     }
 }

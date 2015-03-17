@@ -303,7 +303,7 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
         //handle the case where left is null but right is not
         if (isNull(left) && !isNull(right)) {
             rightBridgePoint = right.rightToLeftCursor;
-            leftBridgePoint = (K) new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);      
+            leftBridgePoint = (K) new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
         }
 
         //handle the case where right is null but left is not
@@ -313,5 +313,13 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
         }
 
         return new AbstractMap.SimpleEntry<>(leftBridgePoint, rightBridgePoint);
+    }
+
+    SimpleIntervalTreeImpl getLeftChild() {
+        return left;
+    }
+
+    SimpleIntervalTreeImpl getRightChild() {
+        return right;
     }
 }
