@@ -50,21 +50,19 @@ public class RadialComparator<K extends Point> implements GeometricComparator<K>
         return compare(anchor, o1, o2);
     }
 
-    private int compare( K anchor, K o1, K o2) {
-        double d = ccw(anchor, o1, o2);
+    private int compare(K anchor, K o1, K o2) {
         int retVal = Orientation.COLLINEAR.getCode();
 
-        if (d > EPSILON) {
-            //CCW
-            retVal = Orientation.COUNTERCLOCKWISE.getCode();
-        } else if (d < -EPSILON) {
-            //CW
-            retVal = Orientation.CLOCKWISE.getCode();
-        } else {
-            //Collinear
-           // retVal = Orientation.COLLINEAR.getCode(); //superflous
+        if (anchor != null && o1 != null && o2 != null) {
+            double d = ccw(anchor, o1, o2);
+            if (d > EPSILON) {
+                //CCW
+                retVal = Orientation.COUNTERCLOCKWISE.getCode();
+            } else if (d < -EPSILON) {
+                //CW
+                retVal = Orientation.CLOCKWISE.getCode();
+            }
         }
-
         return retVal;
     }
 

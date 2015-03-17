@@ -25,7 +25,7 @@ public class LexicographicComparatorTest {
         Point2D o2 = new Point2D(2, 2);
         Point2D o3 = new Point2D(2, 3);
         LexicographicComparator instance = new LexicographicComparator(Direction.BOTTOM_UP);
-        int expResult = 1;
+        int expResult = -1;
         int result = instance.compare(o1, o2);
         Assert.assertEquals(expResult, result);
         Assert.assertEquals(-expResult, instance.compare(o2, o1));
@@ -44,7 +44,7 @@ public class LexicographicComparatorTest {
         Point2D o2 = new Point2D(2, 2);
         Point2D o3 = new Point2D(2, 3);
         LexicographicComparator instance = new LexicographicComparator(Direction.TOP_DOWN);
-        int expResult = -1;
+        int expResult = 1;
         int result = instance.compare(o1, o2);
         Assert.assertEquals(expResult, result);
         Assert.assertEquals(-expResult, instance.compare(o2, o1));

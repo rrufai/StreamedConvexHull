@@ -10,6 +10,7 @@ import cg.common.comparators.LexicographicComparator.Direction;
 import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.Geometry;
+import cg.geometry.primitives.Polygon;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Polygon2D;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class ConvexLayerSweepAlgoTest {
     private List<Point2D> pointset;
     private List<TreeSet<Point2D>> expectedLayers;
     private Comparator comparator = new LexicographicComparator(Direction.BOTTOM_UP);
-    private double EPSILON = 1.0E-9;
 
     public ConvexLayerSweepAlgoTest() {
     }
@@ -101,54 +101,6 @@ public class ConvexLayerSweepAlgoTest {
         return list;
     }
 
-    /**
-     * Test of computeIntersection method, of class ConvexLayerSweepAlgo.
-     */
-    @Test
-    public void testComputeIntersection() {
-        System.out.println("computeIntersection");
-        Point2D p1 = new Point2D(0.0, 1.0);
-        Point2D p2 = new Point2D(1.0, 0.0);
-        Point2D p3 = new Point2D(0.0, 0.0);
-        Point2D p4 = new Point2D(1.0, 1.0);
-        ConvexLayerSweepAlgo<Point2D> instance = new ConvexLayerSweepAlgo<>();
-        Point2D expResult = new Point2D(0.5, 0.5);
-        Point2D result = instance.computeIntersection(p1, p2, p3, p4);
-        Assert.assertEquals(expResult, result);
-
-    }
-
-    /**
-     * Test of computeIntersection method, of class ConvexLayerSweepAlgo.
-     */
-    @Test
-    public void testComputeIntersectionParallelSegments() {
-        System.out.println("computeIntersection - parallel segments");
-        Point2D p1 = new Point2D(0.0, 0.0);
-        Point2D p2 = new Point2D(5.0, 5.0);
-        Point2D p3 = new Point2D(10.0, 10.0);
-        Point2D p4 = new Point2D(2.0, 2.0);
-        ConvexLayerSweepAlgo<Point2D> instance = new ConvexLayerSweepAlgo<>();
-        Point2D result = instance.computeIntersection(p1, p2, p3, p4);
-        System.out.println("result: " + result);
-        Assert.assertNull(result);
-    }
-
-    /**
-     * Test of computeIntersection method, of class ConvexLayerSweepAlgo.
-     */
-    @Test
-    public void testComputeIntersectionOverlappingSegments() {
-        System.out.println("computeIntersection - overlapping segments");
-        Point2D p1 = new Point2D(0.0, 0.0);
-        Point2D p2 = new Point2D(4.0, 4.0);
-        Point2D p3 = new Point2D(1.0, 1.0);
-        Point2D p4 = new Point2D(5.0, 5.0);
-        ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<>();
-        Point2D result = instance.computeIntersection(p1, p2, p3, p4);
-        System.out.println("result: " + result);
-        Assert.assertNull(result);
-    }
 
     /**
      * Test of compute method, of class ConvexLayerSweepAlgo.
@@ -159,7 +111,7 @@ public class ConvexLayerSweepAlgoTest {
         ConvexLayerSweepAlgo<Point2D> instance = new ConvexLayerSweepAlgo<>(pointset);
         List<TreeSet<Point2D>> expectedResult = expectedLayers;
 
-        List<List<Point2D>> actualResult = instance.compute();
+        List<Polygon<Point2D>> actualResult = instance.compute();
         Assert.assertEquals(actualResult.size(), expectedResult.size());
         Assert.assertEquals(actualResult, expectedResult);
     }
@@ -170,7 +122,7 @@ public class ConvexLayerSweepAlgoTest {
         int pointCount = 3 + new Random().nextInt(50);
         List<Point2D> circularPointSet = Toolkit.<Point2D>generateLayer(Toolkit.Layer.ALL, 1.0, pointCount);
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> (circularPointSet);
-        List<List<Point2D>> result = instance.compute();
+        List<Polygon<Point2D>> result = instance.compute();
 
         Assert.assertEquals(1, result.size());
     }
@@ -185,7 +137,7 @@ public class ConvexLayerSweepAlgoTest {
 
         List<Point2D> circularPointSet = Toolkit.generateLayer(Toolkit.Layer.ALL, 1.0, pointCount, layerCount);
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> (circularPointSet);
-        List<List<Point2D>> result = instance.compute();
+        List<Polygon<Point2D>> result = instance.compute();
 
         Assert.assertEquals(layerCount, result.size());
     }
@@ -200,7 +152,7 @@ public class ConvexLayerSweepAlgoTest {
 
         List<Point2D> circularPointSet = Toolkit.<Point2D>generatePointSet(Toolkit.PointType.CIRCULAR_K_LAYERS, pointCount, layerCount);
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> (circularPointSet);
-        List<List<Point2D>> result = instance.compute();
+        List<Polygon<Point2D>> result = instance.compute();
 
         Assert.assertEquals(layerCount, result.size());
     }
@@ -216,10 +168,10 @@ public class ConvexLayerSweepAlgoTest {
 
         List<Point2D> circularPointSet = Toolkit.generatePointSet(Toolkit.PointType.HEXAGONAL_K_LAYERS, pointCount, layerCount);
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> (circularPointSet);
-        List<List<Point2D>> result = instance.compute();
+        List<Polygon<Point2D>> result = instance.compute();
 
         Assert.assertEquals(layerCount, result.size());
-        for(List<Point2D> layer : result){
+        for(Polygon<Point2D> layer : result){
             Assert.assertEquals(6, layer.size());
         }
     }
@@ -229,7 +181,7 @@ public class ConvexLayerSweepAlgoTest {
         System.out.println("compute");
         List<Point2D> circularPointSet = new ArrayList();
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> (circularPointSet);
-        List<List<Point2D>> result = instance.compute();
+        List<Polygon<Point2D>> result = instance.compute();
 
         Assert.assertEquals(0, result.size());
     }
@@ -240,7 +192,8 @@ public class ConvexLayerSweepAlgoTest {
         double radius = 1.0; //Math.random();
 
         ConvexLayerSweepAlgo<Point2D>  instance = new ConvexLayerSweepAlgo<> ();
-        List<TreeSet<Point2D>> upperLayers = instance.computeUpperLayers(Toolkit.<Point2D>generateLayer(Toolkit.Layer.UPPER, radius, 10));
+        List<Point2D> inputPoints = Toolkit.<Point2D>generateLayer(Toolkit.Layer.UPPER, radius, 10);
+        List<TreeSet<Point2D>> upperLayers = instance.computeUpperLayers(inputPoints);
         Assert.assertEquals(1, upperLayers.size());
 
         upperLayers = instance.computeUpperLayers(Toolkit.<Point2D>generateLayer(Toolkit.Layer.UPPER, radius, 20, 2));

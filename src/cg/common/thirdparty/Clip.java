@@ -105,8 +105,8 @@ e
     * Return the intersection of <code>p1</code> and <code>p2</code> where the
     * return type is of <code>PolyDefault</code>. 
     *
-    * @param p1 One of the polygons to performt he intersection with
-    * @param p2 One of the polygons to performt he intersection with
+    * @param p1 One of the polygons to perform the intersection with
+    * @param p2 One of the polygons to perform the intersection with
     */
    public static Poly intersection( Poly p1, Poly p2 )
    {
@@ -117,8 +117,8 @@ e
     * Return the union of <code>p1</code> and <code>p2</code> where the
     * return type is of <code>PolyDefault</code>. 
     *
-    * @param p1 One of the polygons to performt he union with
-    * @param p2 One of the polygons to performt he union with
+    * @param p1 One of the polygons to perform the union with
+    * @param p2 One of the polygons to perform the union with
     */
    public static Poly union( Poly p1, Poly p2 )
    {
@@ -129,8 +129,8 @@ e
     * Return the xor of <code>p1</code> and <code>p2</code> where the
     * return type is of <code>PolyDefault</code>. 
     *
-    * @param p1 One of the polygons to performt he xor with
-    * @param p2 One of the polygons to performt he xor with
+    * @param p1 One of the polygons to perform the xor with
+    * @param p2 One of the polygons to perform the xor with
     */
    public static Poly xor( Poly p1, Poly p2 )
    {

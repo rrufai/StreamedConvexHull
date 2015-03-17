@@ -6,6 +6,7 @@ package cg.convexlayers;
 
 
 import cg.geometry.primitives.Point;
+import cg.geometry.primitives.Polygon;
 import java.util.List;
 
 /**
@@ -20,12 +21,16 @@ public interface ConvexLayers<K extends Point> {
      *
      * @return
      */
-    List<List<K>> compute();
+    List<Polygon<K>> compute();
 
+    /**
+     * 
+     * @return the set of points whose convex layers is computed
+     */
     List<K> getPointset();
 
     /**
-     * @param pointset the point set to set
+     * @param pointset the set of points whose convex layers is sought
      */
     void setPointset(List<K> pointset);
     

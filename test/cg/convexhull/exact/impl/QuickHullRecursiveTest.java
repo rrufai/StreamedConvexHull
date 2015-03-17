@@ -117,7 +117,7 @@ public class QuickHullRecursiveTest {
         double maxDistance = Math.max(left.distanceSq(result), right.distanceSq(result));
         for (Point2D p : pSet) {
             if (new Triangle2D<>(left, right, result).contains(p)) {
-                assertTrue(p.distanceSq(result) < maxDistance);
+                assertTrue(p.distanceSq(result) <= maxDistance);
             }
         }
     }

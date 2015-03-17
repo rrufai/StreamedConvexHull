@@ -4,6 +4,7 @@
  */
 package cg.common;
 
+import cg.geometry.primitives.Point;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -189,5 +190,9 @@ public class Utilities {
             //System.out.println("Error " + app.getError().toString());
         }
 
+    }
+    
+    public static <K extends Point>  boolean isMonotonic(K p, K q) {
+        return p != null && q != null && p.getX() < q.getX() && p.getY() < q.getY();
     }
 }

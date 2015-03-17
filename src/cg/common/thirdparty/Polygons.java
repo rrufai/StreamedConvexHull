@@ -31,6 +31,10 @@ public class Polygons {
         Poly poly1 = toPoly(convPolygon1);
         Poly poly2 = toPoly(convPolygon2);
         
+        if(poly1.isEmpty() || poly2.isEmpty()) {
+            return null;
+        }
+        
         Poly intersectionPoly = Clip.intersection(poly1, poly2);
         
         return toPolygon(intersectionPoly);

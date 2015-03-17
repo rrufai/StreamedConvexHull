@@ -5,9 +5,10 @@ package cg.convexlayers.ui.actions;
  * and open the template in the editor.
  */
 import cg.common.Toolkit;
-import cg.convexlayers.ConvexLayerSweepAlgo;
+import cg.convexlayers.ConvexLayers;
+import cg.convexlayers.ConvexLayersPseudoIntervalTreePeeling;
+import cg.geometry.primitives.Polygon;
 import cg.geometry.primitives.impl.Point2D;
-import cg.geometry.primitives.impl.Polygon2D;
 import cg.geometry.primitives.impl.Triangle2D;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import java.awt.Color;
@@ -17,8 +18,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -32,7 +34,8 @@ import javax.media.opengl.glu.GLU;
  */
 public class ConvexLayerListener implements GLEventListener, MouseListener {
 
-    ConvexLayerSweepAlgo<Point2D> cLayers;
+    private static final Logger LOGGER = Logger.getAnonymousLogger();
+    private ConvexLayers<Point2D> cLayers;
     private GLU glu;
     //private GLUT glut = new GLUT();
     private GLCapabilities capabilities;
@@ -48,7 +51,8 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
     public ConvexLayerListener(List pointset, Configuration configuration) {
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 24);
         textRenderer = new TextRenderer(font, true);
-        cLayers = new ConvexLayerSweepAlgo<>(pointset);
+        //cLayers = new ConvexLayerSweepAlgo<>(pointset);
+        cLayers = new ConvexLayersPseudoIntervalTreePeeling<> (pointset);
         this.configuration = configuration;
     }
 
@@ -66,25 +70,36 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
         capabilities.setHardwareAccelerated(true);
 
         GL2 gl = (GL2) drawable.getGL();
-
+//
         aspectRatio = (double) width / (double) height;
-        drawable.getGL().glViewport(0, 0, width, height);
-        gl.glPointSize(configuration.getPOINT_SIZE());
+//        //drawable.getGL().glViewport(0, 0, width, height);
+//        gl.glPointSize(configuration.getPOINT_SIZE());
+//        gl.glColor3i(0, 1, 1);
+//        gl.glClearColor(1.0f, 1.0f, 0.9f, 1.0f);
+//
+//        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+//        gl.glMatrixMode(GL2.GL_PROJECTION);
+//        gl.glLoadIdentity();
+        gl.glOrtho(-aspectRatio, aspectRatio, -1, 1, 1, -1);
+//
+//        gl.glMatrixMode(GL2.GL_MODELVIEW);
+//        gl.glLoadIdentity();
+//
+//        gl.glEnable(GL2.GL_LINE_SMOOTH);
+//        gl.glEnable(GL2.GL_BLEND);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+//        gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_DONT_CARE);
+//
+//        glu.gluLookAt(0, 0, 7.0, 0, 0, 0, 0, 1, 0);
+//        
+
+//        GL2 gl = (GL2) drawable.getGL();
+        gl.glPointSize(5f);
         gl.glColor3i(0, 1, 1);
-        gl.glClearColor(1.0f, 1.0f, 0.9f, 1.0f);
+        gl.glClearColor(.17f, .65f, 0.92f, 1.0f);
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-aspectRatio, aspectRatio, -1, 1, 1, -1);
-
-        gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glLoadIdentity();
-
-        gl.glEnable(GL2.GL_LINE_SMOOTH);
-        gl.glEnable(GL2.GL_BLEND);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-        gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_DONT_CARE);
 
         glu.gluLookAt(0, 0, 7.0, 0, 0, 0, 0, 1, 0);
     }
@@ -119,7 +134,7 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
 
         gl.glColor3f(1.0f, 0.0f, 1.0f);
 
-        List<List<Point2D>> layers = cLayers.compute();
+        List<Polygon<Point2D>> layers = cLayers.compute();
 
         if (configuration.isShowPolygons()) {
             Color[] colors = Toolkit.getUniqueColors(layers.size());
@@ -128,37 +143,37 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
             }
         }
 
-        if (configuration.isShowEvictionTriangle()) {
-            Map<Integer, List<Triangle2D<Point2D>>> map = cLayers.getTriangleMap();
-            for (List<Triangle2D<Point2D>> triangles : map.values()) {
-                if (triangles == null) {
-                    continue;
-                }
-                for (Triangle2D<Point2D> triangle : triangles) {
-                    drawTriangle(drawable, triangle, Color.lightGray);
-                }
-            }
+//        if (configuration.isShowEvictionTriangle()) {
+//            Map<Integer, List<Triangle2D<Point2D>>> map = cLayers.getTriangleMap();
+//            for (List<Triangle2D<Point2D>> triangles : map.values()) {
+//                if (triangles == null) {
+//                    continue;
+//                }
+//                for (Triangle2D<Point2D> triangle : triangles) {
+//                    drawTriangle(drawable, triangle, Color.lightGray);
+//                }
+//            }
+//
+//        }
 
-        }
-        
-        int maxLayers = cLayers.getMaxLayers();
-
-        if (configuration.isShowUpperLayers()) {
-            drawHalfLayers(drawable, cLayers.getUpper(), maxLayers, Color.BLACK);
-        }
-
-        if (configuration.isShowLowerLayers()) {
-            drawHalfLayers(drawable, cLayers.getLower(), maxLayers, Color.BLUE);
-        }
-
-        if (configuration.isShowLeftToRightLayers()) {
-            drawHalfLayers(drawable, cLayers.getLeftToRight(), maxLayers, Color.WHITE);
-        }
-
-        if (configuration.isShowRightToLeftLayers()) {
-            drawHalfLayers(drawable, cLayers.getRightToLeft(), maxLayers, Color.GREEN);
-        }
-
+//        int maxLayers = cLayers.getMaxLayers();
+//
+//        if (configuration.isShowUpperLayers()) {
+//            drawHalfLayers(drawable, cLayers.getUpper(), maxLayers, Color.BLACK);
+//        }
+//
+//        if (configuration.isShowLowerLayers()) {
+//            drawHalfLayers(drawable, cLayers.getLower(), maxLayers, Color.BLUE);
+//        }
+//
+//        if (configuration.isShowLeftToRightLayers()) {
+//            drawHalfLayers(drawable, cLayers.getLeftToRight(), maxLayers, Color.WHITE);
+//        }
+//
+//        if (configuration.isShowRightToLeftLayers()) {
+//            drawHalfLayers(drawable, cLayers.getRightToLeft(), maxLayers, Color.GREEN);
+//        }
+//
         if (configuration.isShowPoints()) {
             for (Point2D p : cLayers.getPointset()) {
                 drawPoint(drawable, p, Color.BLACK);
@@ -203,18 +218,18 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
 
     }
 
-    private void drawPolygon(GLAutoDrawable drawable, List<Point2D> polygon, Color color) {
+    private void drawPolygon(GLAutoDrawable drawable, Polygon<Point2D> polygon, Color color) {
         GL2 gl = (GL2) drawable.getGL();
         gl.glColor3d(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0);
 
         gl.glBegin(GL2.GL_POLYGON);
-        for (Point2D p : polygon) {
+        for (Point2D p : polygon.getVertices()) {
             gl.glVertex3d(p.getX(), p.getY(), 0.0);
         }
         gl.glEnd();
 
         if (configuration.isGenerateTikzPictureCode()) {
-            TikzCommandHandler.getInstance().drawPolygon(polygon, color);
+            TikzCommandHandler.getInstance().drawPolygon(polygon.getVertices(), color);
         }
     }
 
@@ -224,9 +239,9 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
 
         for (int i = 0; i < halfLayers.size(); i++) {
             TreeSet<Point2D> halfLayer = halfLayers.get(i);
-                    gl.glBegin(GL.GL_LINE_STRIP);
+            gl.glBegin(GL.GL_LINE_STRIP);
             for (Point2D vertex : halfLayer) {
-                gl.glVertex3d(vertex.getX(), vertex.getY(), 0.0);                
+                gl.glVertex3d(vertex.getX(), vertex.getY(), 0.0);
             }
             gl.glEnd();
 
@@ -249,8 +264,8 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
     public void mousePressed(MouseEvent e) {
         Point p = e.getPoint();
         cLayers.getPointset().add(map(p));
-        System.out.println("mouseEvent.getPoint(): " + p);
-        System.out.println("map(mouseEvent.getPoint()): " + map(p));
+        LOGGER.log(Level.INFO, "mouseEvent.getPoint(): {0}", p);
+        LOGGER.log(Level.INFO, "map(mouseEvent.getPoint()): {0}", map(p));
     }
 
     @Override
@@ -269,7 +284,11 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
     }
 
     private Point2D map(Point p) {
-        return new Point2D(aspectRatio * ((2 * p.x / (float) width) - 1), 1 - (2 * p.y / (float) height));
+        // return new Point2D(aspectRatio * ((2 * p.x / (float) width) - 1), 1 - (2 * p.y / (float) height));
+        LOGGER.log(Level.INFO, "::::::::::::::in: {0}", p);
+        Point2D pout = new Point2D(2 * p.getX() / width - 1.0, 1.0 - 2 * p.getY() / height);
+        LOGGER.log(Level.INFO, "::::::::::::::out: {0}", pout);
+        return pout;
     }
 
     private void drawTriangle(GLAutoDrawable drawable, Triangle2D<Point2D> triangle, Color color) {

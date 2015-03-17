@@ -59,7 +59,8 @@ public class CGListener implements GLEventListener, MouseListener {
     @Override
     public void init(GLAutoDrawable drawable) {
         glu = new GLU();
-
+        width = drawable.getWidth();
+        height = drawable.getHeight();
         capabilities = new GLCapabilities(drawable.getGLProfile());
         capabilities.setDoubleBuffered(false);
 
@@ -70,8 +71,6 @@ public class CGListener implements GLEventListener, MouseListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        this.width = drawable.getWidth();
-        this.height = drawable.getHeight();
 
         glu.gluLookAt(0, 0, 7.0, 0, 0, 0, 0, 1, 0);
 

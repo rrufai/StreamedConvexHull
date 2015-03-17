@@ -1,0 +1,23 @@
+TODO:
+
+Layers problem
+
+1. Consider a dynamic algorithm for the layers problem
+2. Proof that the intersection of the two convex polygons (4 half-hulls) yield a convex layer
+
+
+Streaming Algorithm
+
+1. Error analysis -- complete proof that the error bound is O(1/k^2).
+2. Algorithm results for points distributed in a disk.
+
+
+todo:
+
+1. Proof that the intersection of the two polygons are old points
+2. Only points eliminated by the intersection are the pseudo points introduced.
+3. Simplify the merge and intersertion steps.
+
+proof: the union of the four half-layer i's remaining after computing the (i-1) layers constitute the i-th layer.
+
+by contradiction.

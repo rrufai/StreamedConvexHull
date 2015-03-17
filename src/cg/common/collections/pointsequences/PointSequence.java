@@ -7,7 +7,6 @@ package cg.common.collections.pointsequences;
 import cg.common.smoothedanalysis.PerturbationModel;
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
-import cg.geometry.primitives.impl.Point2D;
 import java.util.List;
 
 /**

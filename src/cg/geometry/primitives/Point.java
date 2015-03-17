@@ -9,7 +9,8 @@ package cg.geometry.primitives;
  * @author rrufai
  */
 public interface Point  extends Comparable {
-
+    String getName();
+    
     double getX();
 
     double getY();

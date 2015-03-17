@@ -8,14 +8,16 @@ import cg.common.comparators.GeometricComparator;
 import cg.common.comparators.LexicographicComparator;
 import cg.common.comparators.LexicographicComparator.Direction;
 import cg.common.comparators.RadialComparator;
+import cg.convexlayers.events.Event;
+import cg.convexlayers.events.EvictionEvent;
+import cg.convexlayers.events.NewPointEvent;
 import cg.geometry.primitives.Point;
-import cg.geometry.primitives.impl.Point2D;
-import cg.geometry.primitives.impl.Triangle2D;
+import cg.geometry.primitives.Polygon;
+import cg.geometry.primitives.impl.Polygon2D;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -30,15 +32,15 @@ import java.util.logging.Logger;
 public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
 
     private List<K> pointset;
-    private List<List<K>> convexLayers;
+    private List<Polygon<K>> convexLayers;
     private List<TreeSet<K>> upper;
     private List<TreeSet<K>> lower;
     private List<TreeSet<K>> leftToRight;
     private List<TreeSet<K>> rightToLeft;
     private static final Logger LOGGER = Logger.getAnonymousLogger();
     private double EPSILON = GeometricComparator.EPSILON;
-    private Map<Integer, List<Triangle2D<K>>> triangleMap;
     private int maxLayers;
+    private HashSet usedMap;
 
     /**
      *
@@ -54,19 +56,10 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
     public ConvexLayerSweepAlgo(List<K> pointset) {
         convexLayers = new ArrayList<>();
         this.pointset = pointset;
-        triangleMap = new HashMap<>();
     }
 
-    boolean isGreaterThanOrEqual(double coord1, double coord2) {
+    private boolean isGreaterThanOrEqual(double coord1, double coord2) {
         return Math.abs(coord1 - coord2) < EPSILON || coord1 - coord2 > EPSILON;
-    }
-
-    /**
-     * @param pointset the point set to set
-     */
-    @Override
-    public void setPointset(List<K> pointset) {
-        this.pointset = pointset;
     }
 
     /**
@@ -77,9 +70,9 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
      * @return
      */
     @Override
-    public List<List<K>> compute() {
+    public List<Polygon<K>> compute() {
         if (pointset == null || pointset.isEmpty()) {
-            return Collections.<List<K>>emptyList();
+            return Collections.<Polygon<K>>emptyList();
         }
 
         if (pointset.size() > 3) {
@@ -93,114 +86,33 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
             rightToLeft = computeRightToLeftLayers(pointset);
             LOGGER.log(Level.INFO, "RightToLeft layers: {0}", rightToLeft.toString());
 
-
+            // convexLayers = mergeLayers_experimental(upper, lower, leftToRight, rightToLeft);
             convexLayers = mergeLayers(upper, lower, leftToRight, rightToLeft);
         } else {
             Collections.sort(pointset, new RadialComparator<>(pointset.get(0)));
-            convexLayers.add(pointset);
+            convexLayers.add(new Polygon2D<>(pointset));
         }
 
         return convexLayers;
     }
 
-    protected List<K> computeMergedLayer(int i, List<TreeSet<K>> upperLayers, List<TreeSet<K>> lowerLayers) {
-        TreeSet<K> upperLayer = upperLayers.get(i);
-        TreeSet<K> lowerLayer = lowerLayers.get(i);
-
-        List<K> resultList = new ArrayList<>();
-        try {
-            K leftIntersection = computeIntersection(upperLayer, lowerLayer);
-            K rightIntersection = computeIntersection(lowerLayer, upperLayer);
-
-            try {
-                upperLayer = (TreeSet<K>) upperLayer.subSet(leftIntersection, rightIntersection);
-                resultList.addAll(upperLayer);
-                if (leftIntersection.equals(rightIntersection)
-                        && !resultList.contains(rightIntersection)) {
-                    resultList.add(rightIntersection);
-                }
-            } catch (Exception ex) {
-                System.err.println("Message: " + ex.getMessage()
-                        + "\nCause: " + ex.getCause()
-                        + "\n rightIntersection: " + rightIntersection
-                        + "\n leftIntersection: " + leftIntersection);
-            }
-
-
-            try {
-                lowerLayer = (TreeSet<K>) lowerLayer.subSet(rightIntersection, leftIntersection);
-                resultList.addAll(lowerLayer);
-                if (rightIntersection.equals(leftIntersection)
-                        && !resultList.contains(rightIntersection)) {
-                    resultList.add(rightIntersection);
-                }
-            } catch (Exception ex) {
-                System.err.println("Message: " + ex.getMessage()
-                        + "\nCause: " + ex.getCause()
-                        + "\n bottomRightIntersection: " + rightIntersection
-                        + "\n bottomLeftIntersection: " + leftIntersection);
-            }
-
-//            if (upperLayer != null && !upperLayer.isEmpty() && lowerLayer != null && !lowerLayer.isEmpty()
-//                    && !upperLayer.first().equals(lowerLayer.last())) {
-//                //query the content of the triangle T if it's empty
-//                //If it's not empty then traverse 
-//                Triangle2D<K> triangle = new Triangle2D(leftIntersection, upperLayer.first(), lowerLayer.last());
-//                List<Triangle2D<K>> list = triangleMap.get(i);
-//                if (list == null) {
-//                    list = new ArrayList<>();
-//                }
-//                list.add(triangle);
-//                triangleMap.put(i, list);
-//
-//                if (i > 0 && !triangleMap.get(i - 1).isEmpty()) {
-//                    List<Triangle2D<K>> triangleList = triangleMap.get(i - 1);
-//                    for (Triangle2D<K> t : triangleList) {
-//                        if (t.contains(leftIntersection)) {
-//                        }
-//                    }
-//                }
-//            }
-        } catch (Exception ex) {
-            System.err.println("Message: " + ex.getMessage()
-                    + "\nCause: " + ex.getCause());
-        }
-
-
-        return resultList;
-    }
-
-    public List<List<K>> mergeLayers(List<TreeSet<K>> upperLayers, List<TreeSet<K>> lowerLayers, List<TreeSet<K>> leftToRightLayers, List<TreeSet<K>> rightToLeftLayers) {
-        List<List<K>> mergedLayers = new ArrayList();
+    public List<Polygon<K>> mergeLayers(List<TreeSet<K>> upperLayers, List<TreeSet<K>> lowerLayers, List<TreeSet<K>> leftToRightLayers, List<TreeSet<K>> rightToLeftLayers) {
+        List<Polygon<K>> mergedLayers = new ArrayList<>();
+        usedMap = new HashSet<>();
         int nonTrivialLayer = findInnermostNonTrivialLayer(upperLayers, lowerLayers, leftToRightLayers, rightToLeftLayers);
 
         for (int i = 0; i < nonTrivialLayer; i++) {
-            List<K> resultList = computeMergedLayer(i, upperLayers, lowerLayers);
+            Polygon<K> mergedPolygon = computeMergedLayer(upperLayers.get(i), lowerLayers.get(i), leftToRightLayers.get(i), rightToLeftLayers.get(i));
 
-            //eliminateMultiLayerVertices(mergedLayers, upperLayers.get(i), lowerLayers.get(i));
-            //eliminateMultiLayerVertices(mergedLayers, leftToRightLayers.get(i), rightToLeftLayers.get(i));
-            if (resultList.size() > 0) {
-                mergedLayers.add(resultList);
+
+            if (mergedPolygon != null && !mergedPolygon.isEmpty()) {
+                mergedLayers.add(mergedPolygon);
             }
 
-            resultList = computeMergedLayer(i, leftToRightLayers, rightToLeftLayers);
-            if (resultList.size() > 0) {
-                mergedLayers.add(resultList);
-            }
-        }
-
-        //cleanup 
-        int i = 0;
-        while (i < nonTrivialLayer && i < mergedLayers.size()) {
-            if (mergedLayers.get(i).isEmpty()) {
-                mergedLayers.remove(i);
-                nonTrivialLayer--;
-            } else {
-                i++;
-            }
         }
 
         maxLayers = mergedLayers.size();
+
         return mergedLayers;
     }
 
@@ -241,46 +153,6 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
         }
 
         return max;
-    }
-
-    /**
-     * Compute the intersection between the line segment (p1, p2) and the
-     * segment (p3, p4).
-     *
-     * @param p1 first endpoint of segment (p1, p2)
-     * @param p2 second endpoint of segment (p1, p2)
-     * @param p3 first endpoint of segment (p3, p4)
-     * @param p4 second endpoint of segment (p3, p4)
-     * @return
-     */
-    K computeIntersection(K p1, K p2, K p3, K p4) {
-        double xD1, yD1, xD2, yD2, xD3, yD3;
-        double ua, div;
-
-        if ((p1 == null) || (p2 == null) || (p3 == null) || (p4 == null)) {
-            return null;
-        }
-// calculate differences
-
-        xD1 = p2.getX() - p1.getX();
-        xD2 = p4.getX() - p3.getX();
-        yD1 = p2.getY() - p1.getY();
-        yD2 = p4.getY() - p3.getY();
-        xD3 = p1.getX() - p3.getX();
-        yD3 = p1.getY() - p3.getY();
-
-
-        div = yD2 * xD1 - xD2 * yD1;
-
-        if (Math.abs(div) < EPSILON) { //parallel lines
-            return null;
-        }
-
-        ua = (xD2 * yD3 - yD2 * xD3) / div;
-
-        K pt = (K) new Point2D(p1.getX() + ua * xD1, p1.getY() + ua * yD1);
-
-        return pt;
     }
 
     /**
@@ -353,16 +225,15 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
 
         while (!eventQueue.isEmpty()) {
             Event<K> event = eventQueue.poll();
-            int layer = 0;
+            int layer = -1;
             LOGGER.log(Level.INFO, event.toString());
             if (event instanceof EvictionEvent) {
-                EvictionEvent<K> evictionEvent = (EvictionEvent<K>) event;
-                partialHull.get(evictionEvent.getLayer()).remove(event.getBasePoint());
-                layer = evictionEvent.getLayer() + 1;
+                layer = ((EvictionEvent<K>) event).getLayer();
+                partialHull.get(layer).remove(event.getBasePoint());
             }
 
             // NB: NewPointEvent insert into layer 0
-            insert(event.getBasePoint(), eventQueue, partialHull, layer, direction);
+            insert(event.getBasePoint(), eventQueue, partialHull, layer + 1, direction);
         }
 
         return partialHull;
@@ -450,43 +321,12 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
         return pointset;
     }
 
-    private K computeIntersection(TreeSet<K> upper, TreeSet<K> lower) {
-        K upper_left = upper.first();
-        K upper_left_next = upper.higher(upper_left);
-        K lower_left = lower.last();
-        K lower_left_next = lower.lower(lower_left);
-
-        K leftIntersection = computeIntersection(
-                upper_left, upper_left_next,
-                lower_left, lower_left_next);
-        System.out.println("Intersection: " + leftIntersection);
-
-        return leftIntersection;
-    }
-
     /**
-     * @return the triangleMap
+     * @param pointset the point set to set
      */
-    public Map<Integer, List<Triangle2D<K>>> getTriangleMap() {
-        return triangleMap;
-    }
-
-    private void eliminateMultiLayerVertices(List<List<K>> mergedLayers, TreeSet<K> upperLayer, TreeSet<K> lowerLayer) {
-        // Eliminate multi-layer vertices -- perhaps could be done faster
-        if (mergedLayers.size() > 0) {
-            int layers = mergedLayers.size();
-            for (int j = 0; j < layers; j++) {
-                for (K v : mergedLayers.get(j)) {
-                    if (upperLayer.contains(v)) {
-                        upperLayer.remove(v);
-                    }
-
-                    if (lowerLayer.contains(v)) {
-                        lowerLayer.remove(v);
-                    }
-                }
-            }
-        }
+    @Override
+    public void setPointset(List<K> pointset) {
+        this.pointset = pointset;
     }
 
     public List<TreeSet<K>> getLeftToRight() {
@@ -499,5 +339,47 @@ public class ConvexLayerSweepAlgo<K extends Point> implements ConvexLayers<K> {
 
     public int getMaxLayers() {
         return maxLayers;
+    }
+
+    /**
+     * New version that maintains already used up hull vertices from enclosing
+     * layers in a hashMap.
+     *
+     * @param i
+     * @param upperLayers
+     * @param lowerLayers
+     * @param leftToRightLayers
+     * @param rightToLeftLayers
+     * @return
+     */
+    private Polygon<K> computeMergedLayer(TreeSet<K> upperLayer, TreeSet<K> lowerLayer, TreeSet<K> leftToRightLayer, TreeSet<K> rightToLeftLayer) {
+        List<K> vertexList = new ArrayList<>();
+
+        for (K p : upperLayer) {
+            if (!usedMap.contains(p)) {
+                vertexList.add(p);
+                usedMap.add(p);
+            }
+        }
+        for (K p : leftToRightLayer) {
+            if (!usedMap.contains(p)) {
+                vertexList.add(p);
+                usedMap.add(p);
+            }
+        }
+        for (K p : lowerLayer) {
+            if (!usedMap.contains(p)) {
+                vertexList.add(p);
+                usedMap.add(p);
+            }
+        }
+
+        for (K p : rightToLeftLayer) {
+            if (!usedMap.contains(p)) {
+                vertexList.add(p);
+                usedMap.add(p);
+            }
+        }
+        return new Polygon2D<>(vertexList);
     }
 }

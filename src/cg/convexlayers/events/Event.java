@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cg.convexlayers;
+package cg.convexlayers.events;
 
 import cg.geometry.primitives.Point;
 
@@ -13,7 +13,7 @@ import cg.geometry.primitives.Point;
  *
  * @author rrufai
  */
-interface Event<K extends Point> extends Point{
+public interface Event<K extends Point> extends Point{
 
     K getBasePoint();
 

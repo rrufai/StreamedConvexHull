@@ -6,6 +6,8 @@ package cg.geometry.primitives.impl;
 
 import cg.common.comparators.LexicographicComparator;
 import cg.geometry.primitives.Point;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -13,6 +15,8 @@ import cg.geometry.primitives.Point;
  */
 public class Point2D implements Point {
 
+    private static Map<Point2D, String> map = new HashMap<>();
+    private static int nextLetter = 0;
     private java.awt.geom.Point2D.Double point;
     private static double EPSILON = 1e-9;
 
@@ -44,7 +48,7 @@ public class Point2D implements Point {
     }
 
     public double distance(double px, double py) {
-        return  point.distance(px, py);
+        return point.distance(px, py);
     }
 
     @Override
@@ -93,12 +97,30 @@ public class Point2D implements Point {
 
     @Override
     public String toString() {
-        String textForm = "{" + point.x + ", " + point.y + "}";
-        return textForm;
+        return (getName() + "{" + point.x + ", " + point.y + "}");
     }
 
     @Override
     public int compareTo(Object obj) {
         return new LexicographicComparator<>().compare(this, (Point) obj);
+    }
+
+    @Override
+    public String getName() {
+        if (map.get(this) == null) {
+            map.put(this, getNextLetter());
+
+        }
+        return map.get(this);
+    }
+
+ 
+    private static String  getNextLetter() {
+        String name = "";
+        for (int i = -1; i < nextLetter / 26; i++) {
+            name += (char) ('A' + nextLetter % 26);
+        }
+        nextLetter++;
+        return name;
     }
 }

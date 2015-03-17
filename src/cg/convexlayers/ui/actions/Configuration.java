@@ -11,7 +11,7 @@ package cg.convexlayers.ui.actions;
 public class Configuration {
 
     private float SCALE_FACTOR = 0.001f;
-    private boolean showCoordinates = false;
+    private boolean showCoordinates = true;
     private boolean showUpperLayers = true;
     private boolean showLowerLayers = true;
     private boolean showLeftToRightLayers = true;
@@ -19,8 +19,8 @@ public class Configuration {
     private boolean showPolygons = true;
     private boolean showPoints = true;
     private float POINT_SIZE = 2.5f;
-    private boolean generateTikzPictureCode = false;
-    private boolean showEvictionTriangle = false;
+    private boolean generateTikzPictureCode = true;
+//    private boolean showEvictionTriangle = false;
     
     public Configuration(){}
 
@@ -163,7 +163,4 @@ public class Configuration {
         this.generateTikzPictureCode = generateTikzPictureCode;
     }
 
-    boolean isShowEvictionTriangle() {
-        return this.showEvictionTriangle;
-    }
 }

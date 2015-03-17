@@ -61,7 +61,7 @@ public class LexicographicComparator<K extends Point> implements GeometricCompar
      * @return
      */
     protected int compareBottomUp(K p1, K p2) {
-        double d = p2.getY() - p1.getY();
+        double d = p1.getY() - p2.getY();
         int retVal = LexicographicComparator.Orientation.COLLINEAR.getCode();
         if (d > EPSILON) {
             //greater
@@ -70,7 +70,7 @@ public class LexicographicComparator<K extends Point> implements GeometricCompar
             retVal = LexicographicComparator.Orientation.CLOCKWISE.getCode();
         } else {
             //same Y values
-            d = p2.getX() - p1.getX();
+            d = p1.getX() - p2.getX();
             if (d > EPSILON) {
                 //greater
                 retVal = LexicographicComparator.Orientation.COUNTERCLOCKWISE.getCode();

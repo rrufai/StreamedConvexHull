@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cg.convexlayers;
+package cg.convexlayers.events;
 
 import cg.geometry.primitives.Point;
 import java.awt.geom.Point2D;
@@ -56,5 +56,10 @@ class AbstractEvent<K extends Point> implements Event<K> {
     @Override
     public int compareTo(Object o) {
         return p.compareTo(o);
+    }
+
+    @Override
+    public String getName() {
+        return p.getName();
     }
 }

@@ -95,8 +95,8 @@ public class Toolkit {
         for (int i = 0; i < 6; i++) {
             double angle = i * Math.PI / 3;
             P point = (P) new Point2D(
-                    radius * Math.cos(angle),
-                    radius * Math.sin(angle));
+                    Math.floor(radius * Math.cos(angle) * 1000) / 1000,
+                    Math.floor(radius * Math.sin(angle) * 1000) / 1000);
             inputPointset.add(point);
         }
         return inputPointset;
@@ -124,7 +124,7 @@ public class Toolkit {
 
     public static enum PointType {
 
-        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, RANDOM, FIXED, FIXED2, FIXED_PAPER, CIRCULAR_2_LAYERS;
+        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, FIXED_HEXAGONAL_LAYERS, RANDOM, FIXED_RANDOM, FIXED, FIXED2, FIXED_PAPER, CIRCULAR_2_LAYERS;
     }
 
     public static <P extends Point> List<P> generatePointSet(PointType pointType, int numberOfPointsPerLayer, int numberOfLayers) {
@@ -133,8 +133,10 @@ public class Toolkit {
         switch (pointType) {
             case RANDOM:
                 for (int i = 0; i < numberOfPointsPerLayer; i++) {
-                    inputPointset.add((P) new Point2D(2f * (random.nextFloat() - .5f), 2f * (random.nextFloat() - .5f)));
-                    inputPointset.add((P) new Point2D(random.nextDouble(), random.nextDouble()));
+                    double x = Math.floor(2f * (random.nextFloat() - .5f) * 1000f) / 1000f;
+                    double y = Math.floor(2f * (random.nextFloat() - .5f) * 1000f) / 1000f;
+                    inputPointset.add((P) new Point2D(x, y));
+                    inputPointset.add((P) new Point2D(Math.floor(random.nextDouble() * 1000) / 1000, Math.floor(random.nextDouble() * 1000) / 1000));
                 }
                 break;
             case FIXED:
@@ -185,8 +187,11 @@ public class Toolkit {
                 break;
             case FIXED_PAPER:
                 double[][] data1 = {
-                    {0.490, 1.000},
-                    {0.900, 0.900},
+                    {0.267, 0.150},
+                    {0.000, 0.424},
+                    {-0.211, 0.052},
+                    //{0.490, 1.000},
+                    {0.900, 0.910},
                     {1.000, 0.650},
                     {0.500, 0.250},
                     {0.100, 0.700},
@@ -194,12 +199,12 @@ public class Toolkit {
                     {0.650, 0.600},
                     {0.600, 0.800},
                     {0.550, 0.900},
-                    {0.800, 0.520},
+                    {0.810, 0.520},
                     {0.800, 0.400},
-                    {0.400, 0.400},
-                    {0.200, 0.600},
-                    {0.910, 0.700},
-                    {0.010, 0.600}};
+                    {0.410, 0.100},
+                    //{0.200, 0.600},
+                    {0.910, 0.710},
+                    {0.010, 0.610}};
                 for (int i = 0; i < data1.length; i++) {
                     inputPointset.add((P) new Point2D(data1[i][0], data1[i][1]));
                 }
@@ -207,20 +212,20 @@ public class Toolkit {
 
             case FIXED2:
                 double[][] data2 = {
-                    {.49, 1.0},
-                    {0.9, 0.9},
-                    {1.0, 0.65},
-                    {.5, .25},
-                    {.1, .7},
-                    {.4, .59},
-                    {.65, .6},
-                    {.6, .8},
-                    {.55, .9},
-                    {.8, .52},
-                    {.8, .4},
-                    {.4, .4},
-                    {.2, .6},
-                    {.51, .63}
+                    {0.490, 1.000},
+                    {0.900, 0.900},
+                    {1.000, 0.650},
+                    {0.500, 0.250},
+                    {0.100, 0.700},
+                    {0.410, 0.590},
+                    {0.650, 0.610},
+                    {0.600, 0.800},
+                    {0.550, 0.900},
+                    {0.800, 0.520},
+                    {0.810, 0.410},
+                    {0.400, 0.400},
+                    {0.200, 0.600},
+                    {0.510, 0.630}
                 };
                 for (int i = 0; i < data2.length; i++) {
                     inputPointset.add((P) new Point2D(data2[i][0], data2[i][1]));
@@ -233,6 +238,14 @@ public class Toolkit {
                             Math.cos(angle),
                             Math.sin(angle));
                     inputPointset.add(point);
+                }
+                break;
+            case FIXED_RANDOM:
+                double[][] data_random = {{-0.705, -0.947}, {-0.514, 0.428}, {0.064, 0.939}, {-0.519, 0.062}, {-0.106, 0.712}, {0.838, -0.275}, {0.904, 0.48}, {0.042, 0.648}, {0.083, -0.373},
+                    {0.144, 0.311}, {0.831, 0.517}, {0.202, -0.373}, {0.211, 0.128}, {0.287, 0.742}, {0.348, 0.899}, {0.411, 0.92}, {0.229, 0.071}, {0.342, -0.209}, {0.642, 0.138}, {0.761, 0.047}
+                };
+                for (int i = 0; i < data_random.length; i++) {
+                    inputPointset.add((P) new Point2D(data_random[i][0], data_random[i][1]));
                 }
                 break;
             case CIRCULAR_2_LAYERS:
@@ -310,7 +323,31 @@ public class Toolkit {
                     inputPointset.addAll(generateHexagonalLayer);
                 }
                 break;
-
+            case FIXED_HEXAGONAL_LAYERS:
+                double[][] data_hexagon = {
+                    {-0.985, 0.07},
+                    {-0.845, 0.0},
+                    {-0.659, 0.06},
+                    {-0.495, -0.853},
+                    {-0.493, 0.852},
+                    {-0.424, -0.734},
+                    {-0.423, 0.731},
+                    {-0.33, -0.572},
+                    {-0.34, 0.57},
+                    {0.328, -0.571},
+                    {0.330, 0.579},
+                    {0.422, -0.732},
+                    {0.425, 0.735},
+                    {0.492, -0.854},
+                    {0.493, 0.855},
+                    {0.658, 0.02},
+                    {0.844, 0.03},
+                    {0.984, 0.04}
+                };
+                for (int i = 0; i < data_hexagon.length; i++) {
+                    inputPointset.add((P) new Point2D(data_hexagon[i][0], data_hexagon[i][1]));
+                }
+                break;
         }
 
         return inputPointset;
@@ -325,14 +362,30 @@ public class Toolkit {
         return generateLayer(layer, radius, size, 1);
     }
 
+    /**
+     * Generate points on a parabola facing the direction given in
+     * <code>layer</code>.
+     *
+     * @param <P>
+     * @param layer
+     * @param radius
+     * @param size
+     * @param numberOfLayers
+     * @return
+     */
     public static <P extends Point> List<P> generateLayer(Layer layer, double radius, int size, int numberOfLayers) {
         List<P> layerPoints = new ArrayList<>(size * numberOfLayers);
+        // downward facing parabola  y = h - x ^ 2, where h = maximum y coordinate, h > 0
+        // upward facing parabola  y = h + x ^ 2, where h = minimum y coordinate, h > 0
+        // left facing parabola   y^2 = x - h, where h = min x coordinate, h > 0
+        // right facing parabola    y^2 = -x + h, where h = max x coordinate, h > 0
         for (int j = 0; j < numberOfLayers; j++) {
             radius = (j + 1) * radius;
             for (int i = 0; i < size; i++) {
                 double angle = generateRandomAngle(layer);
+                double x = radius * Math.cos(angle);
                 Logger.getAnonymousLogger().log(Level.INFO, "Angle: {0} radians", angle);
-                P p = (P) new Point2D(radius * Math.cos(angle), radius * Math.sin(angle));
+                P p = (P) new Point2D(x, radius - x * x);
                 layerPoints.add(p);
             }
         }

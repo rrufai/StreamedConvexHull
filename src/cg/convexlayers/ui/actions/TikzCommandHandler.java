@@ -8,9 +8,7 @@ import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Triangle2D;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -20,8 +18,6 @@ import java.util.TreeSet;
 public class TikzCommandHandler {
 
     private static TikzCommandHandler INSTANCE = new TikzCommandHandler();
-    private Map<Point2D, String> map = new HashMap<>();
-    private int nextLetter = 0;
     private List<String> tikzStartCommand = new ArrayList<>();
     private List<String> tikzPointDefinitionCommands = new ArrayList<>();
     private List<String> tikzPointDrawingCommands = new ArrayList<>();
@@ -83,25 +79,19 @@ public class TikzCommandHandler {
         if (polygon.size() > 0) {
             pointList += getName(polygon.get(0));
         }
-        tikzPolygonsDrawCommands.add(String.format("\\tkzDrawPolySeg[color=%s](%s)", color.toString(), pointList));
+        tikzPolygonsDrawCommands.add(String.format("\\tkzDrawPolySeg[color=%s](%s)", toTikzColor(color), pointList));
     }
 
+    private String toTikzColor(Color color){
+        //{rgb:red,179;green,18;blue,18}
+        return "{rgb:red," + color.getRed() + ";green," + color.getGreen() + ";blue," +color.getBlue() + "}";
+                
+    }
+    
     private String getName(Point2D p) {
-        if (map.get(p) == null) {
-            map.put(p, getNextLetter());
-
-        }
-        return map.get(p);
+        return p.getName();
     }
 
-    private String getNextLetter() {
-        String name = "";
-        for (int i = -1; i < nextLetter / 26; i++) {
-            name += (char) ('A' + nextLetter % 26);
-        }
-        nextLetter++;
-        return name;
-    }
 
     void drawOpenPolygon(TreeSet<Point2D> polygon, Color color) {
         String pointList = "";
@@ -118,8 +108,6 @@ public class TikzCommandHandler {
         tikzPointDrawingCommands = new ArrayList<>();
         tikzPolygonsDrawCommands = new ArrayList<>();
         tikzEndCommand = new ArrayList<>();
-        map = new HashMap<>();
-        nextLetter = 0;
     }
 
     void drawTriangle(Triangle2D<Point2D> triangle, Color color) {
