@@ -9,9 +9,9 @@ import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
 import java.util.List;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

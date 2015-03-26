@@ -65,16 +65,23 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
 
     @Override
     public List<K> extractRoot() {
-        return intervalTree.extractHull();
+        return getIntervalTree().extractHull();
     }
 
     @Override
     public boolean isEmpty() {
-        return intervalTree.isEmpty();
+        return getIntervalTree().isEmpty();
     }
 
     @Override
     public String toString() {
-        return intervalTree.toString();
+        return getIntervalTree().toString();
+    }
+
+    /**
+     * @return the intervalTree
+     */
+    public IntervalTree<K> getIntervalTree() {
+        return intervalTree;
     }
 }

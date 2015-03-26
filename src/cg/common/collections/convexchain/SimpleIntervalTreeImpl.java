@@ -1,11 +1,13 @@
 package cg.common.collections.convexchain;
 
+import cg.common.Utilities;
 import cg.common.comparators.RadialComparator;
 import cg.convexlayers.events.IntervalTree;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.impl.Point2D;
 import com.rits.cloning.Cloner;
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +28,14 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
     private K rightToLeftCursor;
     private String START = "--------------------START--------------------";
     private String END = "--------------------END--------------------";
+    private final IntervalTree<K> parent;
 
     public SimpleIntervalTreeImpl(IntervalTree<K> parent,
             ConvexLayersIntervalTree<K> delegate) {
         hullChain = new ConvexChainImpl<>();
         this.delegate = delegate;
         this.level = parent != null ? parent.getLevel() + 1 : 0;
+        this.parent = parent;
 
     }
 
@@ -50,54 +54,107 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
     public void delete(ConvexChain<K> chain) {
         System.out.println("entering delete");
         System.out.println("chain: \n" + chain);
-        System.out.println("this before: \n" + this);
         if (!isNull(chain) && !isNull(hullChain)) {
-            int j = hullChain.delete(chain);
-
+            System.out.println("this before: \n" + this);
             // Note: the segment al-ar is the segment that used to be below the 
             // chain that has just been deleted from hullChain.
+            int j = hullChain.indexOf(chain.getFirst());
             K al = hullChain.predecessor(j);
-            K ar = hullChain.get(j);
-            Entry<K, K> bc = bridgePoints(left, right);
-            System.out.printf("al = %s, ar = %s \n", al, ar);
+            K ar = hullChain.get(j + chain.size());
+            j = hullChain.delete(chain);
+            Entry<ConvexChain<K>, ConvexChain<K>> roof = hullChain.split(j);
+            if (!isNull(left) || !isNull(right)) {
+                Entry<K, K> bridge = bridgePoints(left, right);
+                Entry<K, K> bcw = new SimpleEntry<>(left.successor(bridge.getKey()), right.predecessor(bridge.getValue()));
+                System.out.printf("al = %s, ar = %s \n", al, ar);
 
-            // Case IV: Both roof leftovers are below the bridge -- includes the case when the roof is empty.
-            if (isNull(hullChain) || (isBelowBridge(al) && isBelowBridge(ar))) {
-                handleCaseIV();
-            } else // Case I: Nothing to do -- Both Roof leftovers are above the bridge
-            if (!isNull(hullChain) && isAboveBridge(al) && !isBelowBridge(ar)) {
-                handleCaseI();
-            } else //Case II: Only Left Roof leftover is above bridge
-            if (!isNull(hullChain) && isAboveBridge(al) && isBelowBridge(ar)) {
-                handleCaseII();
-            } else //Case III: Only Right Roof leftover is above bridge
-            if (!isNull(hullChain) && isBelowBridge(al) && isAboveBridge(ar)) {
-                handleCaseIII();
+                // Case I: Nothing to do -- Both Roof leftovers are above the bridge
+                // Neither subtree contributes to new roof
+                if (!counterClockwise(al, ar, bridge.getKey()) && !counterClockwise(al, ar, bridge.getValue())) {
+                    //if (!counterClockwise(al, ar, bridge.getKey()) && !counterClockwise(al, ar, bridge.getValue())) {
+                    //do nothing
+                    System.out.println("Case I: Nothing to do -- Both Roof leftovers are above the bridge");
+                }
+
+                //Case II: Only Left Roof leftover (.. al) is above bridge
+                // Only right subtree contributes to new roof
+                if ((isNull(left) || counterClockwise(bridge.getKey(), bridge.getValue(), al)) && (Utilities.isMonotonic(bridge.getValue(), ar) || !counterClockwise(bridge.getKey(), bridge.getValue(), ar))) {
+                    //if ((isNull(left) || !counterClockwise(al, ar, bridge.getKey())) && counterClockwise(al, ar, bridge.getValue())) {
+                    System.out.println("Case II: Only Left Roof leftover (.. al) is above bridge");
+                    Entry<K, K> ik = tangents(al, ar, right, right);
+                    int fromIndex = right.hullChain.indexOf(ik.getKey());
+                    int toIndex = right.hullChain.indexOf(ik.getValue()) + 1;
+                    ConvexChain<K> chainToDelete = new ConvexChainImpl(right.hullChain.subList(fromIndex, toIndex));
+
+                    ConvexChain<K> newHullChain = new ConvexChainImpl<>(roof.getKey());
+                    newHullChain.addAll(chainToDelete);
+                    newHullChain.addAll(roof.getValue());
+                    hullChain = new ConvexChainImpl<>(newHullChain);
+                    Entry<K, K> newCursors = getNewCursors(bcw);
+                    leftToRightCursor = newCursors.getKey();
+                    rightToLeftCursor = newCursors.getValue();
+
+                    right.delete(chainToDelete);
+                }
+
+                //Case III: Only Right Roof leftover (ar ...) is above bridge
+                //Only left subtree contributes to new roof
+                if (!isNull(left) && !counterClockwise(bridge.getKey(), bridge.getValue(), al) && (isNull(right) || counterClockwise(bridge.getKey(), bridge.getValue(), ar))) {
+                    //if (!isNull(left) && counterClockwise(al, ar, bridge.getKey()) && (isNull(right) || !counterClockwise(al, ar, bridge.getValue()))) {    
+                    System.out.println("Case III: Only Right Roof leftover (ar ...) is above bridge");
+                    Entry<K, K> ik = tangents(al, ar, left, left);
+                    int fromIndex = left.hullChain.indexOf(ik.getKey());
+                    int toIndex = left.hullChain.indexOf(ik.getValue()) + 1;
+                    ConvexChain<K> chainToDelete = new ConvexChainImpl(left.hullChain.subList(fromIndex, toIndex));
+
+                    ConvexChain<K> newHullChain = new ConvexChainImpl<>(roof.getKey());
+                    newHullChain.addAll(chainToDelete);
+                    newHullChain.addAll(roof.getValue());
+                    hullChain = new ConvexChainImpl<>(newHullChain);
+                    Entry<K, K> newBC = getNewCursors(bcw);
+                    leftToRightCursor = newBC.getKey();
+                    rightToLeftCursor = newBC.getValue();
+
+                    left.delete(chainToDelete);
+                }
+
+                // Case IV: Both roof leftovers are below the bridge
+                // both subtrees contribute to building the new roof
+                //if (!isNull(left) && !isNull(right) && counterClockwise(al, ar, bridge.getKey()) && counterClockwise(al, ar, bridge.getValue())) {
+                if (!isNull(left) && !isNull(right) && !counterClockwise(bridge.getKey(), bridge.getValue(), al) && !counterClockwise(bridge.getKey(), bridge.getValue(), ar)) {
+                    System.out.println("Case IV: Both roof leftovers are below the bridge.");
+                    Entry<K, K> ik = tangents(al, ar, left, right);
+                    int fromIndex = left.hullChain.indexOf(ik.getKey());
+                    int toIndex = left.hullChain.indexOf(bridge.getKey()) + 1;
+                    ConvexChain<K> leftChainToDelete = new ConvexChainImpl<>(left.hullChain.subList(fromIndex, toIndex));
+
+                    fromIndex = right.hullChain.indexOf(bridge.getValue());
+                    toIndex = right.hullChain.indexOf(ik.getValue()) + 1;
+                    ConvexChain<K> rightChainToDelete = new ConvexChainImpl(right.hullChain.subList(fromIndex, toIndex));
+
+                    ConvexChain<K> newHullChain = new ConvexChainImpl<>(roof.getKey());
+                    newHullChain.addAll(leftChainToDelete);
+                    newHullChain.addAll(rightChainToDelete);
+                    newHullChain.addAll(roof.getValue());
+                    hullChain = new ConvexChainImpl<>(newHullChain);
+                    Entry<K, K> newBC = getNewCursors(bcw);
+                    leftToRightCursor = newBC.getKey();
+                    rightToLeftCursor = newBC.getValue();
+                    left.delete(leftChainToDelete);
+                    right.delete(rightChainToDelete);
+                }
+
+            } else {
+                if (!hullChain.isEmpty()) {
+                    leftToRightCursor = hullChain.getFirst();
+                    rightToLeftCursor = hullChain.getLast();
+                    hullChain.setLeftSentinel(hullChain.getLeftSentinel());
+                    hullChain.setRightSentinel(hullChain.getRightSentinel());
+                }
             }
+            System.out.println("this after: \n" + this);
         }
-
-        System.out.println("this after: \n" + this);
         System.out.println("exiting delete");
-    }
-
-    //"Case I -- nothing to do!  Both Roof leftovers are above the bridge.
-    private void handleCaseI() {
-        System.out.println("Case I -- nothing to do!  Both Roof leftovers are above the bridge. \n");
-    }
-
-    // Case II: Only left roof leftover is above the bridge.
-    private void handleCaseII() throws IllegalArgumentException {
-        System.out.println("Case II --  Only Left Roof leftover is above bridge. \n");
-    }
-
-    //Case III --  Only Right Roof leftover is above bridge. 
-    private void handleCaseIII() throws IllegalArgumentException {
-        System.out.println("Case III --  Only Right Roof leftover is above bridge. \n");
-    }
-
-    private void handleCaseIV() throws IllegalArgumentException {
-        System.out.println("Case IV \n -- Both roof leftovers are below the bridge. Eg. when the entire roof is being deleted !\n");
-
     }
 
     @Override
@@ -110,8 +167,11 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
         System.out.println("ExtractedPoints to be pushed down: " + extractedPoints);
         pushDown(extractedPoints);
 
+        getHullChain().setLeftSentinel(getHullChain().getLeftSentinel());
+        getHullChain().setRightSentinel(getHullChain().getRightSentinel());
         System.out.println("Result after pushdown: \n" + this);
         System.out.println("Exiting insert.");
+
         return true;
     }
 
@@ -131,22 +191,16 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
             if (isNull(right)) {
                 right = new SimpleIntervalTreeImpl(this, delegate);
             }
+
             if (!isNull(chainPair.getKey())) {
                 left.insert(chainPair.getKey());
-                if (leftToRightCursor == null) {
-                    this.leftToRightCursor = chainPair.getKey().get(0);
-                }
             }
 
             if (!isNull(chainPair.getValue())) {
-                if (isNull(right)) {
-                    right = new SimpleIntervalTreeImpl(this, delegate);
-                }
                 right.insert(chainPair.getValue());
-                if (rightToLeftCursor == null) {
-                    this.rightToLeftCursor = chainPair.getValue().get(0);
-                }
             }
+            this.leftToRightCursor = hullChain.getFirst();
+            this.rightToLeftCursor = hullChain.getLast();
         }
     }
 
@@ -170,7 +224,7 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
 
     private String print(String prefix, boolean isTail, String printedTree) {
         printedTree += prefix + (isTail ? "└── " : "├── ") + hullChain
-                + "  LBP: " + leftToRightCursor + ", RBP: " + rightToLeftCursor + "\n";
+                + "  b: " + leftToRightCursor + ", c: " + rightToLeftCursor + "\n";
         if (left != null) {
             printedTree = left.print(prefix + (isTail ? "\t" : "│\t"), false, printedTree);
         }
@@ -188,54 +242,6 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
 
     private boolean clockwise(K l, K r, K p) {
         return RadialComparator.<K>relativeCCW(l, r, p) < 0;
-    }
-
-    private boolean isAboveBridge(K al) {
-        if (leftToRightCursor != null && rightToLeftCursor != null) {
-            return counterClockwise(leftToRightCursor, rightToLeftCursor, al);
-        } else if (leftToRightCursor == null && rightToLeftCursor != null) {
-            return counterClockwise(rightToLeftCursor, rightToLeftCursor, al);
-        } else if (leftToRightCursor != null && rightToLeftCursor == null) {
-            return counterClockwise(leftToRightCursor, leftToRightCursor, al);
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isBelowBridge(K al) {
-        if (leftToRightCursor != null && rightToLeftCursor != null) {
-            return clockwise(leftToRightCursor, rightToLeftCursor, al); // al is below bridge
-        } else if (leftToRightCursor == null && rightToLeftCursor != null) {
-            return clockwise(rightToLeftCursor, rightToLeftCursor, al);
-        } else if (leftToRightCursor != null && rightToLeftCursor == null) {
-            return clockwise(leftToRightCursor, leftToRightCursor, al);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Returns {@code true} if the point p lies below the edge connect l to r.
-     *
-     * @param p
-     * @param l
-     * @param r
-     * @return
-     */
-    private boolean isBelowEdge(K p, K l, K r) {
-        return !counterClockwise(l, r, p);
-    }
-
-    /**
-     * Returns {@code true} if the point p lies above the edge l-r.
-     *
-     * @param p
-     * @param l
-     * @param r
-     * @return
-     */
-    private boolean isAboveEdge(K p, K l, K r) {
-        return counterClockwise(l, r, p);
     }
 
     @Override
@@ -280,39 +286,68 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
     }
 
     protected Entry<K, K> bridgePoints(SimpleIntervalTreeImpl<K> left, SimpleIntervalTreeImpl<K> right) {
-        K leftBridgePoint = (K) new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        K rightBridgePoint = (K) new Point2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
 
-        if (!isNull(left) && !isNull(right) && counterClockwise(left.leftToRightCursor, right.rightToLeftCursor, left.successor(left.leftToRightCursor))) {
+        K leftBridgePoint = null;
+        K rightBridgePoint = null;
+
+        if (!isNull(left)) {
+            if (left.leftToRightCursor == null) {
+                left.leftToRightCursor = left.hullChain.getFirst();
+            }
+            assert left.leftToRightCursor != null;
+            leftBridgePoint = left.leftToRightCursor;
+        }
+//        else {
+//            leftBridgePoint = (left == null || (isNull(left.getHullChain()) && getParent() != null)) ? getParent().getHullChain().getLeftSentinel() : left.hullChain.getLeftSentinel();
+//        }
+
+        if (!isNull(right)) {
+            if (right.rightToLeftCursor == null) {
+                right.rightToLeftCursor = right.hullChain.getLast();
+            }
+            assert right.rightToLeftCursor != null;
+            rightBridgePoint = right.rightToLeftCursor;
+        }
+//        else {
+//            rightBridgePoint = (right == null || isNull(right.hullChain)) ? getParent().getHullChain().getRightSentinel() : right.hullChain.getRightSentinel();
+//        }
+
+        Entry<K, K> bridge = new AbstractMap.SimpleEntry<>(leftBridgePoint, rightBridgePoint);
+
+        //search upwards for left bridgepoint
+        if (!isNull(left) && !left.leftToRightCursor.equals(left.hullChain.getLast()) && counterClockwise(left.leftToRightCursor, bridge.getValue(), left.successor(left.leftToRightCursor))) {
             left.leftToRightCursor = left.successor(left.leftToRightCursor);
             if (left.leftToRightCursor.getX() > left.rightToLeftCursor.getX()) {
                 left.rightToLeftCursor = left.leftToRightCursor;
             }
-            return bridgePoints(left, right);
+            bridge = bridgePoints(left, right);
         }
 
-        if (!isNull(left) && !isNull(right) && counterClockwise(left.leftToRightCursor, right.rightToLeftCursor, left.predecessor(right.rightToLeftCursor))) {
-            right.rightToLeftCursor = left.predecessor(right.rightToLeftCursor);
+        //search downwards for left bridgepoint
+        if (!isNull(left) && !left.leftToRightCursor.equals(left.hullChain.getFirst())
+                && counterClockwise(left.leftToRightCursor, bridge.getValue(), left.predecessor(left.leftToRightCursor))) {
+            left.leftToRightCursor = left.predecessor(left.leftToRightCursor);
+
+            bridge = bridgePoints(left, right);
+        }
+
+        //search downwards for right bridgepoint
+        if (!isNull(right) && !right.rightToLeftCursor.equals(right.hullChain.getFirst()) && counterClockwise(bridge.getKey(), right.rightToLeftCursor, right.predecessor(right.rightToLeftCursor))) {
+            right.rightToLeftCursor = right.predecessor(right.rightToLeftCursor);
             if (right.leftToRightCursor.getX() > right.rightToLeftCursor.getX()) {
                 right.leftToRightCursor = right.rightToLeftCursor;
             }
 
-            return bridgePoints(left, right);
+            bridge = bridgePoints(left, right);
         }
 
-        //handle the case where left is null but right is not
-        if (isNull(left) && !isNull(right)) {
-            rightBridgePoint = right.rightToLeftCursor;
-            leftBridgePoint = (K) new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        }
+        //search upwards for right bridgepoint
+        if (!isNull(right) && !right.rightToLeftCursor.equals(right.hullChain.getLast()) && counterClockwise(bridge.getKey(), right.rightToLeftCursor, right.successor(right.rightToLeftCursor))) {
+            right.rightToLeftCursor = right.successor(right.rightToLeftCursor);
 
-        //handle the case where right is null but left is not
-        if (!isNull(left) && isNull(right)) {
-            leftBridgePoint = left.leftToRightCursor;
-            rightBridgePoint = (K) new Point2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+            bridge = bridgePoints(left, right);
         }
-
-        return new AbstractMap.SimpleEntry<>(leftBridgePoint, rightBridgePoint);
+        return bridge;
     }
 
     SimpleIntervalTreeImpl getLeftChild() {
@@ -321,5 +356,80 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
 
     SimpleIntervalTreeImpl getRightChild() {
         return right;
+    }
+
+    Entry<K, K> tangents(K al, K ar, SimpleIntervalTreeImpl<K> left, SimpleIntervalTreeImpl<K> right) {
+        K b;
+        K c;
+
+        if (!isNull(left)) {
+            b = left.leftToRightCursor;
+        } else {
+            b = left.getParent().getHullChain().getLeftSentinel();
+        }
+
+        if (!isNull(right)) {
+            c = right.rightToLeftCursor;
+        } else {
+            c = right.getParent().getHullChain().getLeftSentinel();
+        }
+
+        Entry<K, K> bc = new AbstractMap.SimpleEntry<>(b, c);
+
+        //Search upwards for tangent point
+        if (!left.hullChain.getLast().equals(left.leftToRightCursor) && !counterClockwise(al, left.successor(left.leftToRightCursor), left.leftToRightCursor)) {
+            left.leftToRightCursor = left.successor(left.leftToRightCursor);
+
+            if (left.leftToRightCursor.getX() > left.rightToLeftCursor.getX()) {
+                left.rightToLeftCursor = left.leftToRightCursor;
+            }
+            bc = tangents(al, ar, left, right);
+        }
+
+        // Search downwards for tangent point
+        if (!left.hullChain.getFirst().equals(left.leftToRightCursor) && counterClockwise(al, left.leftToRightCursor, left.predecessor(left.leftToRightCursor))) {
+            left.leftToRightCursor = left.predecessor(left.leftToRightCursor);
+
+            bc = tangents(al, ar, left, right);
+        }
+
+        // Search downwards for tangent point
+        if (!right.hullChain.getFirst().equals(right.rightToLeftCursor) && counterClockwise(right.rightToLeftCursor, ar, right.predecessor(right.rightToLeftCursor))) {
+            right.rightToLeftCursor = right.predecessor(right.rightToLeftCursor);
+
+            if (right.leftToRightCursor.getX() > right.rightToLeftCursor.getX()) {
+                right.leftToRightCursor = right.rightToLeftCursor;
+            }
+            bc = tangents(al, ar, left, right);
+        }
+
+        // Search upwards for tangent point
+        if (!right.hullChain.getLast().equals(right.rightToLeftCursor) && counterClockwise(right.rightToLeftCursor, ar, right.successor(right.rightToLeftCursor))) {
+            right.rightToLeftCursor = right.successor(right.rightToLeftCursor);
+
+            bc = tangents(al, ar, left, right);
+        }
+
+        return bc;
+    }
+
+    private SimpleEntry<K, K> getNewCursors(Entry<K, K> bc) {
+        K b, c;
+        if (hullChain.indexOf(bc.getKey()) <= 0) {
+            b = hullChain.getFirst();
+        } else {
+            b = bc.getKey();
+        }
+
+        if (hullChain.indexOf(bc.getValue()) == hullChain.size() - 1 || !hullChain.contains(bc.getValue())) {
+            c = hullChain.getLast();
+        } else {
+            c = bc.getValue();
+        }
+        return new AbstractMap.SimpleEntry<>(b, c);
+    }
+
+    private IntervalTree<K> getParent() {
+        return parent;
     }
 }

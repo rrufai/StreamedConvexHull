@@ -15,8 +15,9 @@ import java.util.Map.Entry;
  * @author I827590
  */
 public interface ConvexChain<K extends Point> extends List<K>, Deque<K> {
-    Point LEFT_SENTINEL = new Point2D(-0.5 * Double.MAX_VALUE, -0.5 * Double.MAX_VALUE);
-    Point RIGHT_SENTINEL = new Point2D(0.5 * Double.MAX_VALUE, 0.5 * Double.MAX_VALUE);
+    double INFINITY = 10000.0; //Math.sqrt(Double.MAX_VALUE);
+    Point LEFT_SENTINEL = new Point2D(-0.1 * INFINITY, -0.1 * INFINITY);
+    Point RIGHT_SENTINEL = new Point2D(0.1 * INFINITY, -0.1 * INFINITY);
     /**
      * Inserts a new vertex
      * <code>newPoint</code> into a convex chain of vertices. this involves two
@@ -83,6 +84,11 @@ public interface ConvexChain<K extends Point> extends List<K>, Deque<K> {
     K getRightSentinel();
 
     K getLeftSentinel();
+    
+    void setRightSentinel(K sentinel);
+
+    void setLeftSentinel(K sentinel);
+    
     K predecessor(int j);
     K successor(int i);
     

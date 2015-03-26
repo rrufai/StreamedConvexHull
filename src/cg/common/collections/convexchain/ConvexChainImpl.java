@@ -15,12 +15,22 @@ import java.util.Map.Entry;
 
 public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements ConvexChain<K> {
 
+    private K leftSentinel;
+    private K rightSentinel;
+
     public ConvexChainImpl(List<K> chain) {
         super(chain);
+        leftSentinel = getLeftSentinel();
+        rightSentinel = getRightSentinel();
     }
 
     public ConvexChainImpl() {
         super();
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + " (LS: " +  leftSentinel + ", RS: " + rightSentinel + ")";
     }
 
     /**
@@ -28,7 +38,7 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
      */
     @Override
     public int getTangentPoint(K newPoint) throws IllegalArgumentException {
-        int k = this.size();
+        int k = this.size() - 1;
 
         while (k > -1 && counterClockwise(this.predecessor(k), this.get(k), newPoint)) {
             k--;
@@ -54,9 +64,10 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
     /**
      * Deletes the given chain and returns the index from which it was deleted,
      * or -1 if it is not found.
-     * 
+     *
      * @param chain
-     * @return returns the index from which it was deleted, or -1, if chain not found.
+     * @return returns the index from which it was deleted, or -1, if chain not
+     * found.
      */
     @Override
     public int delete(ConvexChain<K> chain) {
@@ -79,14 +90,14 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
     }
 
     @Override
-    public boolean add(K p){
+    public boolean add(K p) {
         ConvexChain<K> trivialChain = new ConvexChainImpl<>();
         trivialChain.addFirst(p);
         ConvexChain<K> evictions = this.insert(trivialChain);
-        
+
         return evictions.isEmpty();
     }
-    
+
     @Override
     public ConvexChain<K> insert(ConvexChain<K> chain) throws IllegalArgumentException {
         ConvexChain<K> evictedChain = new ConvexChainImpl();
@@ -131,6 +142,9 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
                 }
             }
         }
+        
+        this.leftSentinel = getLeftSentinel();
+        this.rightSentinel = getRightSentinel();
         return evictedChain;
     }
 
@@ -147,7 +161,7 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
     @Override
     public Entry<ConvexChain<K>, ConvexChain<K>> split(int i) {
         if (this.isEmpty() || i < 0) {
-            return null;
+            return new AbstractMap.SimpleEntry<ConvexChain<K>, ConvexChain<K>>(new ConvexChainImpl<K>(), new ConvexChainImpl<K>());
         }
 
         assert i > -1 && i <= size();
@@ -161,16 +175,15 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
         }
     }
 
+   
     @Override
-    public K getRightSentinel() {
+    public final K getRightSentinel() {
         if (size() > 0) {
-            int i = size() - 1;
-            K rightSentinel = new Cloner().deepClone(this.get(i));
-            rightSentinel.setLocation(Double.MAX_VALUE, rightSentinel.getY());
-            return rightSentinel;
-        } else {
-            return (K) RIGHT_SENTINEL;
-        }
+            rightSentinel = new Cloner().deepClone(getLast());
+            rightSentinel.setLocation(RIGHT_SENTINEL.getX(), rightSentinel.getY());
+        } 
+        return rightSentinel;
+
     }
 
     /**
@@ -179,14 +192,14 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
      * @return
      */
     @Override
-    public K getLeftSentinel() {
+    public final K getLeftSentinel() {
         if (size() > 0) {
-            K leftSentinel = new Cloner().deepClone(get(0));
-            leftSentinel.setLocation(leftSentinel.getX(), -0.5 * Double.MAX_VALUE);
-            return leftSentinel;
-        } else {
-            return (K) LEFT_SENTINEL;
-        }
+            leftSentinel = new Cloner().deepClone(getFirst());
+            leftSentinel.setLocation(leftSentinel.getX(), LEFT_SENTINEL.getY());
+        } 
+        
+        return leftSentinel;
+
     }
 
     @Override
@@ -204,22 +217,44 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
         return i < 0 ? this.getLeftSentinel() : (i > size() - 1 ? this.getRightSentinel() : super.get(i));
     }
 
-    private int goLeft(int i, ConvexChain<K> chain) {
-//        int j = chain.size() - 1;
-//        while (j > 0 && counterClockwise(this.get(i), chain.get(j), chain.predecessor(j))) {
-//            --j;
-//            while (i > 0 && counterClockwise(this.get(i), chain.get(j), this.predecessor(i))) {
-//                --i;
-//            }
-//        }
+    /**
+     * Returns the first element in this list.
+     *
+     * @return the first element in this list
+     * @throws NoSuchElementException if this list is empty
+     */
+    @Override
+    public K getFirst() {
+        return get(size() > 0 ? 0 : -1);
+    }
 
-//        while (i > 0 && counterClockwise(this.get(i), chain.get(j), this.predecessor(i))) {
-//            while (j > 0 && counterClockwise(this.get(i), chain.get(j), chain.predecessor(j))) {
-//                --j;
-//            }
-        while (i > 0 && counterClockwise(this.get(i), chain.getFirst(), this.predecessor(i))) {
-            --i;
+    /**
+     * Returns the last element in this list.
+     *
+     * @return the last element in this list
+     * @throws NoSuchElementException if this list is empty
+     */
+    @Override
+    public K getLast() {
+        return get(size() > 0 ? size() - 1 : 0);
+    }
+
+    @Override
+    public List<K> subList(int fromIndex, int toIndex) {
+        if (fromIndex > -1) {
+            return super.subList(fromIndex, toIndex);
+        } else {
+            return new ConvexChainImpl<>();
         }
-        return i;
+    }
+
+    @Override
+    public void setRightSentinel(K sentinel) {
+        rightSentinel = sentinel;
+    }
+
+    @Override
+    public void setLeftSentinel(K sentinel) {
+        leftSentinel = sentinel;
     }
 }
