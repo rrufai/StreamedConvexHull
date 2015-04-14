@@ -62,4 +62,9 @@ class AbstractEvent<K extends Point> implements Event<K> {
     public String getName() {
         return p.getName();
     }
+
+    @Override
+    public Point rotate(double angle) {
+        return p.rotate(angle);
+    }
 }

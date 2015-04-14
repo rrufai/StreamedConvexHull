@@ -45,7 +45,9 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
     }
 
     public ConvexLayersIntervalTreeImpl(List<K> pointset) {
-        this(pointset, new LexicographicComparator<K>(), new LexicographicComparator<K>(LexicographicComparator.Direction.TOP_DOWN));
+        this(pointset,
+                new LexicographicComparator(LexicographicComparator.Direction.BOTTOM_UP),
+                new LexicographicComparator(LexicographicComparator.Direction.LEFT_TO_RIGHT));
     }
 
     public ConvexLayersIntervalTreeImpl() {
@@ -60,7 +62,7 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
      */
     @Override
     public boolean goRight(K point, int level) {
-        return pointToIndexMap.get(point).get(length - level );
+        return pointToIndexMap.get(point).get(length - level);
     }
 
     @Override

@@ -20,5 +20,7 @@ public interface Point  extends Comparable {
     double distance(Point terminus);
     
     java.awt.geom.Point2D getPoint();
+    
+    Point rotate(double angle);
 
 }
