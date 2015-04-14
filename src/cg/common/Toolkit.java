@@ -124,7 +124,7 @@ public class Toolkit {
 
     public static enum PointType {
 
-        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, FIXED_HEXAGONAL_LAYERS, RANDOM, FIXED_RANDOM, FIXED, FIXED2, FIXED_PAPER, CIRCULAR_2_LAYERS,
+        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, FIXED_HEXAGONAL_LAYERS, RANDOM, FIXED_RANDOM, FIXED, FIXED2, FIXED3, FIXED_PAPER, CIRCULAR_2_LAYERS,
         POSITIVE_RANDOM;
     }
 
@@ -220,6 +220,29 @@ public class Toolkit {
                     inputPointset.add((P) new Point2D(data2[i][0], data2[i][1]));
                 }
                 break;
+            case FIXED3:
+                double[][] data3 = {
+                    {0.739, 0.021},
+                    {0.630, 0.054},
+                    {0.539, 0.068},
+                    {0.319, 0.108},
+                    {0.738, 0.197},
+                    {0.010, 0.220},
+                    {0.105, 0.228},
+                    {0.359, 0.293},
+                    {0.535, 0.515},
+                    {0.415, 0.709},
+                    {0.100, 0.745},
+                    {0.143, 0.788},
+                    {0.467, 0.892},
+                    {0.140, 0.921},
+                    {0.154, 0.983},
+                    {0.665, 0.990}
+                };
+                for (int i = 0; i < data3.length; i++) {
+                    inputPointset.add((P) new Point2D(data3[i][0], data3[i][1]));
+                }
+                break;
             case CIRCULAR:
                 for (int i = 0; i < 200 * numberOfPointsPerLayer; i++) {
                     double angle = Math.PI * 2 * random.nextDouble();
@@ -252,7 +275,7 @@ public class Toolkit {
                 }
                 break;
             case CIRCULAR_2_LAYERS:
-                double[][] data3 = {
+                double[][] data_circular = {
                     {-0.002, -0.260},
                     {-0.111, 0.235},
                     {0.232, 0.118},
@@ -303,8 +326,8 @@ public class Toolkit {
                     {-0.098, -0.877},
                     {-0.341, -0.814}
                 };
-                for (int i = 0; i < data3.length; i++) {
-                    inputPointset.add((P) new Point2D(data3[i][0], data3[i][1]));
+                for (int i = 0; i < data_circular.length; i++) {
+                    inputPointset.add((P) new Point2D(data_circular[i][0], data_circular[i][1]));
                 }
                 break;
             case CIRCULAR_K_LAYERS:

@@ -15,54 +15,56 @@ import java.util.Map;
  * @author rrufai
  */
 public class Point2D implements Point {
-    
+
     private static Map<Point2D, String> map = new HashMap<>();
+    private static Map<Integer, Map<Point2D, Point2D>> rotationMap = new HashMap<>();
+    private static Map<Integer, Map<Point2D, Point2D>> reverseRotationMap = new HashMap<>();
     private static int nextLetter = 0;
     private java.awt.geom.Point2D.Double point;
     private static double EPSILON = 1e-9;
     private String name;
-    
+
     public Point2D(double x, double y) {
         point = new java.awt.geom.Point2D.Double(x, y);
     }
-    
-     public Point2D(Point2D p) {
+
+    public Point2D(Point2D p) {
         point = p.point;
         name = p.name;
     }
-    
+
     @Override
     public double getX() {
         return point.getX();
     }
-    
+
     @Override
     public double getY() {
         return point.getY();
     }
-    
+
     @Override
     public void setLocation(double x, double y) {
         point.setLocation(x, y);
     }
-    
+
     public double distanceSq(double px, double py) {
         return point.distanceSq(px, py);
     }
-    
+
     public double distanceSq(Point pt) {
         return point.distanceSq(pt.getX(), pt.getY());
     }
-    
+
     public double distance(double px, double py) {
         return point.distance(px, py);
     }
-    
+
     @Override
     public double distance(Point pt) {
         return point.distance(pt.getX(), pt.getY());
     }
-    
+
     @Override
     public Object clone() {
         try {
@@ -72,12 +74,12 @@ public class Point2D implements Point {
             throw new InternalError();
         }
     }
-    
+
     @Override
     public int hashCode() {
         return getPoint().hashCode();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Point) {
@@ -101,17 +103,17 @@ public class Point2D implements Point {
     public void setPoint(java.awt.geom.Point2D point) {
         this.point = new java.awt.geom.Point2D.Double(point.getX(), point.getY());
     }
-    
+
     @Override
     public String toString() {
         return (getName() + "{" + point.x + ", " + point.y + "}");
     }
-    
+
     @Override
     public int compareTo(Object obj) {
         return new LexicographicComparator<>().compare(this, (Point) obj);
     }
-    
+
     @Override
     public String getName() {
         if (name == null) {
@@ -122,7 +124,7 @@ public class Point2D implements Point {
         }
         return name;
     }
-    
+
     private static String getNextLetter() {
         String name = "";
         for (int i = -1; i < nextLetter / 26; i++) {
@@ -131,16 +133,40 @@ public class Point2D implements Point {
         nextLetter++;
         return name;
     }
-    
+
     @Override
-    public Point2D rotate(double angle) {
-        Point2D result = new Point2D(this);
-        AffineTransform rotation = new AffineTransform();
-        double angleInRadians = (angle);
-        rotation.rotate(angleInRadians);
-        java.awt.geom.Point2D rstPoint = new java.awt.geom.Point2D.Double();
-        rotation.transform(point, rstPoint);        
-        result.setPoint(rstPoint);
-        return result;
+    public Point2D rotate(int angle) {
+        if (!reverseRotationMap.containsKey(angle) || !reverseRotationMap.get(angle).containsKey(this)) {
+
+            Point2D result = new Point2D(this);
+            AffineTransform rotation = new AffineTransform();
+            double angleInRadians = Math.toRadians(angle);
+            rotation.rotate(angleInRadians);
+            java.awt.geom.Point2D rstPoint = new java.awt.geom.Point2D.Double();
+            rotation.transform(point, rstPoint);
+            result.setPoint(rstPoint);
+
+            cache(result, angle, this);
+            return result;
+        } else {
+            return reverseRotationMap.get(angle).get(this);
+        }
+    }
+
+    @Override
+    public Point unrotate(int angle) {
+        return rotationMap.get(angle).get(this);
+    }
+
+    private void cache(Point2D result, Integer angle, Point2D original) {
+        if (!rotationMap.containsKey(angle)) {
+            rotationMap.put(angle, new HashMap<Point2D, Point2D>());
+        }
+
+        if (!reverseRotationMap.containsKey(angle)) {
+            reverseRotationMap.put(angle, new HashMap<Point2D, Point2D>());
+        }
+        rotationMap.get(angle).put(result, original);
+        reverseRotationMap.get(angle).put(original, result);
     }
 }

@@ -14,8 +14,8 @@ import java.awt.geom.Point2D;
 class AbstractEvent<K extends Point> implements Event<K> {
 
     private K p;
-    
-    public AbstractEvent(K p){
+
+    public AbstractEvent(K p) {
         this.p = p;
     }
 
@@ -64,7 +64,12 @@ class AbstractEvent<K extends Point> implements Event<K> {
     }
 
     @Override
-    public Point rotate(double angle) {
+    public Point rotate(int angle) {
         return p.rotate(angle);
+    }
+
+    @Override
+    public Point unrotate(int angle) {
+        return p.unrotate(angle);
     }
 }

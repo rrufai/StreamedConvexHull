@@ -14,6 +14,8 @@ import java.util.List;
 public interface ConvexLayersIntervalTree<K extends Point> {
 
     List<K> extractRoot();
+    
+    void delete(K p);
 
     boolean goRight(K point, int level);
     

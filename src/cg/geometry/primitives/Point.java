@@ -21,6 +21,8 @@ public interface Point  extends Comparable {
     
     java.awt.geom.Point2D getPoint();
     
-    Point rotate(double angle);
+    Point rotate(int angle); // angle in degrees
+    
+    Point unrotate(int angle);  // angle in degrees
 
 }

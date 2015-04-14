@@ -20,7 +20,7 @@ public class Configuration {
     private boolean showPoints = true;
     private float POINT_SIZE = 2.5f;
     private boolean generateTikzPictureCode = true;
-//    private boolean showEvictionTriangle = false;
+
     
     public Configuration(){}
 

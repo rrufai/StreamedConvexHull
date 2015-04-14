@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,9 +36,9 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
         for (int i = 0; i < pointset.size(); i++) {
             pointToIndexMap.put(pointset.get(i), Bits.convert(i, length));
             String binaryNumber = String.format("%" + length + "s", Integer.toBinaryString(i)).replace(' ', '0');
-            System.out.println(pointset.get(i) + "  \t: " + i + " \t: " + binaryNumber);
+            Logger.getGlobal().log(Level.INFO, "{0}  \t: {1} \t: {2}", new Object[]{pointset.get(i), i, binaryNumber});
         }
-        System.out.println("Point Rank Map: " + pointToIndexMap);
+        Logger.getGlobal().log(Level.INFO, "Point Rank Map: {0}", pointToIndexMap);
         intervalTree = new SimpleIntervalTreeImpl<>(null, this);
         Collections.sort(pointset, verticalComparator);
         for (K p : pointset) {
@@ -63,6 +65,11 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
     @Override
     public boolean goRight(K point, int level) {
         return pointToIndexMap.get(point).get(length - level);
+    }
+
+    @Override
+    public void delete(K point) {
+        getIntervalTree().delete(point);
     }
 
     @Override
