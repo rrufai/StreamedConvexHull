@@ -1,10 +1,8 @@
 package cg.common.collections.convexchain;
 
-import cg.common.Utilities;
 import cg.common.comparators.RadialComparator;
 import cg.convexlayers.events.IntervalTree;
 import cg.geometry.primitives.Point;
-import cg.geometry.primitives.impl.Point2D;
 import com.rits.cloning.Cloner;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
@@ -55,7 +53,7 @@ class SimpleIntervalTreeImpl<K extends Point> implements IntervalTree<K> {
         System.out.println("entering delete");
         System.out.println("chain: \n" + chain);
         
-        if (!isNull(chain) && !isNull(hullChain)) {
+        if (!isNull(chain) && !isNull(hullChain) && hullChain.containsAll(chain)) {
             System.out.println("this before: \n" + this);
             // Note: the segment al-ar is the segment that used to be below the 
             // chain that has just been deleted from hullChain.
