@@ -7,13 +7,10 @@ package cg.convexhull.exact.testcases;
 import cg.common.collections.CircularArrayList;
 import cg.common.collections.pointsequences.ConcentricRandomPointSequence;
 import cg.common.collections.pointsequences.PointSequence;
-import cg.common.collections.pointsequences.UniformInBoxPointSequence2D;
-import cg.common.collections.pointsequences.UniformInDiskPointSequence2D;
 import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.impl.AndrewsMonotoneChain;
 import cg.geometry.primitives.impl.Point2D;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +106,6 @@ public class TestData extends AbstractMap<String, TestCase<Point2D>> {
 
     private static List<Point2D> getResult(List<Point2D> points) {
         ConvexHull hull = new AndrewsMonotoneChain<>(points);
-        return hull.compute().getVertices();
+        return hull.compute(points).getVertices();
     }
 }

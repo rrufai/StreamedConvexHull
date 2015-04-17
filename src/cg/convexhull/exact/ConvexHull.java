@@ -6,6 +6,7 @@ package cg.convexhull.exact;
 
 import cg.geometry.primitives.Geometry;
 import cg.geometry.primitives.Point;
+import java.util.List;
 
 /**
  *
@@ -15,15 +16,23 @@ public interface ConvexHull<T extends Point> {
 
     /**
      * Computes the convex hull of the given geometry.
-     * 
+     *
      * @param geom
      * @return convex hull of points passed in.
      */
     Geometry<T> compute(Geometry<T> geom);
 
     /**
+     * Computes the convex hull of the given point set.
+     *
+     * @param pointset
+     * @return convex hull of points passed in.
+     */
+    Geometry<T> compute(List<T> pointset);
+
+    /**
      * Computes the convex hull of its initial point set.
-     * 
+     *
      * @return convex hull of its initial point set.
      */
     Geometry<T> compute();

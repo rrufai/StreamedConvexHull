@@ -27,13 +27,12 @@ public class ConcentricRandomPointSequence<T extends Point> extends AbstractPoin
 
     private static <T extends Point> List<T> generateConcentricRandomPointSequence(int size, double radius) {
         List<T> adversarialPointset = new ArrayList<>(size);
-        //double angle = Math.PI;
+
         for (int i = 0; i < size; i++) {
             double angle = 2 * Math.PI * random.nextDouble();
 
             adversarialPointset.add((T) new Point2D(
                     radius * Math.cos(angle), radius * Math.sin(angle)));
-            //angle /= 2;
         }
 
         return adversarialPointset;

@@ -83,18 +83,18 @@ public class QuickHullRecursive<T extends Point> implements ConvexHull<T> {
     //private
     public List<T> mergeHulls(final List<T> upper, final List<T> lower) {
         List<T> smaller = lower, bigger = upper;
-        
-        if(upper.size() < lower.size()){
+
+        if (upper.size() < lower.size()) {
             smaller = upper;
             bigger = lower;
         }
-        
-        for(T p : smaller){
-            if(!bigger.contains(p)){
+
+        for (T p : smaller) {
+            if (!bigger.contains(p)) {
                 bigger.add(p);
             }
         }
-        
+
         return bigger;
     }
 
@@ -139,11 +139,11 @@ public class QuickHullRecursive<T extends Point> implements ConvexHull<T> {
             }
         }
 
-        if(!newPointSet.contains(left)){
+        if (!newPointSet.contains(left)) {
             newPointSet.add(left);
         }
-        
-        if(!newPointSet.contains(right)){
+
+        if (!newPointSet.contains(right)) {
             newPointSet.add(right);
         }
 
@@ -240,23 +240,26 @@ public class QuickHullRecursive<T extends Point> implements ConvexHull<T> {
      * @return the vertices on the convex hull.
      */
     @Override
-    public Geometry<T>  compute() {
-        Collection<T> vertices;
-        if (valid) {
-            vertices = this.convexHullVertices;
-        } else {
-            vertices = convexHull();
-            valid = true;
-        }
+    public Geometry<T> compute(List<T> pointset) {
+        this.pointset = pointset;
+        Collection< T> vertices = convexHull();
+        valid = true;
 
         return new Polygon2D(vertices);
     }
-    
-        @Override
-    public Geometry<T> compute(Geometry<T> geom) {
-        pointset = geom.getVertices();
-        valid = false;
 
-        return compute();
+    @Override
+    public Geometry<T> compute(Geometry<T> geom) {
+        return compute(geom.getVertices());
+    }
+
+    @Override
+    public Geometry<T> compute() {
+        if (!valid) {
+            convexHullVertices = convexHull();
+            valid = true;
+        }
+
+        return new Polygon2D<>(convexHullVertices);
     }
 }

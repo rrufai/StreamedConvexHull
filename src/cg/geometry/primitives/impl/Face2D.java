@@ -220,6 +220,17 @@ public class Face2D<T extends Point> implements Face<T> {
 
     @Override
     public double getHausdorffDistance(Geometry<T> polygon) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<T> vertices = polygon.getVertices();
+        double hausdorf = 0.0;
+        for(T p : vertices){
+            double d = Double.MAX_VALUE;
+            for(T q : this.getVertices()){
+                d = Math.min(d, p.distance(q));
+            }
+            
+            hausdorf = Math.max(hausdorf, d);
+        }
+        
+        return hausdorf;
     }
 }

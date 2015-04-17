@@ -24,6 +24,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
 
     private List<T> pointset;
     private List<T> convexHullVertices;
+    Geometry<T> hull;
     private T anchor;
     private boolean valid;
 
@@ -83,7 +84,7 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
         }
 
         //push all stack content to collection -- they should come out in counter-clockwise order
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             this.convexHullVertices.add(stack.pop());
         }
 
@@ -116,21 +117,24 @@ public class GrahamScan<T extends Point> implements ConvexHull<T> {
 
     @Override
     public Geometry<T> compute(Geometry geom) {
-        valid = false;
-        this.pointset = geom.getVertices();
-        return compute();
+        return compute(geom.getVertices());
+    }
+
+    @Override
+    public Geometry<T> compute(List<T> pointset) {
+        this.pointset = pointset;
+        hull = convexHull();
+        valid = true;
+
+        return hull;
     }
 
     @Override
     public Geometry<T> compute() {
-        Geometry<T> hull;
-        if (valid) {
-            hull = new Polygon2D<>(convexHullVertices);
-        } else {
+        if (!valid) {
             hull = convexHull();
             valid = true;
         }
-        
         return hull;
     }
 }

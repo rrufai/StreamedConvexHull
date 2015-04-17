@@ -42,9 +42,30 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         this.minHeap = new PriorityQueue<>(budget, new DogEarComparator());
     }
 
+    /**
+     *
+     * @param points
+     * @return
+     */
+    @Override
+    public Geometry<T> compute(List<T> points) {
+        for (T point : points) {
+            process(point);
+        }
+
+        return query();
+    }
+
+    @Override
+    public Geometry<T> compute(Geometry<T> geom) {
+        List<T> points = geom.getVertices();
+
+        return compute(points);
+    }
+
     @Override
     public Geometry<T> compute() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Unsupported Method!");
     }
 
     private static class DogEarComparator<S extends StreamedPoint2D<? extends Point>> implements Comparator<S> {
@@ -53,16 +74,6 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         public int compare(S p1, S p2) {
             return (int) Math.signum(p1.getGoodnessMeasure() - p2.getGoodnessMeasure());
         }
-    }
-
-    @Override
-    public Geometry<T> compute(Geometry<T> geom) {
-        List<T> points = geom.getVertices();
-        for (T point : points) {
-            process(point);
-        }
-
-        return query();
     }
 
     /**

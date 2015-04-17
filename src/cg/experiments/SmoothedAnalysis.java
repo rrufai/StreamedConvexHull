@@ -175,8 +175,8 @@ public class SmoothedAnalysis {
 
         Geometry<Point2D> streamedHullGeometry = streamedHull.compute(geometry);
 
-        ConvexHull<Point2D> trueHull = new AndrewsMonotoneChain<>(geometry);
-        Geometry<Point2D> trueHullGeometry = trueHull.compute();
+        ConvexHull<Point2D> trueHull = new AndrewsMonotoneChain<>();
+        Geometry<Point2D> trueHullGeometry = trueHull.compute(geometry);
         ComparisonResult comparisonResult = new ComparisonResult();
         comparisonResult.type = type;
         comparisonResult.setSize = geometry.getVertices().size();

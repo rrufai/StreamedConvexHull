@@ -47,7 +47,7 @@ public class CGListener implements GLEventListener, MouseListener {
         }
 
         chull = new AndrewsMonotoneChain<>(pointset);
-        hullPoints = chull.compute();
+        hullPoints = chull.compute(pointset);
         //hullPoints = new GrahamScan(pointset).compute();
         //centroid = chull.centroid();
     }
