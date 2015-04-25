@@ -17,7 +17,7 @@ import org.jdesktop.application.SingleFrameApplication;
 public class CGConvexLayersApp extends SingleFrameApplication {
 
     private final int NUMBER_OF_RANDOM_POINTS_PER_LAYER = 6;
-    private int NUMBER_OF_LAYERS = 5;
+    private int NUMBER_OF_LAYERS = 9;
     //private CGView mainFrame;
 
     /**
@@ -26,11 +26,11 @@ public class CGConvexLayersApp extends SingleFrameApplication {
     @Override
     protected void startup() {
        //List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED_RANDOM, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
-       //List pointset = Toolkit.generatePointSet(Toolkit.PointType.POSITIVE_RANDOM, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
+       List pointset = Toolkit.generatePointSet(Toolkit.PointType.POSITIVE_RANDOM, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
        //List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED_PAPER, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
       //List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED_HEXAGONAL_LAYERS, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
        //List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
-      List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED3, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
+      //List pointset = Toolkit.generatePointSet(Toolkit.PointType.FIXED3, NUMBER_OF_RANDOM_POINTS_PER_LAYER, NUMBER_OF_LAYERS);
        
        
         ConvexLayerListener listener = new ConvexLayerListener(pointset, new Configuration());

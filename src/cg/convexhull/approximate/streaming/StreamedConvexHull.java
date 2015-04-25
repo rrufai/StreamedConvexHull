@@ -34,6 +34,7 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
     private PriorityQueue<StreamedPoint2D<T>> minHeap;
     private T centroid;
     private int centroidDirtyCount = 0;
+    private int evictionCount = 0;
 
     public StreamedConvexHull(int budget) {
         this.budget = budget;
@@ -49,6 +50,7 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
      */
     @Override
     public Geometry<T> compute(List<T> points) {
+        evictionCount = 0;
         for (T point : points) {
             process(point);
         }
@@ -66,6 +68,14 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
     @Override
     public Geometry<T> compute() {
         throw new UnsupportedOperationException("Unsupported Method!");
+    }
+
+    /**
+     * @return the evictionCount
+     */
+    @Override
+    public int getEvictionCount() {
+        return evictionCount;
     }
 
     private static class DogEarComparator<S extends StreamedPoint2D<? extends Point>> implements Comparator<S> {
@@ -95,6 +105,8 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         // lemma: heightBalancedTree.size() <= budget + 1
         if (heightBalancedTree.size() > budget) {
             shrinkHull();
+            evictionCount++;
+
         }
     }
 

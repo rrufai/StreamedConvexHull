@@ -22,4 +22,6 @@ interface Streaming<T extends Point> {
     void process(T point);
 
     Geometry<T> query();
+    
+    int getEvictionCount();
 }
