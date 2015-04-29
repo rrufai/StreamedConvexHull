@@ -3,6 +3,7 @@ package cg.common.collections.convexchain;
 import cg.common.Bits;
 import cg.common.comparators.LexicographicComparator;
 import cg.convexlayers.events.IntervalTree;
+import cg.convexlayers.ui.actions.Configuration;
 import cg.geometry.primitives.Point;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -36,9 +37,9 @@ public class ConvexLayersIntervalTreeImpl<K extends Point> implements ConvexLaye
         for (int i = 0; i < pointset.size(); i++) {
             pointToIndexMap.put(pointset.get(i), Bits.convert(i, length));
             String binaryNumber = String.format("%" + length + "s", Integer.toBinaryString(i)).replace(' ', '0');
-            Logger.getGlobal().log(Level.INFO, "{0}  \t: {1} \t: {2}", new Object[]{pointset.get(i), i, binaryNumber});
+            Logger.getAnonymousLogger().log(Level.INFO, "{0}  \t: {1} \t: {2}", new Object[]{pointset.get(i), i, binaryNumber});
         }
-        Logger.getGlobal().log(Level.INFO, "Point Rank Map: {0}", pointToIndexMap);
+        Logger.getAnonymousLogger().log(Configuration.getInstance().getLogLevel(), "Point Rank Map: {0}", pointToIndexMap);
         intervalTree = new SimpleIntervalTreeImpl<>(null, this);
         Collections.sort(pointset, verticalComparator);
         for (K p : pointset) {

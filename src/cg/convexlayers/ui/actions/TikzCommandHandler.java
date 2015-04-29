@@ -4,6 +4,7 @@
  */
 package cg.convexlayers.ui.actions;
 
+import cg.geometry.primitives.Polygon;
 import cg.geometry.primitives.impl.Point2D;
 import cg.geometry.primitives.impl.Triangle2D;
 import java.awt.Color;
@@ -92,7 +93,15 @@ public class TikzCommandHandler {
         return p.getName();
     }
 
+    void drawOpenPolygon(Polygon<Point2D> polygon, Color color) {
+        String pointList = "";
+        for (Point2D p : polygon.getVertices()) {
+            pointList += getName(p) + ", ";
+        }
 
+        tikzPolygonsDrawCommands.add(String.format("\\tkzDrawPolySeg[color=%s](%s)", color.toString(), pointList));
+    }
+    
     void drawOpenPolygon(TreeSet<Point2D> polygon, Color color) {
         String pointList = "";
         for (Point2D p : polygon) {

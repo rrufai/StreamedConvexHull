@@ -18,7 +18,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -52,8 +53,12 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 24);
         textRenderer = new TextRenderer(font, true);
         //cLayers = new ConvexLayerSweepAlgo<>(pointset);
-        cLayers = new ConvexLayersPseudoIntervalTreePeeling<> (pointset);
+        cLayers = new ConvexLayersPseudoIntervalTreePeeling<>(pointset);
         this.configuration = configuration;
+        //LOGGER.setLevel(configuration.getLogLevel());
+        Handler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(configuration.getLogLevel());
+        Logger.getAnonymousLogger().addHandler(consoleHandler);
     }
 
     /**
@@ -82,13 +87,13 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
 //        gl.glLoadIdentity();
         gl.glOrtho(-aspectRatio, aspectRatio, -1, 1, 1, -1);
 //
-//        gl.glMatrixMode(GL2.GL_MODELVIEW);
-//        gl.glLoadIdentity();
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glLoadIdentity();
 //
-//        gl.glEnable(GL2.GL_LINE_SMOOTH);
-//        gl.glEnable(GL2.GL_BLEND);
-//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-//        gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_DONT_CARE);
+        gl.glEnable(GL2.GL_LINE_SMOOTH);
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_DONT_CARE);
 //
 //        glu.gluLookAt(0, 0, 7.0, 0, 0, 0, 0, 1, 0);
 //        
@@ -156,24 +161,11 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
 //
 //        }
 
-//        int maxLayers = cLayers.getMaxLayers();
-//
-//        if (configuration.isShowUpperLayers()) {
-//            drawHalfLayers(drawable, cLayers.getUpper(), maxLayers, Color.BLACK);
-//        }
-//
-//        if (configuration.isShowLowerLayers()) {
-//            drawHalfLayers(drawable, cLayers.getLower(), maxLayers, Color.BLUE);
-//        }
-//
-//        if (configuration.isShowLeftToRightLayers()) {
-//            drawHalfLayers(drawable, cLayers.getLeftToRight(), maxLayers, Color.WHITE);
-//        }
-//
-//        if (configuration.isShowRightToLeftLayers()) {
-//            drawHalfLayers(drawable, cLayers.getRightToLeft(), maxLayers, Color.GREEN);
-//        }
-//
+
+        if (configuration.isShowLayers()) {
+            drawLayers(drawable, layers, Color.BLACK);
+        }
+
         if (configuration.isShowPoints()) {
             for (Point2D p : cLayers.getPointset()) {
                 drawPoint(drawable, p, Color.BLACK);
@@ -222,6 +214,7 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
         GL2 gl = (GL2) drawable.getGL();
         gl.glColor3d(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0);
 
+
         gl.glBegin(GL2.GL_POLYGON);
         for (Point2D p : polygon.getVertices()) {
             gl.glVertex3d(p.getX(), p.getY(), 0.0);
@@ -233,16 +226,19 @@ public class ConvexLayerListener implements GLEventListener, MouseListener {
         }
     }
 
-    private void drawHalfLayers(GLAutoDrawable drawable, List<TreeSet<Point2D>> halfLayers, int maxLayers, Color color) {
+    private void drawLayers(GLAutoDrawable drawable, List<Polygon<Point2D>> halfLayers, Color color) {
         GL2 gl = (GL2) drawable.getGL();
         gl.glColor3d(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0);
 
         for (int i = 0; i < halfLayers.size(); i++) {
-            TreeSet<Point2D> halfLayer = halfLayers.get(i);
+            Polygon<Point2D> halfLayer = halfLayers.get(i);
             gl.glBegin(GL.GL_LINE_STRIP);
-            for (Point2D vertex : halfLayer) {
+            for (Point2D vertex : halfLayer.getVertices()) {
                 gl.glVertex3d(vertex.getX(), vertex.getY(), 0.0);
             }
+
+            Point2D vertex = halfLayer.getVertices().get(0);
+            gl.glVertex3d(vertex.getX(), vertex.getY(), 0.0);
             gl.glEnd();
 
             if (configuration.isGenerateTikzPictureCode()) {

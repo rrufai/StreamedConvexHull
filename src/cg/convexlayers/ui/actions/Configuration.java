@@ -4,6 +4,8 @@
  */
 package cg.convexlayers.ui.actions;
 
+import java.util.logging.Level;
+
 /**
  *
  * @author rrufai
@@ -11,17 +13,23 @@ package cg.convexlayers.ui.actions;
 public class Configuration {
 
     private float SCALE_FACTOR = 0.001f;
-    private boolean showCoordinates = true;
+    private boolean showCoordinates = false;
     private boolean showUpperLayers = true;
     private boolean showLowerLayers = true;
     private boolean showLeftToRightLayers = true;
     private boolean showRightToLeftLayers = true;
-    private boolean showPolygons = true;
+    private boolean showPolygons = false;
     private boolean showPoints = true;
     private float POINT_SIZE = 2.5f;
     private boolean generateTikzPictureCode = true;
 
-    
+    /**
+     *
+     * @return
+     */
+    public static Configuration getInstance(){
+        return new Configuration();
+    }
     public Configuration(){}
 
     /**
@@ -161,6 +169,14 @@ public class Configuration {
      */
     public void setGenerateTikzPictureCode(boolean generateTikzPictureCode) {
         this.generateTikzPictureCode = generateTikzPictureCode;
+    }
+
+    boolean isShowLayers() {
+        return true;
+    }
+
+    public Level getLogLevel() {
+        return Level.ALL;
     }
 
 }

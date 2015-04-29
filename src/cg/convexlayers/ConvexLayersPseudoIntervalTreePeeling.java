@@ -6,6 +6,7 @@ package cg.convexlayers;
 
 import cg.common.collections.convexchain.ConvexLayersIntervalTree;
 import cg.common.collections.convexchain.ConvexLayersIntervalTreeImpl;
+import cg.convexlayers.ui.actions.Configuration;
 import cg.geometry.primitives.Point;
 import cg.geometry.primitives.Polygon;
 import cg.geometry.primitives.impl.Polygon2D;
@@ -30,12 +31,12 @@ public class ConvexLayersPseudoIntervalTreePeeling<K extends Point> implements C
 
     public ConvexLayersPseudoIntervalTreePeeling(List<K> pointset) {
         this.pointset = pointset;
-        Logger.getGlobal().setLevel(Level.OFF);
+        Logger.getAnonymousLogger().setLevel(Configuration.getInstance().getLogLevel());
     }
 
     public ConvexLayersPseudoIntervalTreePeeling() {
         this.pointset = new ArrayList<>();
-        Logger.getGlobal().setLevel(Level.OFF);
+        Logger.getAnonymousLogger().setLevel(Configuration.getInstance().getLogLevel());
     }
 
     /**
@@ -79,8 +80,6 @@ public class ConvexLayersPseudoIntervalTreePeeling<K extends Point> implements C
             for (K p : marked) {
                 intervalTreeNW.delete(p);
                 intervalTreeNE.delete((K) p.rotate(90));
-            }
-            for (K p : marked) {
                 intervalTreeSE.delete((K) p.rotate(180));
                 intervalTreeSW.delete((K) p.rotate(270));
             }
@@ -139,11 +138,11 @@ public class ConvexLayersPseudoIntervalTreePeeling<K extends Point> implements C
         intervalTreeSW = new ConvexLayersIntervalTreeImpl<>(rotatedPointset270);
 
 
-        Logger.getGlobal().log(Level.INFO, "intervalTreeNW:\n{0}", intervalTreeNW);
-        Logger.getGlobal().log(Level.INFO, "intervalTreeNE:\n{0}", intervalTreeNE);
+        Logger.getAnonymousLogger().log(Configuration.getInstance().getLogLevel(), "intervalTreeNW:\n{0}", intervalTreeNW);
+        Logger.getAnonymousLogger().log(Configuration.getInstance().getLogLevel(), "intervalTreeNE:\n{0}", intervalTreeNE);
 
-        Logger.getGlobal().log(Level.INFO, "intervalTreeSW:\n{0}", intervalTreeSW);
-        Logger.getGlobal().log(Level.INFO, "intervalTreeSE:\n{0}", intervalTreeSE);
+        Logger.getAnonymousLogger().log(Configuration.getInstance().getLogLevel(), "intervalTreeSW:\n{0}", intervalTreeSW);
+        Logger.getAnonymousLogger().log(Configuration.getInstance().getLogLevel(), "intervalTreeSE:\n{0}", intervalTreeSE);
     }
 
     private List<K> rotate(List<K> pointset, int angle) {
