@@ -21,4 +21,9 @@ public class FixedPointSequence2D<T extends Point> extends AbstractPointSequence
         super(pointSequence);
     } 
 
+    @Override
+    public T newPoint() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -13,22 +13,23 @@ import java.util.Random;
 public class UniformInBoxPointSequence2D<T extends Point> extends AbstractPointSequence<T> {
 
     protected static Random random = new Random();
+    private double width;
+    private double height;
+
     /**
      * Random in a rectangle constructor
      */
     public UniformInBoxPointSequence2D(int size, double width, double height) {
-        super((List<T>) generateRandomPoints(size, width, height));
+        super(size);
+        this.width = width;
+        this.height = height;
     }
 
-    private static <T extends Point> List<T> generateRandomPoints(int size, double width, double height) {
-        List<T> adversarialPointset = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            double x = (random.nextBoolean() ? 0.5 : -0.5) * width * random.nextDouble();
-            double y = (random.nextBoolean() ? 0.5 : -0.5) * height * random.nextDouble();
 
-            adversarialPointset.add((T) new Point2D(x, y));
-        }
-
-        return adversarialPointset;
+    @Override
+    public T newPoint() {
+        double x = (random.nextBoolean() ? 0.5 : -0.5) * width * random.nextDouble();
+        double y = (random.nextBoolean() ? 0.5 : -0.5) * height * random.nextDouble();
+        return (T) new Point2D(x, y);
     }
 }
