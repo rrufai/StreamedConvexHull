@@ -4,6 +4,7 @@
  */
 package cg.convexhull.main;
 
+import cg.convexhull.approximate.streaming.EarAreaGoodness;
 import cg.convexhull.approximate.streaming.StreamedConvexHull;
 import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.impl.AndrewsMonotoneChain;
@@ -34,7 +35,7 @@ public class StreamedConvexHullMain {
         final Polygon2D<Point2D> polygon2D = new Polygon2D<>(pointset);
         // ConvexHull<Point2D> instance = new AndrewsMonotoneChain<>();
         for (int budget = 21; budget > 2; budget--) {
-            ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget);
+            ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget, new EarAreaGoodness());
             final Geometry<Point2D> polygon = instance.compute(polygon2D);
 
             List<Point2D> vertices = polygon.getVertices();

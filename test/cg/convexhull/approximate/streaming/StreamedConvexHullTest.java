@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +63,7 @@ public class StreamedConvexHullTest {
     public void testCompute() {
         System.out.println("compute");
 
-        ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget);
+        ConvexHull<Point2D> instance = new StreamedConvexHull<>(budget, new EarAreaGoodness());
         ConvexHull<Point2D> exactHull = new AndrewsMonotoneChain<>();
         for (int i = 0; i < pointSequence.size(); i++) {
             Geometry<Point2D> shuffledGeometry = pointSequence.shuffle();
@@ -90,7 +89,7 @@ public class StreamedConvexHullTest {
         final int BUDGET = Math.min(10, chVertices.size());
 
         List<Point2D> hullVertices = chVertices.subList(0, BUDGET);
-        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET, new EarAreaGoodness());
         instance.initialize(hullVertices);
 
         Geometry<Point2D> expectedResult = new Polygon2D<>(hullVertices);
@@ -108,12 +107,12 @@ public class StreamedConvexHullTest {
         final int BUDGET = Math.min(10, chVertices.size()) - 1;
 
         List<Point2D> geometry = chVertices.subList(0, BUDGET);
-        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET, new EarAreaGoodness());
         instance.initialize(geometry);
         instance.update(chVertices.get(BUDGET));
         Geometry<Point2D> actualResult = instance.query();
 
-        StreamedConvexHull<Point2D> instance2 = new StreamedConvexHull<>(BUDGET);
+        StreamedConvexHull<Point2D> instance2 = new StreamedConvexHull<>(BUDGET, new EarAreaGoodness());
         final Polygon2D<Point2D> polygon = new Polygon2D<>(chVertices.subList(0, BUDGET + 1));
         Geometry<Point2D> expectedResult = instance2.compute(polygon);
 
@@ -130,7 +129,7 @@ public class StreamedConvexHullTest {
         final int BUDGET = Math.min(10, chVertices.size());
 
         List<Point2D> hullVertices = chVertices.subList(0, BUDGET);
-        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET);
+        StreamedConvexHull<Point2D> instance = new StreamedConvexHull<>(BUDGET, new EarAreaGoodness());
         instance.initialize(hullVertices);
 
         Geometry<Point2D> expectedResult = new Polygon2D<>(hullVertices);

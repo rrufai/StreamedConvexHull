@@ -27,10 +27,10 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
     public ConvexChainImpl() {
         super();
     }
-    
+
     @Override
-    public String toString(){
-        return super.toString() + " (LS: " +  leftSentinel + ", RS: " + rightSentinel + ")";
+    public String toString() {
+        return super.toString() + " (LS: " + leftSentinel + ", RS: " + rightSentinel + ")";
     }
 
     /**
@@ -42,6 +42,19 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
 
         while (k > -1 && counterClockwise(this.predecessor(k), this.get(k), newPoint)) {
             k--;
+        }
+
+        return k;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getTangentPointUp(K newPoint) throws IllegalArgumentException {
+        int k = 0;
+
+        while (k < size() && counterClockwise(newPoint, this.get(k), this.successor(k))) {
+            k++;
         }
 
         return k;
@@ -102,6 +115,71 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
     public ConvexChain<K> insert(ConvexChain<K> chain) throws IllegalArgumentException {
         ConvexChain<K> evictedChain = new ConvexChainImpl();
         if (!chain.isEmpty()) {
+            if (chain.dominates(this)) {
+                evictedChain = new ConvexChainImpl(
+                        this.subList(0, this.size()));
+
+                if (!evictedChain.isEmpty()) {
+                    this.subList(0, this.size()).clear();
+                }
+
+                this.addAll(chain);
+            } else if (chain.leftDominates(this)) {
+                int tangent = getTangentPointUp(chain.getLast());
+
+                if (tangent > 0) {
+                    evictedChain = new ConvexChainImpl(
+                            this.subList(0, tangent));
+                }
+
+                if (!evictedChain.isEmpty()) {
+                    this.subList(0, tangent).clear();
+                }
+
+                this.addAll(0, chain);
+            } else if (chain.rightDominates(this)) {
+                int tangent = getTangentPoint(chain.getFirst()) + 1;
+
+                if (tangent < this.size()) {
+                    evictedChain = new ConvexChainImpl(
+                            this.subList(tangent, this.size()));
+                }
+
+                if (!evictedChain.isEmpty()) {
+                    this.subList(tangent, this.size()).clear();
+                }
+
+                for (K p : chain) {
+                    this.addLast(p);
+                }
+            } else { // case 4
+                int from = getTangentPoint(chain.getFirst()) + 1;
+                int to = getTangentPointUp(chain.getLast());
+
+                if (from < this.size()) {
+                    evictedChain = new ConvexChainImpl(
+                            this.subList(from, to));
+                }
+
+                if (!evictedChain.isEmpty()) {
+                    this.subList(from, to).clear();
+                }
+
+                for (K p : chain) {
+                    this.addLast(p);
+                }
+
+            }
+        }
+
+        this.leftSentinel = getLeftSentinel();
+        this.rightSentinel = getRightSentinel();
+        return evictedChain;
+    }
+
+    private ConvexChain<K> insert_to_be_deleted(ConvexChain<K> chain) throws IllegalArgumentException {
+        ConvexChain<K> evictedChain = new ConvexChainImpl();
+        if (!chain.isEmpty()) {
             if (this.isEmpty()) {
                 this.addAll(chain);
             } else if (size() == 1 && chain.size() == 1) {
@@ -142,11 +220,12 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
                 }
             }
         }
-        
+
         this.leftSentinel = getLeftSentinel();
         this.rightSentinel = getRightSentinel();
         return evictedChain;
     }
+
 
     /*
      * Returns true if this chain dominates the given chain, i.e. the given chain lies within the convex closure of this chain.
@@ -155,7 +234,17 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
      */
     @Override
     public boolean dominates(ConvexChain<K> chain) {
-        return chain.isEmpty() || getFirst().getX() < chain.getFirst().getX() && getLast().getY() > chain.getLast().getY();
+        return leftDominates(chain) && rightDominates(chain);
+    }
+
+    @Override
+    public boolean leftDominates(ConvexChain<K> chain) {
+        return chain.isEmpty() || getFirst().getX() < chain.getFirst().getX();
+    }
+
+    @Override
+    public boolean rightDominates(ConvexChain<K> chain) {
+        return chain.isEmpty() || getLast().getY() > chain.getLast().getY();
     }
 
     @Override
@@ -175,13 +264,12 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
         }
     }
 
-   
     @Override
     public final K getRightSentinel() {
         if (size() > 0) {
             rightSentinel = new Cloner().deepClone(getLast());
             rightSentinel.setLocation(RIGHT_SENTINEL.getX(), rightSentinel.getY());
-        } 
+        }
         return rightSentinel;
 
     }
@@ -196,8 +284,8 @@ public class ConvexChainImpl<K extends Point> extends LinkedList<K> implements C
         if (size() > 0) {
             leftSentinel = new Cloner().deepClone(getFirst());
             leftSentinel.setLocation(leftSentinel.getX(), LEFT_SENTINEL.getY());
-        } 
-        
+        }
+
         return leftSentinel;
 
     }

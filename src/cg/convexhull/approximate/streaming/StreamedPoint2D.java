@@ -8,12 +8,10 @@ import cg.geometry.primitives.impl.Point2D;
  * @author I827590
  * @param <T>
  */
-public class StreamedPoint2D<T extends Point> extends Point2D {
+public class StreamedPoint2D<T extends Point> extends Point2D implements Point {
 
     private double polar; //polar angle of point relative to a center point
-    private double dogEar; //Goodness measure to keep this point on the hull
     private boolean marked; //to be used for lazy deletion
-    private static final double NEGATIVE_INFINITY = -Double.MAX_VALUE;
     private double goodness;
 
     /**
@@ -36,12 +34,10 @@ public class StreamedPoint2D<T extends Point> extends Point2D {
     public StreamedPoint2D(T point, double polar, double dogEar) {
         super(point.getX(), point.getY());
         this.polar = polar;
-        this.dogEar = dogEar;
     }
 
     public void mark() {
         marked = true;
-        this.dogEar = NEGATIVE_INFINITY;
     }
 
     public boolean isMarked() {
@@ -62,12 +58,4 @@ public class StreamedPoint2D<T extends Point> extends Point2D {
     public void setGoodnessMeasure(double goodness) {
         this.goodness = goodness;
     }
-    
-//    public double getDogEar() {
-//        return dogEar;
-//    }
-//
-//    public void setDogEar(double dogEar) {
-//        this.dogEar = dogEar;
-//    }
 }

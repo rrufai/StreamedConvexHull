@@ -8,6 +8,7 @@ import cg.common.collections.pointsequences.ConcentricRandomPointSequence;
 import cg.common.collections.pointsequences.PointSequence;
 import cg.common.smoothedanalysis.PerturbationModel;
 import cg.common.smoothedanalysis.UniformNoisePerturbationModel;
+import cg.convexhull.approximate.streaming.EarAreaGoodness;
 import cg.convexhull.approximate.streaming.StreamedConvexHull;
 import cg.convexhull.exact.ConvexHull;
 import cg.convexhull.exact.impl.AndrewsMonotoneChain;
@@ -171,7 +172,7 @@ public class SmoothedAnalysis {
     };
 
     private ComparisonResult runComparison(int budget, Geometry<Point2D> geometry, String type) {
-        ConvexHull<Point2D> streamedHull = new StreamedConvexHull<>(budget);
+        ConvexHull<Point2D> streamedHull = new StreamedConvexHull<>(budget, new EarAreaGoodness());
 
         Geometry<Point2D> streamedHullGeometry = streamedHull.compute(geometry);
 

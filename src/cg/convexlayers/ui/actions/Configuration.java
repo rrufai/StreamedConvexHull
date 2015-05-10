@@ -176,7 +176,7 @@ public class Configuration {
     }
 
     public Level getLogLevel() {
-        return Level.ALL;
+        return Level.OFF;
     }
 
 }

@@ -124,7 +124,7 @@ public class Toolkit {
 
     public static enum PointType {
 
-        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, FIXED_HEXAGONAL_LAYERS, RANDOM, FIXED_RANDOM, FIXED, FIXED2, FIXED3, FIXED_PAPER, CIRCULAR_2_LAYERS,
+        CIRCULAR, CIRCULAR_K_LAYERS, HEXAGONAL_K_LAYERS, FIXED_HEXAGONAL_LAYERS, RANDOM, FIXED_RANDOM, FIXED, FIXED2, FIXED3, FIXED4, FIXED_PAPER, CIRCULAR_2_LAYERS,
         POSITIVE_RANDOM;
     }
 
@@ -222,25 +222,50 @@ public class Toolkit {
                 break;
             case FIXED3:
                 double[][] data3 = {
-                    {0.739, 0.021},
+                    {0.739, 0.001},
                     {0.630, 0.054},
-                    {0.539, 0.068},
-                    {0.319, 0.108},
-                    {0.738, 0.197},
-                    {0.010, 0.220},
+                    //{0.539, 0.068},
+                    //{0.319, 0.108},
+                    //{0.738, 0.197},
+                    {0.010, 0.200},
                     {0.105, 0.228},
                     {0.359, 0.293},
                     {0.535, 0.515},
                     {0.415, 0.709},
-                    {0.100, 0.745},
+                    //{0.050, 0.745},
                     {0.143, 0.788},
                     {0.467, 0.892},
                     {0.140, 0.921},
-                    {0.154, 0.983},
+                    {0.104, 0.983},
                     {0.665, 0.990}
                 };
                 for (int i = 0; i < data3.length; i++) {
                     inputPointset.add((P) new Point2D(data3[i][0], data3[i][1]));
+                }
+                break;
+            case FIXED4:
+                double[][] data4 = {
+                    {0.024, 0.275},
+                    {0.034, 0.651},
+                    {0.119, 0.239},
+                    {0.127, 0.048},
+                    {0.152, 0.568},
+                    {0.187, 0.491},
+                    {0.414, 0.433},
+                    {0.485, 0.928},
+                    {0.520, 0.037},
+                    {0.522, 0.097},
+                    {0.603, 0.619},
+                    {0.697, 0.182},
+                    {0.766, 0.461},
+                    {0.855, 0.764},
+                    {0.864, 0.185},
+                    {0.914, 0.336},
+                    {0.941, 0.490}
+                };
+
+                for (int i = 0; i < data4.length; i++) {
+                    inputPointset.add((P) new Point2D(data4[i][0], data4[i][1]));
                 }
                 break;
             case CIRCULAR:

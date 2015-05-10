@@ -35,8 +35,7 @@ public class ConvexLayersPseudoIntervalTreePeeling<K extends Point> implements C
     }
 
     public ConvexLayersPseudoIntervalTreePeeling() {
-        this.pointset = new ArrayList<>();
-        Logger.getAnonymousLogger().setLevel(Configuration.getInstance().getLogLevel());
+        this(new ArrayList<K>());
     }
 
     /**

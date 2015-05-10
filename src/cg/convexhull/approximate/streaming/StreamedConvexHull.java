@@ -13,7 +13,6 @@ import cg.geometry.primitives.impl.Polygon2D;
 import cg.geometry.primitives.impl.Triangle2D;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -35,12 +34,14 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
     private T centroid;
     private int centroidDirtyCount = 0;
     private int evictionCount = 0;
+    private Goodness goodness;
 
-    public StreamedConvexHull(int budget) {
+    public StreamedConvexHull(int budget, Goodness goodness) {
         this.budget = budget;
         this.convexHull = new AndrewsMonotoneChain();
         inputPoints = new ArrayList<>();
-        this.minHeap = new PriorityQueue<>(budget, new DogEarComparator());
+        this.minHeap = new PriorityQueue<>(budget, new GoodnessComparator());
+        this.goodness = goodness;
     }
 
     /**
@@ -76,14 +77,6 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
     @Override
     public int getEvictionCount() {
         return evictionCount;
-    }
-
-    private static class DogEarComparator<S extends StreamedPoint2D<? extends Point>> implements Comparator<S> {
-
-        @Override
-        public int compare(S p1, S p2) {
-            return (int) Math.signum(p1.getGoodnessMeasure() - p2.getGoodnessMeasure());
-        }
     }
 
     /**
@@ -151,9 +144,9 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
                 }
 
                 //recompute dogEars for p, q, and r. And then insert q into both T and heap
-                q.setGoodnessMeasure(StreamedConvexUtility.area(p, q, r));
-                p.setGoodnessMeasure(StreamedConvexUtility.area(predecessor(p), p, q));
-                r.setGoodnessMeasure(StreamedConvexUtility.area(q, r, successor(r)));
+                q.setGoodnessMeasure(goodness.computeGoodness(p, q, r, centroid));
+                p.setGoodnessMeasure(goodness.computeGoodness(predecessor(p), p, q, centroid));
+                r.setGoodnessMeasure(goodness.computeGoodness(q, r, successor(r), centroid));
                 heightBalancedTree.put(q.getPolar(), q);
 
                 minHeap.add(q);
@@ -246,7 +239,7 @@ public class StreamedConvexHull<T extends Point> implements ConvexHull<T>, Strea
         for (T p : L.getVertices()) {
             StreamedPoint2D<T> streamedPoint = new StreamedPoint2D<>(p);
             streamedPoint.setPolar(StreamedConvexUtility.polar(centroid, p));
-            streamedPoint.setGoodnessMeasure(StreamedConvexUtility.area(L.getPredecessor(p), p, L.getSuccessor(p)));
+            streamedPoint.setGoodnessMeasure(goodness.computeGoodness(L.getPredecessor(p), p, L.getSuccessor(p), centroid));
 
             // add the point to treemap  - RB tree
             heightBalancedTree.put(streamedPoint.getPolar(), streamedPoint);
